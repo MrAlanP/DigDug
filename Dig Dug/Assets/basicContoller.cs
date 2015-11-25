@@ -70,9 +70,13 @@ public class basicContoller : MonoBehaviour
         //Right side of the controller
         else if (controllerSide == true)
         {
+            ////////////////////////////////////
+            // X Axis button input here
+            ////////////////////////////////////
             if (Input.GetButton("Player2ButtonX") != false || Input.GetButton("Player2ButtonB") != false)
             {
                 float player2MovementXAxis = 0f;
+
                 //recognize button input
                 if (Input.GetButton("Player2ButtonX") == true)
                 {
@@ -100,19 +104,36 @@ public class basicContoller : MonoBehaviour
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player2MovementXAxis * speed, 0));
                 }
             }
-            else if (Input.GetButton("Player2ButtonY") != false)
+            ////////////////////////////////////
+            // Y Axis button input here
+            ////////////////////////////////////
+            else if (Input.GetButton("Player2ButtonY") != false || Input.GetButton("Player2ButtonA") != false)
             {
-                float player2MovementY = 1.0f;
+                float player2MovementYAxis = 0f;
 
-                if (player2MovementY > 0)
+                //recognize button input
+                if (Input.GetButton("Player2ButtonA") == true)
+                {
+                    player2MovementYAxis = -1f;
+                }
+                else if (Input.GetButton("Player2ButtonY") == true)
+                {
+                    player2MovementYAxis = 1f;
+                }
+                if (Input.GetButton("Player2ButtonA") == true && Input.GetButton("Player2ButtonY") == true)
+                {
+                    player2MovementYAxis = 0f;
+                }
+
+                if (player2MovementYAxis > 0)
                 {
                     ani.Play("WalkUp");
-                    gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player2MovementY * speed));
+                    gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player2MovementYAxis * speed));
                 }
                 else
                 {
                     ani.Play("walkDown");
-                    gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player2MovementY * speed));
+                    gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player2MovementYAxis * speed));
                 }
             }
             else
