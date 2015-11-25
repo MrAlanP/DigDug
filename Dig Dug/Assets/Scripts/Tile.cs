@@ -6,8 +6,12 @@ public class Tile : MonoBehaviour {
 	public Sprite grassEdgeSprite;
 
 	SpriteRenderer spriteRend;
+
+
+	Fault fault;
 	// Use this for initialization
 	void Awake () {
+		fault = null;
 		spriteRend = GetComponent<SpriteRenderer> ();
 	}
 	
@@ -18,5 +22,13 @@ public class Tile : MonoBehaviour {
 
 	public void SetEdgeSprite(){
 		spriteRend.sprite = grassEdgeSprite;
+	}
+
+	public void AddFault(Fault _fault){
+		fault = _fault;
+	}
+
+	public bool HasFault(){
+		return fault != null;
 	}
 }

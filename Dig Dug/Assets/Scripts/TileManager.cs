@@ -7,7 +7,7 @@ public class TileManager : MonoBehaviour {
 	public GameObject tilesParent;
 	public GameObject tilePrefab;
 
-	CrackManager crackManager;
+	FaultManager faultManager;
 
 	Tile[,] tiles;
 
@@ -16,7 +16,7 @@ public class TileManager : MonoBehaviour {
 	Vector2 GRID_SIZE = new Vector2(70,35);
 	// Use this for initialization
 	void Awake () {
-		crackManager = GetComponent<CrackManager> ();
+		faultManager = GetComponent<FaultManager> ();
 
 		//Create Tiles in grid
 		tiles = new Tile[(int)GRID_SIZE.x, (int)GRID_SIZE.y];
@@ -28,7 +28,7 @@ public class TileManager : MonoBehaviour {
 				newTile.name = "Tile_"+y+"-"+x;
 				tiles[x,y] = newTile.GetComponent<Tile>();
 
-				//If the sprite should be edge alt
+				//If the sprite should be edge alt sprite
 				if(y==0){
 					tiles[x,y].SetEdgeSprite();
 				}
@@ -46,6 +46,14 @@ public class TileManager : MonoBehaviour {
 	}
 
 	public void Earthquake(){
+		int faultCount = 3;
+		Tile[] tilesToAddFaults = new Tile [faultCount];
+
+		for (int i = 0; i<faultCount; i++) {
+			Vector2 tileIndex = new Vector2(Random.Range(0,(int)GRID_SIZE.x-1), Random.Range(0,(int)GRID_SIZE.y-1));
+			tilesToAddFaults[i] = tiles[(int)tileIndex.x, (int)tileIndex.y];
+		}
+		faultManager.CreateCracks (tilesToAddFaults);
 
 	}
 }

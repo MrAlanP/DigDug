@@ -28,7 +28,7 @@ public class GameCamera : MonoBehaviour {
 
 	public void Earthquake(){
 		cameraOffset = Vector2.zero;
-		DOTween.Shake (() => cameraOffset, x => cameraOffset = x, 1.0f, 0.5f, 100, 10);
+		DOTween.Shake (() => cameraOffset, x => cameraOffset = x, 1.0f, 0.1f, 50, 10);
 
 	}
 }
