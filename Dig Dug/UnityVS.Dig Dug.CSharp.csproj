@@ -78,11 +78,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\FlashText.cs" />
     <Compile Include="Assets\Imported\Demigiant\DOTween\Examples\Basics.cs" />
     <Compile Include="Assets\Imported\Demigiant\DOTween\Examples\Sequences.cs" />
     <Compile Include="Assets\Imported\JSON\JSONObject.cs" />
     <Compile Include="Assets\Imported\JSON\JSONTemplates.cs" />
     <Compile Include="Assets\Imported\JSON\VectorTemplates.cs" />
+    <Compile Include="Assets\JoinGame.cs" />
     <Compile Include="Assets\Scripts\Fault.cs" />
     <Compile Include="Assets\Scripts\FaultManager.cs" />
     <Compile Include="Assets\Scripts\Game.cs" />
