@@ -18,9 +18,9 @@ public class FaultManager : MonoBehaviour {
 	public void CreateCracks(Tile[] tilesToAddCracks){
 		for (int i = 0; i<tilesToAddCracks.Length; i++) {
 			GameObject newFault = Instantiate (faultPrefab);
-			newFault.transform.SetParent(tilesToAddCracks[i].transform);
-			newFault.transform.localPosition = Vector3.zero;
 			Fault fault = newFault.GetComponent<Fault>();
+			tilesToAddCracks[i].AddFault(fault);
+			fault.SetTile(tilesToAddCracks[i]);
 			fault.FadeIn();
 		}
 
