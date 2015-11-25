@@ -4,6 +4,7 @@ using System.Collections;
 public class basicContoller : MonoBehaviour
 {
     float speed = 250;
+    public bool falling = false;
     Animator ani;
 	// Use this for initialization
 	void Start () 
@@ -47,6 +48,10 @@ public class basicContoller : MonoBehaviour
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             ani.Play("playerIdle");
+        }
+        if (falling)
+        {
+            ani.Play("PlayerFall");
         }
 	}
 }

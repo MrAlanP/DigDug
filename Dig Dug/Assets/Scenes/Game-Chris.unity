@@ -255,6 +255,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11477080, guid: 4174076b8aa5b1e4e894769ecf815499, type: 2}
+      propertyPath: falling
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9568482, guid: 4174076b8aa5b1e4e894769ecf815499, type: 2}
     - {fileID: 11145654, guid: 4174076b8aa5b1e4e894769ecf815499, type: 2}
