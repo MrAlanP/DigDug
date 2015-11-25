@@ -12,4 +12,8 @@ public class CrackManager : MonoBehaviour {
 	void Update () {
 	
 	}
+
+	public void CreateRandomCracks(int count){
+
+	}
 }

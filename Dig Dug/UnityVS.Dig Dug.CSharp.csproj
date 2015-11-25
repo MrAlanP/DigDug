@@ -82,6 +82,7 @@
     <Compile Include="Assets\Imported\JSON\VectorTemplates.cs" />
     <Compile Include="Assets\Scripts\CrackManager.cs" />
     <Compile Include="Assets\Scripts\Game.cs" />
+    <Compile Include="Assets\Scripts\GameCamera.cs" />
     <Compile Include="Assets\Scripts\Tile.cs" />
     <Compile Include="Assets\Scripts\TileManager.cs" />
   </ItemGroup>
