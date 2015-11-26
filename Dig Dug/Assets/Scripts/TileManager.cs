@@ -59,6 +59,10 @@ public class TileManager : MonoBehaviour {
 	}
 
 	public Tile GetTile(Vector2 tileIndex){
+		//If out of range
+		if (tileIndex.x < 0 || tileIndex.y < 0 || tileIndex.x >= GRID_SIZE.x || tileIndex.y >= GRID_SIZE.y) {
+			return null;
+		}
 		return tiles[(int)tileIndex.x, (int)tileIndex.y];
 	}
 }

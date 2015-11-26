@@ -12,22 +12,22 @@ public class Fault : MonoBehaviour {
 		Connection
 	}
 
-	public Sprite[] connectionSprites = new Sprite[4];
+	public Sprite[] connectionSprites = new Sprite[5];
 
 	Vector2[] connectionDirections = new Vector2[4];
 
 
-	FaultType faultType;
+	FaultType faultType = FaultType.Connection;
 	SpriteRenderer spriteRend;
 
 	Tile tile;
+	//A reference back to the collection of faults this belongs to
+	public FaultCollection faultCollectionRef;
 
-	uint faultKey  = 0;
 
 
 	// Use this for initialization
 	void Awake () {
-		faultType = FaultType.Connection;
 		spriteRend = GetComponent<SpriteRenderer> ();
 		mainFaultSprite.enabled = false;
 	}
@@ -49,24 +49,29 @@ public class Fault : MonoBehaviour {
 		FadeIn ();
 	}
 
+	public bool CanBeSetMain(){
+		if (faultType == FaultType.Main) {
+			return false;
+		}
+		return true;
+	}
+
 	public void ExplodeFault(){
 		faultType = FaultType.Connection;
 		AddConnectionDirection (new Vector2 (1, 0));
 		AddConnectionDirection (new Vector2 (0, 1));
 		AddConnectionDirection (new Vector2 (-1, 0));
 		AddConnectionDirection (new Vector2 (0, -1));
+		UpdateSprite ();
 	}
 
 	public void AddConnectionDirection(Vector2 dir){
-
-		//Index for the connection - based on connection count
-		int spriteIndex = 0;
 
 		for(int i = 0; i<connectionDirections.Length; i++){
 			if(connectionDirections[i]==Vector2.zero){
 
 				connectionDirections[i] = dir;
-				spriteIndex = i;
+
 				break;
 			}
 			//If we already have this direction, return and don't update sprite
@@ -75,25 +80,68 @@ public class Fault : MonoBehaviour {
 			}
 		}
 
-		spriteRend.sprite = connectionSprites [spriteIndex];
+
 
 	}
 
-	public void SetRotationFromDirections(){
+	public void UpdateSprite(){
 		//Add all directions so we can then average to work out rotation
 		Vector2 totalDirection = new Vector2 ();
 		int directionCount = 0;
+
+
 		for(int i = 0; i<connectionDirections.Length; i++){
 			if(connectionDirections[i]!=Vector2.zero){
 				directionCount++;
 				totalDirection += connectionDirections[i];
 			}
 		}
-		if (directionCount != 3) {
-			float rotation = Mathf.Atan2 (connectionDirections[0].x, -connectionDirections[0].y);
-			rotation *= Mathf.Rad2Deg;
-			transform.localEulerAngles = new Vector3 (0, 0, rotation);
+
+		//No directions means we shouldn't set sprite
+		if (directionCount == 0) {
+			return;
 		}
+
+		//Work out the average direction - for certain connection cases
+		Vector2 averageDirection = totalDirection / directionCount;
+
+
+		int spriteIndex = directionCount-1;
+		//Check if sprite should be corner
+		if (directionCount == 2) {
+			if(totalDirection!=Vector2.zero){
+				spriteIndex = 4;
+			}
+		}
+
+
+		 spriteRend.sprite = connectionSprites [spriteIndex];
+
+		float rotation = 0;
+
+		//Sort out rotation
+		switch (spriteIndex) {
+		//t junction
+		case 2:{
+			rotation = Mathf.Atan2 (averageDirection.x, -averageDirection.y);
+			break;
+		}
+		//corner
+		case 4:{
+			rotation = Mathf.Atan2 (averageDirection.x, -averageDirection.y);
+			rotation -= Mathf.Deg2Rad*45;
+			break;
+		}
+		default:{
+			//Use first connection to determine direction (1 or 2 connections)
+			rotation = Mathf.Atan2 (connectionDirections[0].x, -connectionDirections[0].y);
+			break;
+		}
+		}
+
+		rotation *= Mathf.Rad2Deg;
+		transform.localEulerAngles = new Vector3 (0, 0, rotation);
+
 	}
 
 	public void SetTile(Tile _tile){

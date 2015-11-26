@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class FaultManager : MonoBehaviour {
-
-	List<Fault> faults = new List<Fault>();
+	
 	List<Fault> mainFaults = new List<Fault>();
+	List<FaultCollection> faultCollections = new List<FaultCollection> ();
+	uint faultKey = 0;
 	public GameObject faultPrefab;
 
 	TileManager tileManager;
@@ -25,6 +26,10 @@ public class FaultManager : MonoBehaviour {
 		for (int i = 0; i<tilesToAddCracks.Length; i++) {
 			Fault newFault = AddFault(tilesToAddCracks[i]);
 			SetFaultAsMain(newFault);
+
+			//Create a new fault collection for this item
+			FaultCollection collection = CreateFaultCollection();
+			collection.AddFault(newFault);
 		}
 	}
 
@@ -41,41 +46,60 @@ public class FaultManager : MonoBehaviour {
 		for(int i = 0; i<explodeRange; i++){
 			//Do all 4 directions
 			for(int j = 0; j<4; j++){
+
 				float angle = Mathf.Deg2Rad*(90*(j%4));
 				Vector2 direction = new Vector2(Mathf.Cos(angle),-Mathf.Sin(angle));
 
 				Vector2 directionOffset = direction * (i+1);
 				Tile tile = tileManager.GetTile(faultIndex + directionOffset);
 
-				//Add a fault if one doesn't exist
-				Fault newFault;
-				if(tile.HasFault()){
-					newFault = tile.GetFault();
-				}
-				else{
-					newFault = AddFault(tile);
-				}
+				//If the tile is in range
+				if(tile!=null){
+					//Add a fault if one doesn't exist
+					Fault newFault;
+					if(tile.HasFault()){
+						newFault = tile.GetFault();
 
-				//Add entry connection
-				newFault.AddConnectionDirection(direction);
-				if(i<explodeRange-1){
-					//If not at end of explode range, add exit direction too
-					newFault.AddConnectionDirection(-direction);
-				}
-				//Set fault type as insertable
-				else{
-					SetFaultAsMain(newFault);
-				}
+						//Check if fault collection is same or not
+						if(newFault.faultCollectionRef.key != fault.faultCollectionRef.key){
+							fault.faultCollectionRef.MergeCollection(newFault.faultCollectionRef);
+							faultCollections.Remove(newFault.faultCollectionRef);
+						}
+						else{
+	
+						}
+					}
+					else{
+						//Create a new fault
+						newFault = AddFault(tile);
+						fault.faultCollectionRef.AddFault(newFault);
+					}
 
-				newFault.SetRotationFromDirections();
+
+					//Add entry connection
+					newFault.AddConnectionDirection(direction);
+					if(i<explodeRange-1){
+						//If not at end of explode range, add exit direction too
+						newFault.AddConnectionDirection(-direction);
+					}
+					//Set fault type as insertable
+					else{
+						SetFaultAsMain(newFault);
+					}
+					//Update rotation based on connections
+					newFault.UpdateSprite();
+				}
 			}
 		}
 
 	}
 
 	void SetFaultAsMain(Fault fault){
-		fault.SetAsMain();
-		mainFaults.Add (fault);
+		if (fault.CanBeSetMain ()) {
+			fault.SetAsMain ();
+			mainFaults.Add (fault);
+		} 
+
 	}
 
 	Fault AddFault(Tile tile){
@@ -83,7 +107,15 @@ public class FaultManager : MonoBehaviour {
 		Fault fault = newFault.GetComponent<Fault>();
 		tile.AddFault(fault);
 		fault.SetTile(tile);
-		faults.Add(fault);
 		return fault;
+	}
+
+	FaultCollection CreateFaultCollection(){
+		FaultCollection newCollection = new FaultCollection ();
+		faultCollections.Add (newCollection);
+		newCollection.key = faultKey;
+		faultKey++;
+
+		return newCollection;
 	}
 }
