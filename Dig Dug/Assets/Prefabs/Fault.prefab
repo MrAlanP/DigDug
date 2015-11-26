@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 423440}
   - 212: {fileID: 21232020}
   m_Layer: 0
-  m_Name: FaultConnection
+  m_Name: FaultMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,6 +69,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1ab6d2b235f8064fba57c3a2e736c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainFaultSprite: {fileID: 0}
+  connectionSprites:
+  - {fileID: 21300000, guid: 7da4d8503b604ee459a91378cc8942c2, type: 3}
+  - {fileID: 21300000, guid: 9b5a15a15b153404495fd59ca6a0e721, type: 3}
+  - {fileID: 21300000, guid: 4ce823efd21af364ea142dfc0cb9e5a1, type: 3}
+  - {fileID: 21300000, guid: 953177ebfd168af4f8561093338f6be7, type: 3}
 --- !u!212 &21232020
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -93,7 +99,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: bc2c47a7e75984047b86c2a8a322feac, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!212 &21269376
 SpriteRenderer:
@@ -119,7 +125,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 22822605
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: bc2c47a7e75984047b86c2a8a322feac, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:

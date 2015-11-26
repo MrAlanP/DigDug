@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class FaultManager : MonoBehaviour {
 
 	List<Fault> faults = new List<Fault>();
+	List<Fault> mainFaults = new List<Fault>();
 	public GameObject faultPrefab;
 
 	TileManager tileManager;
@@ -16,19 +17,19 @@ public class FaultManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Q)) {
-			ExplodeFault(faults[Random.Range(0,faults.Count)]);
+			ExplodeFault(mainFaults[Random.Range(0,mainFaults.Count)]);
 		}
 	}
 
 	public void CreateCracks(Tile[] tilesToAddCracks){
 		for (int i = 0; i<tilesToAddCracks.Length; i++) {
 			Fault newFault = AddFault(tilesToAddCracks[i]);
-			newFault.SetAsMain();
+			SetFaultAsMain(newFault);
 		}
 	}
 
 	public void ExplodeFault(Fault fault){
-
+		mainFaults.Remove (fault);
 		fault.ExplodeFault();
 
 		Vector2 faultIndex = fault.GetTile ().tileIndex;
@@ -45,7 +46,15 @@ public class FaultManager : MonoBehaviour {
 
 				Vector2 directionOffset = direction * (i+1);
 				Tile tile = tileManager.GetTile(faultIndex + directionOffset);
-				Fault newFault = AddFault(tile);
+
+				//Add a fault if one doesn't exist
+				Fault newFault;
+				if(tile.HasFault()){
+					newFault = tile.GetFault();
+				}
+				else{
+					newFault = AddFault(tile);
+				}
 
 				//Add entry connection
 				newFault.AddConnectionDirection(direction);
@@ -55,13 +64,18 @@ public class FaultManager : MonoBehaviour {
 				}
 				//Set fault type as insertable
 				else{
-					newFault.SetAsMain();
+					SetFaultAsMain(newFault);
 				}
 
 				newFault.SetRotationFromDirections();
 			}
 		}
 
+	}
+
+	void SetFaultAsMain(Fault fault){
+		fault.SetAsMain();
+		mainFaults.Add (fault);
 	}
 
 	Fault AddFault(Tile tile){

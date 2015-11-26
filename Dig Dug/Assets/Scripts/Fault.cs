@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class Fault : MonoBehaviour {
 
-	public SpriteRenderer connectionSprite;
+	public SpriteRenderer mainFaultSprite;
 
 	//Whether we can stick a bomb in the fault or not
 	public enum FaultType{
@@ -29,7 +29,7 @@ public class Fault : MonoBehaviour {
 	void Awake () {
 		faultType = FaultType.Connection;
 		spriteRend = GetComponent<SpriteRenderer> ();
-		spriteRend.enabled = false;
+		mainFaultSprite.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -38,14 +38,14 @@ public class Fault : MonoBehaviour {
 	}
 
 	public void FadeIn(){
-		transform.localScale = Vector3.zero;
-		DOTween.To (() => transform.localScale, x => transform.localScale = x, new Vector3 (1, 1, 1), 1);
+		mainFaultSprite.transform.localScale = Vector3.zero;
+		DOTween.To (() => mainFaultSprite.transform.localScale, x => mainFaultSprite.transform.localScale = x, new Vector3 (1, 1, 1), 1);
 	}
 
 	//Sets the fault as a connection type
 	public void SetAsMain(){
 		faultType = FaultType.Main;
-		spriteRend.enabled = true;
+		mainFaultSprite.enabled = true;
 		FadeIn ();
 	}
 
@@ -75,7 +75,7 @@ public class Fault : MonoBehaviour {
 			}
 		}
 
-		connectionSprite.sprite = connectionSprites [spriteIndex];
+		spriteRend.sprite = connectionSprites [spriteIndex];
 
 	}
 
@@ -92,7 +92,7 @@ public class Fault : MonoBehaviour {
 		if (directionCount != 3) {
 			float rotation = Mathf.Atan2 (connectionDirections[0].x, -connectionDirections[0].y);
 			rotation *= Mathf.Rad2Deg;
-			connectionSprite.transform.localEulerAngles = new Vector3 (0, 0, rotation);
+			transform.localEulerAngles = new Vector3 (0, 0, rotation);
 		}
 	}
 
