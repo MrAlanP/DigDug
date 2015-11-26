@@ -88,7 +88,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c8063f07f3b2b4687eddffbde6d625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bomb: {fileID: 186706, guid: dd496aa6b2bc9104fb70f58be5c45ef8, type: 2}
   falling: 0
+  dead: 0
   controllerSide: 0
 --- !u!212 &21266504
 SpriteRenderer:
