@@ -3,30 +3,56 @@ using System.Collections;
 
 public class bombTrack : MonoBehaviour 
 {
-    public float speed = 1.0F;
-    private float startTime;
-    private float journeyLength;
+    public float speed = 0.50F;
+    private float startTime = 0;
+    private float journeyLength = 0;
     float detonate = 0;
+    bool throb = false;
+    float active = 0;
     Vector2 scale;
 	// Use this for initialization
 	void Start ()
     {
+        startTime = Time.time;
+        journeyLength = Vector2.Distance(scale, scale*4);
       scale = transform.localScale;
+        
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        
-        detonate += Time.deltaTime;
-        Debug.Log(detonate);
-        if (detonate >=3)
+        active += Time.deltaTime;
+        if (active >= 0.3f)
         {
-           // gameObject.transform.localScale = new Vector2(100f,100f);
-            Debug.Log(gameObject.transform.localScale);
+            throb = !throb;
+
+            if (!throb)
+            {
+                transform.localScale = new Vector2(1.1f, 1.1f);//,1.5f);
+                gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+               
+            }
+            else
+            {
+                transform.localScale = new Vector2(1, 1);
+
+                gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+               
+            } 
+            active = 0;
+        }
+
+        detonate += Time.deltaTime;
+        if (detonate >=2)
+        {
             float distCovered = (Time.time - startTime) * speed;
             float fracJourney = distCovered / journeyLength;
-            transform.localScale = Vector2.Lerp(scale,scale*10 , fracJourney);
+            transform.localScale = Vector2.Lerp(scale,scale*4 , fracJourney*Time.deltaTime);
+        }
+        else
+        {
+          
         }
 
 	}

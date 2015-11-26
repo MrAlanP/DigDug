@@ -129,7 +129,7 @@ public class basicContoller : MonoBehaviour
             ////////////////////////////////////
             // X Axis button input here
             ////////////////////////////////////
-            if (Input.GetButton("Player2ButtonX") != false || Input.GetButton("Player2ButtonB") != false)
+          //  if (Input.GetButton("Player2ButtonX") != false || Input.GetButton("Player2ButtonB") != false)
             {
                 float player2MovementXAxis = 0f;
 
@@ -172,7 +172,7 @@ public class basicContoller : MonoBehaviour
             ////////////////////////////////////
             // Y Axis button input here
             ////////////////////////////////////
-            else if (Input.GetButton("Player2ButtonY") != false || Input.GetButton("Player2ButtonA") != false)
+         //   else if (Input.GetButton("Player2ButtonY") != false || Input.GetButton("Player2ButtonA") != false)
             {
                 float player2MovementYAxis = 0f;
 
