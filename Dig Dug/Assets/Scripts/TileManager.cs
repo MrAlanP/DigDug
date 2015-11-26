@@ -27,6 +27,7 @@ public class TileManager : MonoBehaviour {
 				newTile.transform.localPosition = new Vector3(TILE_SIZE*x, TILE_SIZE*y, 0);
 				newTile.name = "Tile_"+y+"-"+x;
 				tiles[x,y] = newTile.GetComponent<Tile>();
+				tiles[x,y].tileIndex = new Vector2(x,y);
 
 				//If the sprite should be edge alt sprite
 				if(y==0){
@@ -55,5 +56,9 @@ public class TileManager : MonoBehaviour {
 		}
 		faultManager.CreateCracks (tilesToAddFaults);
 
+	}
+
+	public Tile GetTile(Vector2 tileIndex){
+		return tiles[(int)tileIndex.x, (int)tileIndex.y];
 	}
 }

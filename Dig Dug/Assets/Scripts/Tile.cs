@@ -7,6 +7,8 @@ public class Tile : MonoBehaviour {
 
 	SpriteRenderer spriteRend;
 
+	public Vector2 tileIndex = new Vector2();
+
 
 	Fault fault;
 	// Use this for initialization
