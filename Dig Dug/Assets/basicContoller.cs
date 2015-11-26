@@ -3,9 +3,13 @@ using System.Collections;
 
 public class basicContoller : MonoBehaviour
 {
+   public GameObject bomb;
     float speed = 250;
     public bool falling = false;
     Animator ani;
+    public bool dead = false;
+    bool sexBomb = false;
+    float coolDown = 0;
 
     ///////////////////////////////////////////////////////////////////////////
     //If false using left side of the controller if true then right side
@@ -15,24 +19,18 @@ public class basicContoller : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
+       // bomb = GameObject.FindGameObjectWithTag("Bomb");
         ani = gameObject.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
-	void Update () 
+    void Update()
     {
         MovePlayer();
-
-		ani.SetBool("playerFalling", falling);
-
-        //if (falling)
-      //  {
-           // ani.Play("PlayerFall");
-        //}
-
-
-
-	}
+        placeBomb();
+        ani.SetBool("playerFalling", falling);
+        ani.SetBool("playerDead", dead);
+    }
 
 
 
@@ -129,7 +127,7 @@ public class basicContoller : MonoBehaviour
             ////////////////////////////////////
             // X Axis button input here
             ////////////////////////////////////
-          //  if (Input.GetButton("Player2ButtonX") != false || Input.GetButton("Player2ButtonB") != false)
+           // if (Input.GetButton("Player2ButtonX")  || Input.GetButton("Player2ButtonB"))
             {
                 float player2MovementXAxis = 0f;
 
@@ -213,12 +211,58 @@ public class basicContoller : MonoBehaviour
 					
 				}
             }
-//            else
-//            {
-//                gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-//                //ani.Play("playerIdle");
-//            }
         }
 
+    }
+    void placeBomb()
+    {
+        if (!controllerSide)
+        {
+            if (!sexBomb)
+            {
+                if (Input.GetButtonDown("Player1BumperLeft"))
+                {
+                    Instantiate(bomb, new Vector2(gameObject.transform.position.x + 0.1f, gameObject.transform.position.y), gameObject.transform.rotation);
+                    sexBomb = true;
+                }
+                if (Input.GetButtonUp("Player1BumperLeft"))
+                {
+                    sexBomb = false;
+                }
+            }
+            else
+            {
+                coolDown += Time.deltaTime;
+                if (coolDown >= 2)
+                {
+                    sexBomb = false;
+                    coolDown = 0;
+                }
+            }
+        }
+        else
+        {
+            if (!sexBomb)
+            {
+                if (Input.GetButtonDown("Player2BumperRight"))
+                {
+                    Instantiate(bomb, new Vector2(gameObject.transform.position.x + 0.1f, gameObject.transform.position.y), gameObject.transform.rotation);
+                    sexBomb = true;
+                }
+                if (Input.GetButtonUp("Player2BumperRight"))
+                {
+                    sexBomb = false;
+                }
+            }
+            else
+            {
+                coolDown += Time.deltaTime;
+                if (coolDown >= 2)
+                {
+                    sexBomb = false;
+                    coolDown = 0;
+                }
+            }
+        }
     }
 }

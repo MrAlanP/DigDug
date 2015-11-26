@@ -95,6 +95,7 @@
     <Compile Include="Assets\basicContoller.cs" />
     <Compile Include="Assets\bombTrack.cs" />
     <Compile Include="Assets\bombTrigger.cs" />
+    <Compile Include="Assets\explosion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Imported\Demigiant\DOTween\DOTween.XML" />
