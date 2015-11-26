@@ -8,6 +8,8 @@ public class basicContoller : MonoBehaviour
     public bool falling = false;
     Animator ani;
     public bool dead = false;
+    float dying = 0;
+    float fade = 0;
     bool sexBomb = false;
     float coolDown = 0;
 
@@ -26,10 +28,30 @@ public class basicContoller : MonoBehaviour
 	// Update is called once per frame
     void Update()
     {
-        MovePlayer();
-        placeBomb();
-        ani.SetBool("playerFalling", falling);
         ani.SetBool("playerDead", dead);
+        if (!dead)
+        {
+            MovePlayer();
+            placeBomb();
+            ani.SetBool("playerFalling", falling);
+        }
+        else
+        {
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            dying += Time.deltaTime;
+            if (dying>=3)
+            {
+             
+                fade += Time.deltaTime;
+                gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.clear,fade);
+            }
+        }
+        if (gameObject.GetComponent<SpriteRenderer>().color == Color.clear)
+        {
+            Destroy(gameObject);
+        }
+       
+        
     }
 
 
