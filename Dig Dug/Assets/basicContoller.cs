@@ -22,14 +22,23 @@ public class basicContoller : MonoBehaviour
 	void Update () 
     {
         MovePlayer();
-        if (falling)
-        {
+
+		ani.SetBool("playerFalling", falling);
+
+        //if (falling)
+      //  {
            // ani.Play("PlayerFall");
-        }
+        //}
+
+
+
 	}
+
+
 
     void MovePlayer()
     {
+
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // Left side of the controller
         /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,8 +47,8 @@ public class basicContoller : MonoBehaviour
             ////////////////////////////////////
             // X Axis button input here
             ////////////////////////////////////
-            if (Input.GetAxis("Player1DpadX") != 0)
-            {
+            //if (Input.GetAxis("Player1DpadX") != 0)
+            //{
                 float player1MovementXAxis = 0f;
 
                 //set all inputs straight to 1 so both sides of the controller have the same movement
@@ -57,19 +66,25 @@ public class basicContoller : MonoBehaviour
                 {
 
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2((player1MovementXAxis * speed), 0));
+					ani.SetFloat("XMovement", player1MovementXAxis);
                    // ani.Play("walkR");
                 }
-                else
+                else if(player1MovementXAxis < 0)
                 {
                    // ani.Play("walkL");
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player1MovementXAxis * speed, 0));
+					ani.SetFloat("XMovement", player1MovementXAxis);
                 }
-            }
+				else if(player1MovementXAxis == 0)
+				{
+					ani.SetFloat("XMovement", player1MovementXAxis);
+				}
+            //}
             ////////////////////////////////////
             // Y Axis button input here
             ////////////////////////////////////
-            else if (Input.GetAxis("Player1DpadY") != 0)
-            {
+            //else if (Input.GetAxis("Player1DpadY") != 0)
+           // {
                 float player1MovementYAxis = 0f;
 
                 //set all inputs straight to 1 so both sides of the controller have the same movement
@@ -82,23 +97,28 @@ public class basicContoller : MonoBehaviour
                     player1MovementYAxis = 1f;
                 }
 
+			
+
                 //do movement stuff
                 if (player1MovementYAxis > 0)
                 {
                     //ani.Play("WalkUp");
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player1MovementYAxis * speed));
+					ani.SetFloat("YMovement", player1MovementYAxis);
                 }
-                else
+                else if(player1MovementYAxis < 0)
                 {
                    // ani.Play("walkDown");
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player1MovementYAxis * speed));
+					ani.SetFloat("YMovement", player1MovementYAxis);
+				
                 }
-            }
-            else
-            {
-                gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                //ani.Play("playerIdle");
-            }
+            	else if(player1MovementYAxis == 0)
+           		{
+                	gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+					ani.SetFloat("YMovement", player1MovementYAxis);
+				  	//ani.Play("playerIdle");
+            	}
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,15 +151,23 @@ public class basicContoller : MonoBehaviour
                 //do movement stuff
                 if (player2MovementXAxis > 0)
                 {
-
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2((player2MovementXAxis * speed), 0));
+					ani.SetFloat("XMovement", player2MovementXAxis);
                     //ani.Play("walkR");
                 }
-                else
+				else if (player2MovementXAxis < 0)
                 {
                     //ani.Play("walkL");
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player2MovementXAxis * speed, 0));
+					ani.SetFloat("XMovement", player2MovementXAxis);
+					
                 }
+				else if(player2MovementXAxis == 0)
+				{
+					gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+					ani.SetFloat("XMovement", player2MovementXAxis);
+					//ani.Play("playerIdle");
+				}
             }
             ////////////////////////////////////
             // Y Axis button input here
@@ -168,18 +196,29 @@ public class basicContoller : MonoBehaviour
                 {
                    // ani.Play("WalkUp");
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player2MovementYAxis * speed));
+					ani.SetFloat("YMovement", player2MovementYAxis);
+					
                 }
-                else
+                else if (player2MovementYAxis < 0)
                 {
                     //ani.Play("walkDown");
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player2MovementYAxis * speed));
+					ani.SetFloat("YMovement", player2MovementYAxis);
+					
                 }
+				else if (player2MovementYAxis == 0)
+				{
+					gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+					ani.SetFloat("YMovement", player2MovementYAxis);
+					
+				}
             }
-            else
-            {
-                gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                //ani.Play("playerIdle");
-            }
+//            else
+//            {
+//                gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+//                //ani.Play("playerIdle");
+//            }
         }
+
     }
 }
