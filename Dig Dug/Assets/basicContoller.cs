@@ -24,7 +24,7 @@ public class basicContoller : MonoBehaviour
         MovePlayer();
         if (falling)
         {
-            ani.Play("PlayerFall");
+           // ani.Play("PlayerFall");
         }
 	}
 
@@ -57,11 +57,11 @@ public class basicContoller : MonoBehaviour
                 {
 
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2((player1MovementXAxis * speed), 0));
-                    ani.Play("walkR");
+                   // ani.Play("walkR");
                 }
                 else
                 {
-                    ani.Play("walkL");
+                   // ani.Play("walkL");
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player1MovementXAxis * speed, 0));
                 }
             }
@@ -85,19 +85,19 @@ public class basicContoller : MonoBehaviour
                 //do movement stuff
                 if (player1MovementYAxis > 0)
                 {
-                    ani.Play("WalkUp");
+                    //ani.Play("WalkUp");
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player1MovementYAxis * speed));
                 }
                 else
                 {
-                    ani.Play("walkDown");
+                   // ani.Play("walkDown");
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player1MovementYAxis * speed));
                 }
             }
             else
             {
                 gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                ani.Play("playerIdle");
+                //ani.Play("playerIdle");
             }
         }
 
@@ -125,7 +125,7 @@ public class basicContoller : MonoBehaviour
                 if (Input.GetButton("Player2ButtonX") == true && Input.GetButton("Player2ButtonB") == true)
                 {
                     player2MovementXAxis = 0f;
-                    ani.Play("playerIdle");
+                    //ani.Play("playerIdle");
                 }
 
                 //do movement stuff
@@ -133,11 +133,11 @@ public class basicContoller : MonoBehaviour
                 {
 
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2((player2MovementXAxis * speed), 0));
-                    ani.Play("walkR");
+                    //ani.Play("walkR");
                 }
                 else
                 {
-                    ani.Play("walkL");
+                    //ani.Play("walkL");
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player2MovementXAxis * speed, 0));
                 }
             }
@@ -160,25 +160,25 @@ public class basicContoller : MonoBehaviour
                 if (Input.GetButton("Player2ButtonA") == true && Input.GetButton("Player2ButtonY") == true)
                 {
                     player2MovementYAxis = 0f;
-                    ani.Play("playerIdle");
+                    //ani.Play("playerIdle");
                 }
 
                 // do movement stuff
                 if (player2MovementYAxis > 0)
                 {
-                    ani.Play("WalkUp");
+                   // ani.Play("WalkUp");
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player2MovementYAxis * speed));
                 }
                 else
                 {
-                    ani.Play("walkDown");
+                    //ani.Play("walkDown");
                     gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player2MovementYAxis * speed));
                 }
             }
             else
             {
                 gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                ani.Play("playerIdle");
+                //ani.Play("playerIdle");
             }
         }
     }
