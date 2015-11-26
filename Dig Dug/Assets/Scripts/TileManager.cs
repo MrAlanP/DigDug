@@ -65,4 +65,5 @@ public class TileManager : MonoBehaviour {
 		}
 		return tiles[(int)tileIndex.x, (int)tileIndex.y];
 	}
+  
 }

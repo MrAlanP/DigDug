@@ -71,8 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosion: {fileID: 142938, guid: 22c975eb353a6474b81adde06a051845, type: 2}
-  player: {fileID: 0}
-  speed: 1
+  tileManager: {fileID: 11403434, guid: 6c6de7d01ce2373408e20a445d3f181a, type: 2}
 --- !u!212 &21272180
 SpriteRenderer:
   m_ObjectHideFlags: 1

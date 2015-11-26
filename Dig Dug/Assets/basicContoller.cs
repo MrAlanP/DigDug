@@ -21,8 +21,7 @@ public class basicContoller : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-       // bomb = GameObject.FindGameObjectWithTag("Bomb");
-        ani = gameObject.GetComponent<Animator>();
+     ani = gameObject.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -37,24 +36,26 @@ public class basicContoller : MonoBehaviour
         }
         else
         {
-            gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            dying += Time.deltaTime;
-            if (dying>=3)
-            {
-             
-                fade += Time.deltaTime;
-                gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.clear,fade);
-            }
+            onDeath();
+        }
+    }
+
+    //kill player object
+    void onDeath()
+    {
+        gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        dying += Time.deltaTime;
+        if (dying >= 3)
+        {
+
+            fade += Time.deltaTime;
+            gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.clear, fade);
         }
         if (gameObject.GetComponent<SpriteRenderer>().color == Color.clear)
         {
             Destroy(gameObject);
         }
-       
-        
     }
-
-
 
     void MovePlayer()
     {

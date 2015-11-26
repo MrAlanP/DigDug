@@ -4,17 +4,49 @@ using System.Collections;
 public class bombTrack : MonoBehaviour 
 {
     public GameObject explosion;
-   
+    public TileManager tileManager;
     bool exploded = false;
     bool throb = false;
     float active = 0;
     float throbCount = 0;
     Vector2 scale;
-		
+    float shrink;
+    Vector2 startSize;
+    Vector2 bombPos;
+    void Start()
+    {
+       startSize = gameObject.transform.localScale;
+
+    }
 	// Update is called once per frame
 	void Update ()
     {
-       groundActiveBomb();
+        Debug.Log(tileManager.GetCentrePoint().ToString());
+       // Tile localTile = tileManager.GetTile(new Vector2(1,1));
+
+             
+        //get tile with nearest position, set bomb pos to tile pos. IF tile has crack (crackActiveBomb()) ELSE (groundActiveBomb())
+
+        bombPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);   
+        
+      
+      
+       // gameObject.transform.SetParent(localTile.transform);
+        //if (localTile.HasFault())
+        //{
+        //    crackActiveBomb();
+        //}
+        //else
+        //{
+           groundActiveBomb();
+        //}
+    }
+    void crackActiveBomb()
+    {
+        shrink += Time.deltaTime;
+        gameObject.transform.localScale = Vector2.Lerp(startSize, Vector2.zero, shrink);
+
+
     }
     void groundActiveBomb()
     {
@@ -50,5 +82,4 @@ public class bombTrack : MonoBehaviour
             Destroy(gameObject);
         }
     }
-       
 }
