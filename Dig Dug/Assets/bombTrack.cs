@@ -50,23 +50,28 @@ public class bombTrack : MonoBehaviour
         }
         //makes the bomb "explode"
         detonate += Time.deltaTime;
-        if (detonate >= 3)
+        if (detonate >= 3&&!exploded)
         {
-            float distCovered = (Time.time - startTime) * speed;
-            float fracJourney = distCovered / journeyLength;
-            transform.localScale = Vector2.Lerp(scale, scale * 4, fracJourney * Time.deltaTime);
+            //float distCovered = (Time.time - startTime) * speed;
+            //float fracJourney = distCovered / journeyLength;
+           // transform.localScale = Vector2.Lerp(scale, scale * 4, fracJourney * Time.deltaTime);
+            ///exploded = true;
+            //gameObject.GetComponent<CircleCollider2D>().isTrigger = true;
+            Instantiate(explosion, gameObject.transform.position, gameObject.transform.rotation);
             exploded = true;
-            gameObject.GetComponent<CircleCollider2D>().isTrigger = true;
-
+        }
+        if (detonate>=3.5f)
+        {
+            Destroy(gameObject);
         }
     }
    
-    void OnTriggerEnter2D(Collider2D col)
-    {
+    //void OnTriggerEnter2D(Collider2D col)
+    //{
 
-        if (col.gameObject.GetComponent<basicContoller>())
-        {
-            col.gameObject.GetComponent<basicContoller>().dead = true;
-        }
-    }
+    //    if (col.gameObject.GetComponent<basicContoller>())
+    //    {
+    //        col.gameObject.GetComponent<basicContoller>().dead = true;
+    //    }
+    //}
 }
