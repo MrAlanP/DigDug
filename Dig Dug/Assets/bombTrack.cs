@@ -22,8 +22,8 @@ public class bombTrack : MonoBehaviour
 	void Update ()
     {
         Debug.Log(tileManager.GetCentrePoint().ToString());
-       // Tile localTile = tileManager.GetTile(new Vector2(1,1));
-
+        Tile localTile = tileManager.GetClosestTile(gameObject.transform.position);
+        gameObject.transform.SetParent(localTile.transform);
              
         //get tile with nearest position, set bomb pos to tile pos. IF tile has crack (crackActiveBomb()) ELSE (groundActiveBomb())
 
