@@ -171,6 +171,7 @@ public class Fault : MonoBehaviour {
 
 	public void CollapseTile(){
 		tile.Collapse ();
+		Destroy (gameObject);
 	}
 
 

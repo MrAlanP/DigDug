@@ -46,7 +46,6 @@ public class FaultManager : MonoBehaviour {
 		for(int j = 0; j<4; j++){
 			//Repeat for range
 			for(int i = 0; i<explodeRange; i++){
-
 				float angle = Mathf.Deg2Rad*(90*(j%4));
 
 				Vector2 direction = new Vector2(Mathf.Cos(angle),-Mathf.Sin(angle));
@@ -91,7 +90,12 @@ public class FaultManager : MonoBehaviour {
 						//Check to see if this connects to ocean
 						Tile exitTile = tileManager.GetTile(tile.tileIndex + direction);
 
-						if(exitTile==null){//TODO add water tile check
+
+						if(exitTile==null){
+							stopExplodingInDirection = true;
+							newFault.SetConnectsToWater();
+						}
+						else if(exitTile.HasCollapsed()){
 							stopExplodingInDirection = true;
 							newFault.SetConnectsToWater();
 						}
@@ -105,6 +109,9 @@ public class FaultManager : MonoBehaviour {
 
 
 				}
+				else{
+					fault.SetConnectsToWater();
+				}
 
 				if(stopExplodingInDirection){
 					break;
@@ -115,7 +122,12 @@ public class FaultManager : MonoBehaviour {
 		//Collapse any water connections
 		List<Fault> faultsToCollapse = fault.faultCollectionRef.GetFaultsToCollapse ();
 		if (faultsToCollapse.Count > 0) {
-
+			foreach(Fault faultToCollapse in faultsToCollapse){
+				faultToCollapse.CollapseTile();
+				if(mainFaults.Contains(faultToCollapse)){
+					mainFaults.Remove(faultToCollapse);
+				}
+			}
 		}
 
 	}

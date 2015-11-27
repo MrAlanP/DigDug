@@ -42,6 +42,7 @@ public class Tile : MonoBehaviour {
 
 	public void Collapse(){
 		collapsed = true;
+		spriteRend.enabled = false;
 	}
 
 	public bool HasCollapsed(){

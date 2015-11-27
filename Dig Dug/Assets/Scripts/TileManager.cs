@@ -52,6 +52,10 @@ public class TileManager : MonoBehaviour {
 		int faultCount = 1;
 		Tile[] tilesToAddFaults = new Tile [faultCount];
 
+
+		tilesToAddFaults [0] = tiles [5, 20];
+
+
 		for (int i = 0; i<faultCount; i++) {
 			Vector2 tileIndex = new Vector2(Random.Range(0,(int)GRID_SIZE.x-1), Random.Range(0,(int)GRID_SIZE.y-1));
 			tilesToAddFaults[i] = tiles[(int)tileIndex.x, (int)tileIndex.y];
@@ -77,13 +81,5 @@ public class TileManager : MonoBehaviour {
 		return GetTile (new IntVector2((int)position.x,(int)position.y));
 	}
 
-    //public Vector2 GetClosestTilePos(Vector2 position)
-    //{
-    //    position /= TILE_SIZE;
-    //    position = new Vector2(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
-    //    position.x = Mathf.Clamp(position.x, 0, GRID_SIZE.x - 1);
-    //    position.y = Mathf.Clamp(position.y, 0, GRID_SIZE.y - 1);
-
-    //    return GetTile(position).transform.position;
-    //}
+  
 }

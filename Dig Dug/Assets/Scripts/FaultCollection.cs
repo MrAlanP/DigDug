@@ -49,11 +49,26 @@ public class FaultCollection {
 		}
 
 		//Collapse
+		List<List<IntVector2>> paths = new List<List<IntVector2>> ();
 		for (int i = 0; i<waterConnectionIndexes.Count-1; i++) {
-			List<IntVector2> path = GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1]);
+			paths.Add(GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1]));
 			Debug.Log("Collapse Land - Water Connection");
+
 		}
 
+		foreach (List<IntVector2> path in paths) {
+			for(int i = 0; i<path.Count; i++){
+				for(int j = faults.Count-1; j>=0; j--){
+					if(faults[j].tileIndex == path[i]){
+						faultsToCollapse.Add(faults[j]);
+						faults.RemoveAt(j);
+						break;
+					}
+				}
+			}
+		}
+
+		
 		return faultsToCollapse;
 
 	}
