@@ -327,7 +327,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ReadyTextPlayer1: {fileID: 1765532859}
-  ReadyTextPlayer2: {fileID: 2013934587}
+  ReadyTextPlayer2: {fileID: 935139343}
+  ReadyTextPlayer3: {fileID: 935139343}
+  ReadyTextPlayer4: {fileID: 1665049128}
+  ReadyTextPlayer5: {fileID: 92052903}
+  ReadyTextPlayer6: {fileID: 742917487}
+  ReadyTextPlayer7: {fileID: 1969581757}
+  ReadyTextPlayer8: {fileID: 1769177882}
   PlayerList: 
 --- !u!1 &298379443
 GameObject:
