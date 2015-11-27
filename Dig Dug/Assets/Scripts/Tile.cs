@@ -11,6 +11,8 @@ public class Tile : MonoBehaviour {
 
 
 	Fault fault;
+
+	bool collapsed = false;
 	// Use this for initialization
 	void Awake () {
 		fault = null;
@@ -36,5 +38,13 @@ public class Tile : MonoBehaviour {
 
 	public Fault GetFault(){
 		return fault;
+	}
+
+	public void Collapse(){
+		collapsed = true;
+	}
+
+	public bool HasCollapsed(){
+		return collapsed;
 	}
 }

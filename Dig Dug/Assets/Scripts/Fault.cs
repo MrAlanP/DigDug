@@ -169,6 +169,10 @@ public class Fault : MonoBehaviour {
 		return connectsToWater;
 	}
 
+	public void CollapseTile(){
+		tile.Collapse ();
+	}
+
 
 
 }

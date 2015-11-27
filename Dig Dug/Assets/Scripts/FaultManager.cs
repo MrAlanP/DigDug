@@ -55,19 +55,23 @@ public class FaultManager : MonoBehaviour {
 				//Debug.Log(directionOffset);
 				Tile tile = tileManager.GetTile(faultIndex + directionOffset);
 
+				bool stopExplodingInDirection = tile==null;
+
 				//If the tile is in range
-				if(tile!=null){
+				if(!stopExplodingInDirection){
 					//Add a fault if one doesn't exist
 					Fault newFault;
 					if(tile.HasFault()){
 						newFault = tile.GetFault();
-
+						stopExplodingInDirection = true;
 						//Check if fault collection is same or not
 						if(newFault.faultCollectionRef.key != fault.faultCollectionRef.key){
 							fault.faultCollectionRef.MergeCollection(newFault.faultCollectionRef);
 							faultCollections.Remove(newFault.faultCollectionRef);
 						}
-						else{
+						//Not explode point connection
+						else if(i>0){
+							Debug.Log("Collapse Land");
 
 						}
 					}
@@ -77,7 +81,7 @@ public class FaultManager : MonoBehaviour {
 						fault.faultCollectionRef.AddFault(newFault);
 					}
 
-					bool hitsWater = false;
+
 
 					//Add entry connection
 					newFault.AddConnectionDirection(direction);
@@ -88,7 +92,7 @@ public class FaultManager : MonoBehaviour {
 						Tile exitTile = tileManager.GetTile(tile.tileIndex + direction);
 
 						if(exitTile==null){//TODO add water tile check
-							hitsWater = true;
+							stopExplodingInDirection = true;
 							newFault.SetConnectsToWater();
 						}
 					}
@@ -99,16 +103,20 @@ public class FaultManager : MonoBehaviour {
 					//Update rotation based on connections
 					newFault.UpdateSprite();
 
-					if(hitsWater){
-						break;
-					}
+
+				}
+
+				if(stopExplodingInDirection){
+					break;
 				}
 			}
 		}
 
 		//Collapse any water connections
-		fault.faultCollectionRef.CollapseWaterConnectionTiles ();
-		
+		List<Fault> faultsToCollapse = fault.faultCollectionRef.GetFaultsToCollapse ();
+		if (faultsToCollapse.Count > 0) {
+
+		}
 
 	}
 

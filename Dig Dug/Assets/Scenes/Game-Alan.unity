@@ -135,6 +135,10 @@ Prefab:
       propertyPath: mainFaultSprite
       value: 
       objectReference: {fileID: 238640086}
+    - target: {fileID: 164374, guid: ccced09b1e7fa124d96c0fe5b7e4e1e7, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ccced09b1e7fa124d96c0fe5b7e4e1e7, type: 2}
   m_IsPrefabParent: 0

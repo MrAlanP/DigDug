@@ -31,7 +31,11 @@ public class FaultCollection {
 	}
 
 
-	public void CollapseWaterConnectionTiles(){
+	public List<Fault> GetFaultsToCollapse(){
+		List<Fault> faultsToCollapse = new List<Fault> ();
+
+
+		//Get water connected indexes
 		List<IntVector2> waterConnectionIndexes = new List<IntVector2> ();
 
 		for(int i = 0; i<faults.Count; i++){
@@ -41,11 +45,16 @@ public class FaultCollection {
 		}
 		
 		if(waterConnectionIndexes.Count < 2){
-			return;
+			return faultsToCollapse;
 		}
 
-		List<IntVector2> path = GetPath (waterConnectionIndexes [0], waterConnectionIndexes [1]);
+		//Collapse
+		for (int i = 0; i<waterConnectionIndexes.Count-1; i++) {
+			List<IntVector2> path = GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1]);
+			Debug.Log("Collapse Land - Water Connection");
+		}
 
+		return faultsToCollapse;
 
 	}
 
