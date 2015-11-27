@@ -4,6 +4,7 @@ using System.Collections;
 public class basicContoller : MonoBehaviour
 {
    public GameObject bomb;
+   TileManager tileManager;
     float speed = 250;
     public bool falling = false;
     Animator ani;
@@ -16,11 +17,12 @@ public class basicContoller : MonoBehaviour
     ///////////////////////////////////////////////////////////////////////////
     //If false using left side of the controller if true then right side
     /// ///////////////////////////////////////////////////////////////////////
-    public bool controllerSide = true;
+    public bool controllerSide = false;
 
 	// Use this for initialization
 	void Start () 
     {
+        tileManager = GameObject.FindGameObjectWithTag("Game").GetComponent<TileManager>();
      ani = gameObject.GetComponent<Animator>();
 	}
 	
@@ -28,15 +30,19 @@ public class basicContoller : MonoBehaviour
     void Update()
     {
         ani.SetBool("playerDead", dead);
-        if (!dead)
+        if (!dead&&!checkFalling())
         {
             MovePlayer();
             placeBomb();
-            ani.SetBool("playerFalling", falling);
+        }
+        else if (dead)
+        {
+            onDeath();
         }
         else
         {
-            onDeath();
+            ani.SetBool("playerFalling", checkFalling());
+            fall();
         }
     }
 
@@ -287,5 +293,30 @@ public class basicContoller : MonoBehaviour
                 }
             }
         }
+    }
+    bool checkFalling()
+    {
+        Vector2 tilePos = tileManager.GetClosestTile(gameObject.transform.position).transform.position;
+        bool fall = false;
+        if (Vector2.Distance(tilePos, gameObject.transform.position)>0.32f)
+        {
+            fall = true;
+        }
+        else
+        {
+            fall = false;
+        }
+        return fall;
+    }
+    void fall()
+    {
+        float fallToDeath=0;
+        fallToDeath+=Time.deltaTime;
+        gameObject.transform.localScale = Vector2.Lerp(gameObject.transform.localScale, Vector2.zero, fallToDeath);
+        if (gameObject.transform.localScale.x <= 0.07f)
+        {
+            Destroy(gameObject);
+        }
+
     }
 }

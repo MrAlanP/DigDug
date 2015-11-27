@@ -26,7 +26,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 186706}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -.00600000005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -56,7 +56,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: -.119999997}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: .101400822
 --- !u!114 &11490330
@@ -71,7 +71,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosion: {fileID: 142938, guid: 22c975eb353a6474b81adde06a051845, type: 2}
-  tileManager: {fileID: 11403434, guid: 6c6de7d01ce2373408e20a445d3f181a, type: 2}
 --- !u!212 &21272180
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -99,8 +99,8 @@ public class bombTrack : MonoBehaviour
 
         if (throbCount==7)
         {
-            
-            if (Random.Range(0, 2) == 1)
+            int two = 2;
+            if (two ==2)//Random.Range(0, 2) == 1)
             {
                 Tile[] crack = new Tile[1];
                 crack[0] = localTile;
