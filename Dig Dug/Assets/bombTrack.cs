@@ -28,12 +28,15 @@ public class bombTrack : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (Vector2.Distance(localTile.transform.position, gameObject.transform.position)>1f)
+        float lerpTime = Time.deltaTime;
+        bombPos = gameObject.transform.position;
+      
+        if (localTile.transform.position!=gameObject.transform.position)
         {
             localTile = tileManager.GetClosestTile(gameObject.transform.position);
-            gameObject.transform.position = localTile.transform.position;
+            gameObject.transform.position = Vector2.Lerp (gameObject.transform.position,localTile.transform.position,lerpTime);
         }
-       // gameObject.transform.SetParent(localTile.transform);
+      
        
         if (localTile.HasFault())
         {
@@ -46,11 +49,14 @@ public class bombTrack : MonoBehaviour
     }
     void crackActiveBomb()
     {
-        gameObject.transform.SetParent(localTile.transform);
+        localFault = localTile.GetFault();
+        gameObject.transform.SetParent(localFault.transform);
+        gameObject.transform.position = localFault.transform.position;
+        gameObject.GetComponent<CircleCollider2D>().enabled = false;
         shrink += Time.deltaTime;
         gameObject.transform.localScale = Vector2.Lerp(startSize, Vector2.zero, shrink);
-        localFault = localTile.GetFault();
-        if (gameObject.transform.localScale==Vector3.zero)
+
+        if (gameObject.transform.localScale == Vector3.zero)
         {
             Instantiate(explosion, gameObject.transform.position, gameObject.transform.rotation);
             localFault.ExplodeFault();
@@ -88,10 +94,18 @@ public class bombTrack : MonoBehaviour
         {
             Instantiate(explosion, gameObject.transform.position, gameObject.transform.rotation);
             exploded = true;
+           
         }
 
         if (throbCount==7)
         {
+            
+            if (Random.Range(0, 2) == 1)
+            {
+                Tile[] crack = new Tile[1];
+                crack[0] = localTile;
+                faultManager.CreateCracks(crack);
+            }
             Destroy(gameObject);
         }
     }
