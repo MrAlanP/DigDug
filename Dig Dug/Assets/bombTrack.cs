@@ -8,6 +8,7 @@ public class bombTrack : MonoBehaviour
     TileManager tileManager;
     Fault localFault;
     Tile localTile;
+    bool drop = false;
     bool exploded = false;
     bool throb = false;
     float active = 0;
@@ -33,18 +34,35 @@ public class bombTrack : MonoBehaviour
       
         if (localTile.transform.position!=gameObject.transform.position)
         {
-            localTile = tileManager.GetClosestTile(gameObject.transform.position);
-            gameObject.transform.position = Vector2.Lerp (gameObject.transform.position,localTile.transform.position,lerpTime);
+            Tile tile = tileManager.GetClosestTile(gameObject.transform.position);
+            
+            if (Vector2.Distance(tile.transform.position, gameObject.transform.position) > 0.32f)
+            {
+                drop = true;
+                gameObject.transform.localScale = Vector2.Lerp(gameObject.transform.localScale, Vector2.zero, lerpTime);
+                if (gameObject.transform.localScale.x <= 0.07f)
+                {
+
+                    Destroy(gameObject);
+                }
+            }
+            else
+            {
+                localTile = tileManager.GetClosestTile(gameObject.transform.position);
+                gameObject.transform.position = Vector2.Lerp(gameObject.transform.position, localTile.transform.position, lerpTime);
+            }
         }
-      
-       
-        if (localTile.HasFault())
+        if (!drop)
         {
-            crackActiveBomb();
-        }
-        else
-        {
-           groundActiveBomb();
+
+            if (localTile.HasFault())
+            {
+                crackActiveBomb();
+            }
+            else
+            {
+                groundActiveBomb();
+            }
         }
     }
     void crackActiveBomb()
@@ -99,8 +117,8 @@ public class bombTrack : MonoBehaviour
 
         if (throbCount==7)
         {
-            int two = 2;
-            if (two ==2)//Random.Range(0, 2) == 1)
+          
+            if (Random.Range(0, 2) == 1)
             {
                 Tile[] crack = new Tile[1];
                 crack[0] = localTile;
