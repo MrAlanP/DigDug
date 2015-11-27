@@ -84,6 +84,15 @@ public class TileManager : MonoBehaviour {
 		return GetTile (new IntVector2((int)position.x,(int)position.y));
 	}
 
+	public void CollapseTiles(List<IntVector2> tileIndices){
+		foreach (IntVector2 tileIndex in tileIndices) {
+			if(!tiles[tileIndex.x, tileIndex.y].HasCollapsed()){
+				tiles[tileIndex.x, tileIndex.y].Collapse();
+			}
+
+		}
+	}
+
 	public void SetAdjacentWaterTiles(){
 		adjacentToWaterTiles.Clear ();
 		for(int y = 0; y<GRID_SIZE.y; y++){

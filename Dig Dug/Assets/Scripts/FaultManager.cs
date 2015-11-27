@@ -120,14 +120,19 @@ public class FaultManager : MonoBehaviour {
 
 		tileManager.SetAdjacentWaterTiles ();
 		//Collapse any water connections
-		List<Fault> faultsToCollapse = fault.faultCollectionRef.GetFaultsToCollapse (tileManager.adjacentToWaterTiles);
-		if (faultsToCollapse.Count > 0) {
-			foreach(Fault faultToCollapse in faultsToCollapse){
-				faultToCollapse.CollapseTile();
-				if(mainFaults.Contains(faultToCollapse)){
-					mainFaults.Remove(faultToCollapse);
+		List<IntVector2> tilesToCollapse = fault.faultCollectionRef.GetTilesToCollapse (tileManager.adjacentToWaterTiles);
+		if (tilesToCollapse.Count > 0) {
+			foreach(IntVector2 tileIndex in tilesToCollapse){
+				for(int i = mainFaults.Count-1; i>=0; i--){
+					if(mainFaults[i].tileIndex == tileIndex){
+						mainFaults.RemoveAt(i);
+						break;
+					}
 				}
 			}
+			faultCollections.Remove(fault.faultCollectionRef);
+
+			tileManager.CollapseTiles(tilesToCollapse);
 		}
 
 	}

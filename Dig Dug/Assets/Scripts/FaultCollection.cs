@@ -31,8 +31,8 @@ public class FaultCollection {
 	}
 
 
-	public List<Fault> GetFaultsToCollapse(List<Tile> waterTiles){
-		List<Fault> faultsToCollapse = new List<Fault> ();
+	public List<IntVector2> GetTilesToCollapse(List<Tile> waterTiles){
+		List<IntVector2> tilesToCollapse = new List<IntVector2> ();
 
 
 		//Get water connected indexes
@@ -56,23 +56,24 @@ public class FaultCollection {
 		//Water linked path
 		if(waterConnectionIndexes.Count > 1){
 			for (int i = 0; i<waterConnectionIndexes.Count-1; i++) {
-				paths.Add(GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1]));
-				paths.Add(GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1],waterTiles));
+				List<IntVector2> path1 = GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1]);
+				List<IntVector2> path2 =  GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1],waterTiles);
+				path1.AddRange(path2);
 				//Add to list
-				Debug.Log(paths[paths.Count-1].Count);
+				paths.Add(path1);
 			}
 		}
 		for (int i = 0; i<landConnectionIndexes.Count; i++) {
-			paths.Add(GetPath(landConnectionIndexes[i], landConnectionIndexes[i]));
+			//paths.Add(GetPath(landConnectionIndexes[i], landConnectionIndexes[i]));
 		}
 
 
 
 		foreach (List<IntVector2> path in paths) {
 			for(int i = 0; i<path.Count; i++){
+				tilesToCollapse.Add(path[i]);
 				for(int j = faults.Count-1; j>=0; j--){
 					if(faults[j].tileIndex == path[i]){
-						faultsToCollapse.Add(faults[j]);
 						faults.RemoveAt(j);
 						break;
 					}
@@ -80,7 +81,7 @@ public class FaultCollection {
 			}
 		}
 
-		return faultsToCollapse;
+		return tilesToCollapse;
 	}
 
 	//A* pathfinding for faults

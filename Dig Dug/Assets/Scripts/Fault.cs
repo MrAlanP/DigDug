@@ -178,8 +178,7 @@ public class Fault : MonoBehaviour {
 		return linksToSelf;
 	}
 
-	public void CollapseTile(){
-		tile.Collapse ();
+	public void Collapse(){
 		Destroy (gameObject);
 	}
 

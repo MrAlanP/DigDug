@@ -43,6 +43,10 @@ public class Tile : MonoBehaviour {
 	public void Collapse(){
 		collapsed = true;
 		spriteRend.enabled = false;
+		if (HasFault ()) {
+			fault.Collapse ();
+		}
+
 	}
 
 	public bool HasCollapsed(){
