@@ -27,7 +27,7 @@ public class TileManager : MonoBehaviour {
 				newTile.transform.localPosition = new Vector3(TILE_SIZE*x, TILE_SIZE*y, 0);
 				newTile.name = "Tile_"+y+"-"+x;
 				tiles[x,y] = newTile.GetComponent<Tile>();
-				tiles[x,y].tileIndex = new Vector2(x,y);
+				tiles[x,y].tileIndex = new IntVector2(x,y);
 
 				//If the sprite should be edge alt sprite
 				if(y==0){
@@ -49,23 +49,27 @@ public class TileManager : MonoBehaviour {
 	}
 
 	public void Earthquake(){
-		int faultCount = 3;
+		int faultCount = 1;
 		Tile[] tilesToAddFaults = new Tile [faultCount];
 
-		for (int i = 0; i<faultCount; i++) {
+
+		tilesToAddFaults [0] = tiles [5, 20];
+
+
+		/*for (int i = 0; i<faultCount; i++) {
 			Vector2 tileIndex = new Vector2(Random.Range(0,(int)GRID_SIZE.x-1), Random.Range(0,(int)GRID_SIZE.y-1));
 			tilesToAddFaults[i] = tiles[(int)tileIndex.x, (int)tileIndex.y];
-		}
+		}*/
 		faultManager.CreateCracks (tilesToAddFaults);
 
 	}
 
-	public Tile GetTile(Vector2 tileIndex){
+	public Tile GetTile(IntVector2 tileIndex){
 		//If out of range
 		if (tileIndex.x < 0 || tileIndex.y < 0 || tileIndex.x >= GRID_SIZE.x || tileIndex.y >= GRID_SIZE.y) {
 			return null;
 		}
-		return tiles[(int)tileIndex.x, (int)tileIndex.y];
+		return tiles[tileIndex.x, tileIndex.y];
 	}
 
 	public Tile GetClosestTile(Vector2 position){
@@ -74,7 +78,7 @@ public class TileManager : MonoBehaviour {
 		position.x = Mathf.Clamp(position.x, 0, GRID_SIZE.x-1);
 		position.y = Mathf.Clamp(position.y, 0, GRID_SIZE.y-1);
 
-		return GetTile (position);
+		return GetTile (new IntVector2((int)position.x,(int)position.y));
 	}
 
   

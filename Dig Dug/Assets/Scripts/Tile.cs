@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour {
 
 	SpriteRenderer spriteRend;
 
-	public Vector2 tileIndex = new Vector2();
+	public IntVector2 tileIndex = new IntVector2();
 
 
 	Fault fault;

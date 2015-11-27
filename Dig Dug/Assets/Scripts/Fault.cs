@@ -24,7 +24,7 @@ public class Fault : MonoBehaviour {
 	//A reference back to the collection of faults this belongs to
 	public FaultCollection faultCollectionRef;
 
-	public Vector2 tileIndex;
+	public IntVector2 tileIndex;
 
 
 	bool connectsToWater = false;

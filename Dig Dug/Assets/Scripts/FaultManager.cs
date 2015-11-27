@@ -37,26 +37,22 @@ public class FaultManager : MonoBehaviour {
 		mainFaults.Remove (fault);
 		fault.ExplodeFault();
 
-		Vector2 faultIndex = fault.tileIndex;
+		IntVector2 faultIndex = fault.tileIndex;
 
 		//The number of tiles the explosion expands the fault by
 		int explodeRange = 10;
-		//Skip expanding into direction if we hit water
-		bool[] skipDirection = new bool[4]{false,false,false,false};
 
-
-		for(int i = 0; i<explodeRange; i++){
-			//Do all 4 directions
-			for(int j = 0; j<4; j++){
-
-				if(skipDirection[j]){
-					continue;
-				}
+		//Do all 4 directions
+		for(int j = 0; j<4; j++){
+			//Repeat for range
+			for(int i = 0; i<explodeRange; i++){
 
 				float angle = Mathf.Deg2Rad*(90*(j%4));
+
 				Vector2 direction = new Vector2(Mathf.Cos(angle),-Mathf.Sin(angle));
 
 				Vector2 directionOffset = direction * (i+1);
+				//Debug.Log(directionOffset);
 				Tile tile = tileManager.GetTile(faultIndex + directionOffset);
 
 				//If the tile is in range
@@ -72,7 +68,7 @@ public class FaultManager : MonoBehaviour {
 							faultCollections.Remove(newFault.faultCollectionRef);
 						}
 						else{
-	
+
 						}
 					}
 					else{
@@ -81,6 +77,7 @@ public class FaultManager : MonoBehaviour {
 						fault.faultCollectionRef.AddFault(newFault);
 					}
 
+					bool hitsWater = false;
 
 					//Add entry connection
 					newFault.AddConnectionDirection(direction);
@@ -91,7 +88,7 @@ public class FaultManager : MonoBehaviour {
 						Tile exitTile = tileManager.GetTile(tile.tileIndex + direction);
 
 						if(exitTile==null){//TODO add water tile check
-							skipDirection[j] = true;
+							hitsWater = true;
 							newFault.SetConnectsToWater();
 						}
 					}
@@ -101,13 +98,16 @@ public class FaultManager : MonoBehaviour {
 					}
 					//Update rotation based on connections
 					newFault.UpdateSprite();
+
+					if(hitsWater){
+						break;
+					}
 				}
 			}
 		}
 
 		//Collapse any water connections
-		//fault.faultCollectionRef.HasMultipleWaterConnectors ();
-
+		fault.faultCollectionRef.CollapseWaterConnectionTiles ();
 		
 
 	}
