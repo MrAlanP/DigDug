@@ -35,6 +35,8 @@ public class TileManager : MonoBehaviour {
 				}
 			}
 		}
+
+		GetClosestTile (new Vector2 (1.8f, 3.2f));
 	}
 	
 	// Update is called once per frame
@@ -65,5 +67,15 @@ public class TileManager : MonoBehaviour {
 		}
 		return tiles[(int)tileIndex.x, (int)tileIndex.y];
 	}
+
+	public Tile GetClosestTile(Vector2 position){
+		position /= TILE_SIZE;
+		position = new Vector2 (Mathf.RoundToInt (position.x), Mathf.RoundToInt (position.y));
+		position.x = Mathf.Clamp(position.x, 0, GRID_SIZE.x-1);
+		position.y = Mathf.Clamp(position.y, 0, GRID_SIZE.y-1);
+
+		return GetTile (position);
+	}
+
   
 }

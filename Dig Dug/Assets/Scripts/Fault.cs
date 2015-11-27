@@ -46,10 +46,12 @@ public class Fault : MonoBehaviour {
 	public void SetAsMain(){
 		faultType = FaultType.Main;
 		mainFaultSprite.enabled = true;
+
 		FadeIn ();
 	}
 
 	public bool CanBeSetMain(){
+
 		if (faultType == FaultType.Main) {
 			return false;
 		}
@@ -57,7 +59,6 @@ public class Fault : MonoBehaviour {
 	}
 
 	public void ExplodeFault(){
-		faultType = FaultType.Connection;
 		AddConnectionDirection (new Vector2 (1, 0));
 		AddConnectionDirection (new Vector2 (0, 1));
 		AddConnectionDirection (new Vector2 (-1, 0));
@@ -153,6 +154,7 @@ public class Fault : MonoBehaviour {
 	public Tile GetTile(){
 		return tile;
 	}
+
 
 
 }
