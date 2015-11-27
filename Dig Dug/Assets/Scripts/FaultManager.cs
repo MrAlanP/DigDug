@@ -37,15 +37,21 @@ public class FaultManager : MonoBehaviour {
 		mainFaults.Remove (fault);
 		fault.ExplodeFault();
 
-		Vector2 faultIndex = fault.GetTile ().tileIndex;
+		Vector2 faultIndex = fault.tileIndex;
 
 		//The number of tiles the explosion expands the fault by
-		int explodeRange = 3;
+		int explodeRange = 10;
+		//Skip expanding into direction if we hit water
+		bool[] skipDirection = new bool[4]{false,false,false,false};
 
 
 		for(int i = 0; i<explodeRange; i++){
 			//Do all 4 directions
 			for(int j = 0; j<4; j++){
+
+				if(skipDirection[j]){
+					continue;
+				}
 
 				float angle = Mathf.Deg2Rad*(90*(j%4));
 				Vector2 direction = new Vector2(Mathf.Cos(angle),-Mathf.Sin(angle));
@@ -81,6 +87,13 @@ public class FaultManager : MonoBehaviour {
 					if(i<explodeRange-1){
 						//If not at end of explode range, add exit direction too
 						newFault.AddConnectionDirection(-direction);
+						//Check to see if this connects to ocean
+						Tile exitTile = tileManager.GetTile(tile.tileIndex + direction);
+
+						if(exitTile==null){//TODO add water tile check
+							skipDirection[j] = true;
+							newFault.SetConnectsToWater();
+						}
 					}
 					//Set fault type as insertable
 					else{
@@ -91,6 +104,11 @@ public class FaultManager : MonoBehaviour {
 				}
 			}
 		}
+
+		//Collapse any water connections
+		//fault.faultCollectionRef.HasMultipleWaterConnectors ();
+
+		
 
 	}
 

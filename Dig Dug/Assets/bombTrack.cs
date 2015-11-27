@@ -21,13 +21,14 @@ public class bombTrack : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        Debug.Log(tileManager.GetCentrePoint().ToString());
+        //Debug.Log(tileManager.GetCentrePoint().ToString());
        // Tile localTile = tileManager.GetTile(new Vector2(1,1));
+		Tile closestTile = tileManager.GetClosestTile (new Vector2 (1.5f, 1.5f));
 
              
         //get tile with nearest position, set bomb pos to tile pos. IF tile has crack (crackActiveBomb()) ELSE (groundActiveBomb())
 
-        bombPos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);   
+        bombPos = new Vector2(closestTile.transform.position.x, closestTile.transform.position.y);   
         
       
       

@@ -30,4 +30,20 @@ public class FaultCollection {
 		}
 	}
 
+
+	public void CollapseWaterConnectionTiles(){
+		List<Vector2> waterConnectionIndexes = new List<Vector2> ();
+
+		for(int i = 0; i<faults.Count; i++){
+			if(faults[i].GetConnectsToWater()){
+				waterConnectionIndexes.Add(faults[i].tileIndex);
+			}
+		}
+		
+		if(waterConnectionIndexes.Count < 2){
+			return;
+		}
+
+	}
+
 }

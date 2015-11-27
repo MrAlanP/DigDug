@@ -24,6 +24,11 @@ public class Fault : MonoBehaviour {
 	//A reference back to the collection of faults this belongs to
 	public FaultCollection faultCollectionRef;
 
+	public Vector2 tileIndex;
+
+
+	bool connectsToWater = false;
+
 
 
 	// Use this for initialization
@@ -149,10 +154,19 @@ public class Fault : MonoBehaviour {
 		tile = _tile;
 		transform.SetParent(tile.transform);
 		transform.localPosition = Vector3.zero;
+		tileIndex = tile.tileIndex;
 	}
 
 	public Tile GetTile(){
 		return tile;
+	}
+
+	public void SetConnectsToWater(bool setter = true){
+		connectsToWater = setter;
+	}
+
+	public bool GetConnectsToWater(){
+		return connectsToWater;
 	}
 
 
