@@ -57,4 +57,6 @@ public class JoinGame : MonoBehaviour {
 			Debug.Log ("This list has " + PlayerList.Count + " numbers");
 		}
 	}
+
+
 }
