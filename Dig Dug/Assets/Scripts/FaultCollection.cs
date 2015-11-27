@@ -31,30 +31,42 @@ public class FaultCollection {
 	}
 
 
-	public List<Fault> GetFaultsToCollapse(){
+	public List<Fault> GetFaultsToCollapse(List<Tile> waterTiles){
 		List<Fault> faultsToCollapse = new List<Fault> ();
 
 
 		//Get water connected indexes
 		List<IntVector2> waterConnectionIndexes = new List<IntVector2> ();
+		//Land connected indexes
+		List<IntVector2> landConnectionIndexes = new List<IntVector2> ();
 
 		for(int i = 0; i<faults.Count; i++){
 			if(faults[i].GetConnectsToWater()){
 				waterConnectionIndexes.Add(faults[i].tileIndex);
 			}
+			else if(faults[i].GetLinksToSelf()){
+				landConnectionIndexes.Add(faults[i].tileIndex);
+			}
 		}
-		
-		if(waterConnectionIndexes.Count < 2){
-			return faultsToCollapse;
-		}
+
+
 
 		//Collapse
 		List<List<IntVector2>> paths = new List<List<IntVector2>> ();
-		for (int i = 0; i<waterConnectionIndexes.Count-1; i++) {
-			paths.Add(GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1]));
-			Debug.Log("Collapse Land - Water Connection");
-
+		//Water linked path
+		if(waterConnectionIndexes.Count > 1){
+			for (int i = 0; i<waterConnectionIndexes.Count-1; i++) {
+				paths.Add(GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1]));
+				paths.Add(GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1],waterTiles));
+				//Add to list
+				Debug.Log(paths[paths.Count-1].Count);
+			}
 		}
+		for (int i = 0; i<landConnectionIndexes.Count; i++) {
+			paths.Add(GetPath(landConnectionIndexes[i], landConnectionIndexes[i]));
+		}
+
+
 
 		foreach (List<IntVector2> path in paths) {
 			for(int i = 0; i<path.Count; i++){
@@ -68,49 +80,47 @@ public class FaultCollection {
 			}
 		}
 
-		
 		return faultsToCollapse;
-
 	}
 
 	//A* pathfinding for faults
-	List<IntVector2> GetPath(IntVector2 start, IntVector2 goal){
-		List<FaultHeuristic> openList = new List<FaultHeuristic> ();
-		List<FaultHeuristic> closedList = new List<FaultHeuristic> ();
+	List<IntVector2> GetPath(IntVector2 start, IntVector2 goal, List<Tile> tiles = null){
+		List<PathHeuristic> openList = new List<PathHeuristic> ();
+		List<PathHeuristic> closedList = new List<PathHeuristic> ();
 
-		FaultHeuristic currentFault = new FaultHeuristic(start);
+		PathHeuristic currentTile = new PathHeuristic(start);
 
 		do {
 			//Get the best fault using heuristics
 			if(openList.Count>0){
-				FaultHeuristic lowestFFault = null;
-				foreach(FaultHeuristic fault in openList){
-					if(lowestFFault==null){
-						lowestFFault = fault;
+				PathHeuristic lowestFTile = null;
+				foreach(PathHeuristic tile in openList){
+					if(lowestFTile==null){
+						lowestFTile = tile;
 					}
-					else if(fault.score<lowestFFault.score){
-						lowestFFault = fault;
+					else if(tile.score<lowestFTile.score){
+						lowestFTile = tile;
 					}
-					if(lowestFFault.tileIndex==goal){
-						lowestFFault = fault;
+					if(lowestFTile.tileIndex==goal){
+						lowestFTile = tile;
 						break;
 					}
 				}
-				currentFault = lowestFFault;
+				currentTile = lowestFTile;
 			}
 
 			//Put the currentTile in closedList and remove from open
-			closedList.Add(currentFault);
-			openList.Remove(currentFault);
+			closedList.Add(currentTile);
+			openList.Remove(currentTile);
 
 			//If the current is at the end
-			if(currentFault.tileIndex == goal){
+			if(currentTile.tileIndex == goal){
 				List<IntVector2> pathList = new List<IntVector2>();
 
-				while(currentFault.parent!=null){
+				while(currentTile.parent!=null){
 					//Add parent to the pathlist
-					pathList.Add(currentFault.tileIndex);
-					currentFault = currentFault.parent;
+					pathList.Add(currentTile.tileIndex);
+					currentTile = currentTile.parent;
 				}
 				pathList.Add(start);
 				pathList.Reverse();
@@ -118,32 +128,40 @@ public class FaultCollection {
 			}
 
 			//Set adjacent list up
-			List<IntVector2> adjacentList = GetAdjacentFaults(currentFault.tileIndex);
+			List<IntVector2> adjacentList;
+			if(tiles!=null){
+				adjacentList = GetAdjacentTiles(currentTile.tileIndex, tiles);
+			}
+			else{
+				adjacentList = GetAdjacentFaults(currentTile.tileIndex);
+			}
+
 			foreach(IntVector2 adjacent in adjacentList){
 				//If adjacent is in closed list, skip
 				bool adjacentInClosed = false;
-				foreach(FaultHeuristic fault in closedList){
-					if(fault.tileIndex == adjacent){
+				foreach(PathHeuristic tile in closedList){
+					if(tile.tileIndex == adjacent){
 						adjacentInClosed = true;
 					}
 				}
+
 				if(adjacentInClosed){
 					continue;
 				}
 
 				//If not in open list, add it
 				bool adjacentInOpen = false;
-				foreach(FaultHeuristic fault in openList){
-					if(fault.tileIndex == adjacent){
+				foreach(PathHeuristic tile in openList){
+					if(tile.tileIndex == adjacent){
 						adjacentInOpen = true;
 					}
 				}
 				//Add to open list
 				if(!adjacentInOpen){
-					FaultHeuristic newFault = new FaultHeuristic(adjacent, currentFault);
+					PathHeuristic newTile = new PathHeuristic(adjacent, currentTile);
 					//Score
-					newFault.SetScore((int)(IntVector2.Distance(adjacent,goal)*10));
-					openList.Add(newFault);
+					newTile.SetScore((int)(IntVector2.Distance(adjacent,goal)*10));
+					openList.Add(newTile);
 					   
 				}
 			}
@@ -171,13 +189,43 @@ public class FaultCollection {
 		return adjacents;
 	}
 
+	List<IntVector2> GetAdjacentTiles(IntVector2 tileIndex, List<Tile> tiles){
+		List<IntVector2> adjacents = new List<IntVector2> ();
+		
+		for(int i = 0; i<tiles.Count; i++){
+			if(tiles[i].tileIndex.x == tileIndex.x){
+				if(Mathf.Abs(tiles[i].tileIndex.y - tileIndex.y)==1){
+					adjacents.Add(tiles[i].tileIndex);
+				}
+			}
+			else if(tiles[i].tileIndex.y == tileIndex.y){
+				if(Mathf.Abs(tiles[i].tileIndex.x - tileIndex.x)==1){
+					adjacents.Add(tiles[i].tileIndex);
+				}
+			}
+		}
+		return adjacents;
+	}
 
-	class FaultHeuristic{
-		public FaultHeuristic parent;
+
+	int GetParentCount(PathHeuristic _tile){
+
+		PathHeuristic tile = _tile;
+		int parentCount = 0;
+		while (tile.parent!=null) {
+			tile = tile.parent;
+			parentCount++;
+		}
+		return parentCount;
+	}
+
+
+	class PathHeuristic{
+		public PathHeuristic parent;
 		public IntVector2 tileIndex;
 		public int score;
 
-		public FaultHeuristic(IntVector2 _tileIndex, FaultHeuristic _parent = null){
+		public PathHeuristic(IntVector2 _tileIndex, PathHeuristic _parent = null){
 			tileIndex = _tileIndex;
 			parent = _parent;
 		}

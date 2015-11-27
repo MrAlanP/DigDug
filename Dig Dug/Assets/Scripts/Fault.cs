@@ -26,8 +26,9 @@ public class Fault : MonoBehaviour {
 
 	public IntVector2 tileIndex;
 
-
+	//Used to determine whether we should collapse
 	bool connectsToWater = false;
+	bool linksToSelf = false;
 
 
 
@@ -167,6 +168,14 @@ public class Fault : MonoBehaviour {
 
 	public bool GetConnectsToWater(){
 		return connectsToWater;
+	}
+
+	public void SetLinksToSelf(bool setter = true){
+		linksToSelf = setter;
+	}
+	
+	public bool GetLinksToSelf(){
+		return linksToSelf;
 	}
 
 	public void CollapseTile(){

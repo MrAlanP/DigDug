@@ -71,6 +71,7 @@ public class FaultManager : MonoBehaviour {
 						//Not explode point connection
 						else if(i>0){
 							Debug.Log("Collapse Land");
+							fault.SetLinksToSelf();
 
 						}
 					}
@@ -106,8 +107,6 @@ public class FaultManager : MonoBehaviour {
 					}
 					//Update rotation based on connections
 					newFault.UpdateSprite();
-
-
 				}
 				else{
 					fault.SetConnectsToWater();
@@ -119,8 +118,9 @@ public class FaultManager : MonoBehaviour {
 			}
 		}
 
+		tileManager.SetAdjacentWaterTiles ();
 		//Collapse any water connections
-		List<Fault> faultsToCollapse = fault.faultCollectionRef.GetFaultsToCollapse ();
+		List<Fault> faultsToCollapse = fault.faultCollectionRef.GetFaultsToCollapse (tileManager.adjacentToWaterTiles);
 		if (faultsToCollapse.Count > 0) {
 			foreach(Fault faultToCollapse in faultsToCollapse){
 				faultToCollapse.CollapseTile();

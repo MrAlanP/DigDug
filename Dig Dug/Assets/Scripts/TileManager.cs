@@ -14,6 +14,9 @@ public class TileManager : MonoBehaviour {
 	const float TILE_SIZE = 0.32f;
 
 	Vector2 GRID_SIZE = new Vector2(70,35);
+
+	[HideInInspector]
+	public List<Tile> adjacentToWaterTiles = new List<Tile>();
 	// Use this for initialization
 	void Awake () {
 		faultManager = GetComponent<FaultManager> ();
@@ -80,6 +83,33 @@ public class TileManager : MonoBehaviour {
 
 		return GetTile (new IntVector2((int)position.x,(int)position.y));
 	}
+
+	public void SetAdjacentWaterTiles(){
+		adjacentToWaterTiles.Clear ();
+		for(int y = 0; y<GRID_SIZE.y; y++){
+			for(int x = 0; x<GRID_SIZE.x; x++){
+				for(int i = 0; i<4; i++){
+					float angle = Mathf.Deg2Rad*(90*(i%4));
+					
+					Vector2 direction = new Vector2(Mathf.Cos(angle),-Mathf.Sin(angle));
+					Tile adjacent = GetTile(new IntVector2(x+(int)direction.x, y+(int)direction.y));
+					if(adjacent==null){
+						adjacentToWaterTiles.Add(GetTile(new IntVector2(x,y)));
+						break;
+					}
+					else if(adjacent.HasCollapsed()){
+						adjacentToWaterTiles.Add(GetTile(new IntVector2(x,y)));
+						break;
+					}
+
+				}
+			}
+		}
+
+
+	}
+
+
 
   
 }
