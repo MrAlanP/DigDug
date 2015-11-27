@@ -4,7 +4,10 @@ using System.Collections;
 public class bombTrack : MonoBehaviour 
 {
     public GameObject explosion;
-    public TileManager tileManager;
+    FaultManager faultManager;
+    TileManager tileManager;
+    Fault localFault;
+    Tile localTile;
     bool exploded = false;
     bool throb = false;
     float active = 0;
@@ -16,41 +19,45 @@ public class bombTrack : MonoBehaviour
     void Start()
     {
        startSize = gameObject.transform.localScale;
+       tileManager = GameObject.FindGameObjectWithTag("Game").GetComponent<TileManager>();
+       faultManager = GameObject.FindGameObjectWithTag("Game").GetComponent<FaultManager>();
+       localTile = tileManager.GetClosestTile(gameObject.transform.position);
+       gameObject.transform.position = localTile.transform.position;
 
     }
 	// Update is called once per frame
 	void Update ()
     {
-        //Debug.Log(tileManager.GetCentrePoint().ToString());
-       // Tile localTile = tileManager.GetTile(new Vector2(1,1));
-		Tile closestTile = tileManager.GetClosestTile (new Vector2 (1.5f, 1.5f));
-
-
-        Debug.Log(tileManager.GetCentrePoint().ToString());
-        Tile localTile = tileManager.GetClosestTile(gameObject.transform.position);
-        gameObject.transform.SetParent(localTile.transform);
-
-             
-        //get tile with nearest position, set bomb pos to tile pos. IF tile has crack (crackActiveBomb()) ELSE (groundActiveBomb())
-
-        bombPos = new Vector2(closestTile.transform.position.x, closestTile.transform.position.y);   
-        
-      
-      
+        if (Vector2.Distance(localTile.transform.position, gameObject.transform.position)>1f)
+        {
+            localTile = tileManager.GetClosestTile(gameObject.transform.position);
+            gameObject.transform.position = localTile.transform.position;
+        }
        // gameObject.transform.SetParent(localTile.transform);
-        //if (localTile.HasFault())
-        //{
-        //    crackActiveBomb();
-        //}
-        //else
-        //{
+       
+        if (localTile.HasFault())
+        {
+            crackActiveBomb();
+        }
+        else
+        {
            groundActiveBomb();
-        //}
+        }
     }
     void crackActiveBomb()
     {
+        gameObject.transform.SetParent(localTile.transform);
         shrink += Time.deltaTime;
         gameObject.transform.localScale = Vector2.Lerp(startSize, Vector2.zero, shrink);
+        localFault = localTile.GetFault();
+        if (gameObject.transform.localScale==Vector3.zero)
+        {
+            Instantiate(explosion, gameObject.transform.position, gameObject.transform.rotation);
+            localFault.ExplodeFault();
+            Destroy(gameObject);
+        }
+        
+
 
 
     }
