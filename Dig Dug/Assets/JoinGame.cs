@@ -12,29 +12,37 @@ public class JoinGame : MonoBehaviour {
 	void Start ()
     {
 		//PlayerList.Add (ReadyTextPlayer1);
-
+		Debug.Log("This list has " + PlayerList.Count + " numbers");
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-	
-
-
-
-
 		bool PCReadyP1 = Input.GetKeyDown (KeyCode.Return);
 		bool PCReadyP2 = Input.GetKeyDown (KeyCode.KeypadEnter);
-		bool JoypadReadyTest = Input.GetKeyDown (KeyCode.JoystickButton4);
+		bool JoypadReadyP1 = Input.GetKeyDown (KeyCode.JoystickButton4);
+		bool JoypadReadyP2 = Input.GetKeyDown (KeyCode.JoystickButton5);
 
 		if (PCReadyP1) {
 			ReadyTextPlayer1.SetActive (true);
-		} 
-		else if (JoypadReadyTest) {
-			ReadyTextPlayer1.SetActive (true);
+			PlayerList.Add(1);
+			Debug.Log("This list has " + PlayerList.Count + " numbers");
 		} 
 		else if (PCReadyP2) {
 			ReadyTextPlayer2.SetActive (true);
+			PlayerList.Add(2);
+			Debug.Log("This list has " + PlayerList.Count + " numbers");
+		}
+
+		if (JoypadReadyP1) {
+			ReadyTextPlayer1.SetActive (true);
+			PlayerList.Add (1);
+			Debug.Log ("This list has " + PlayerList.Count + " numbers");
+		} 
+		else if (JoypadReadyP2) {
+			ReadyTextPlayer1.SetActive (true);
+			PlayerList.Add (2);
+			Debug.Log ("This list has " + PlayerList.Count + " numbers");
 		}
 	}
 }
