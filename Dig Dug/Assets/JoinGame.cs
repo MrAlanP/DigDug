@@ -11,7 +11,7 @@ public class JoinGame : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-		PlayerList.Add (ReadyTextPlayer1);
+		//PlayerList.Add (ReadyTextPlayer1);
 
 	}
 	
