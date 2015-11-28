@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class FaultCollection {
 
@@ -96,6 +97,9 @@ public class FaultCollection {
 
 
 		foreach (List<IntVector2> path in paths) {
+			List<IntVector2> containedTiles = GetContainedSquares(path);
+			path.AddRange(containedTiles);
+
 			for(int i = 0; i<path.Count; i++){
 				tilesToCollapse.Add(path[i]);
 				for(int j = faults.Count-1; j>=0; j--){
@@ -221,6 +225,62 @@ public class FaultCollection {
 			parentCount++;
 		}
 		return parentCount;
+	}
+
+	//Pass in a list of a shapes coords for its circumference, get back a list of squares inside the shape
+	List<IntVector2> GetContainedSquares(List<IntVector2> shapeCirc){
+		List<IntVector2> containedSquares = new List<IntVector2> ();
+
+		//Order list by height
+		shapeCirc = shapeCirc.OrderBy (w => w.y).ToList ();
+
+		int startIndex = 0;
+		//For each row
+		for (int i = shapeCirc[0].y; i<=shapeCirc[shapeCirc.Count-1].y; i++) {
+			//Row List
+			List<int> row = new List<int>();
+			for(int j = startIndex; j<shapeCirc.Count; j++){
+				if(shapeCirc[j].y > i){
+					startIndex = j;
+					break;
+				}
+				else{
+					row.Add(shapeCirc[j].x);
+				}
+			}
+			row = row.OrderBy(w => w).ToList();
+			//Now using this row, work out which squares should be marked as start edges, end edges and which to ignore
+			List<int> startEdges = new List<int>();
+			List<int> endEdges = new List<int>();
+			for(int j = 0; j<row.Count; j++){
+				//If not at last box
+				if(j<row.Count-1){
+					//If the box doesn't have another to the right
+					if(!row.Contains(row[j]+1)){
+						startEdges.Add(row[j]);
+					}
+				}
+				//If not first box
+				if(j>0){
+					//If the box doesn't have another to the left
+					if(!row.Contains(row[j]-1)){
+						endEdges.Add(row[j]);
+					}
+				}
+			}
+			if(startEdges.Count>0){
+				//Add all points between start and end edges
+				for(int j= 0; j<endEdges.Count; j++){
+					for(int k = startEdges[j]+1; k<endEdges[j]; k++){
+						containedSquares.Add(new IntVector2(k, i));
+					}
+				}
+			}
+
+		}
+
+
+		return containedSquares;
 	}
 
 
