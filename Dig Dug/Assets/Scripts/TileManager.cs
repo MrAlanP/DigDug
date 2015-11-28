@@ -31,13 +31,15 @@ public class TileManager : MonoBehaviour {
 
 				Color color = pixels[(y*level.width)+x];
 
-				if(color.r < 0.1){
-					GameObject newTile = Instantiate(tilePrefab);
-					newTile.transform.SetParent(tilesParent.transform);
-					newTile.transform.localPosition = new Vector3(TILE_SIZE*x, TILE_SIZE*y, 0);
-					newTile.name = "Tile_"+x+"-"+y;
-					tiles[x,y] = newTile.GetComponent<Tile>();
-					tiles[x,y].tileIndex = new IntVector2(x,y);
+				GameObject newTile = Instantiate(tilePrefab);
+				newTile.transform.SetParent(tilesParent.transform);
+				newTile.transform.localPosition = new Vector3(TILE_SIZE*x, TILE_SIZE*y, 0);
+				newTile.name = "Tile_"+x+"-"+y;
+				tiles[x,y] = newTile.GetComponent<Tile>();
+				tiles[x,y].tileIndex = new IntVector2(x,y);
+
+				if(color.r > 0.1){
+					tiles[x,y].Collapse();
 				}
 			}
 		}
@@ -80,8 +82,12 @@ public class TileManager : MonoBehaviour {
 
 
 		for (int i = 0; i<faultCount; i++) {
-			Vector2 tileIndex = new Vector2(Random.Range(0,(int)GRID_SIZE.x-1), Random.Range(0,(int)GRID_SIZE.y-1));
-			tilesToAddFaults[i] = tiles[(int)tileIndex.x, (int)tileIndex.y];
+			do{
+				Vector2 tileIndex = new Vector2(Random.Range(0,(int)GRID_SIZE.x-1), Random.Range(0,(int)GRID_SIZE.y-1));
+				tilesToAddFaults[i] = tiles[(int)tileIndex.x, (int)tileIndex.y];
+			}while(tilesToAddFaults[i].HasCollapsed() || tilesToAddFaults[i].HasFault());
+
+
 		}
 		faultManager.CreateCracks (tilesToAddFaults);
 

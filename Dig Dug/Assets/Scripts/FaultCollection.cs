@@ -107,6 +107,16 @@ public class FaultCollection {
 						faults.RemoveAt(j);
 						break;
 					}
+					else{
+						IntVector2 difference = path[i] - faults[j].tileIndex;
+						int offset = (Mathf.Abs(difference.x)+Mathf.Abs(difference.y));
+						//Tile is next to one we just destroyed
+						if(offset==1){
+							if(faults[j].HasConnection(difference)){
+								faults[j].SetConnectsToWater();
+							}
+						}
+					}
 				}
 			}
 		}

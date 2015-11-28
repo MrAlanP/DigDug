@@ -182,6 +182,18 @@ public class Fault : MonoBehaviour {
 		Destroy (gameObject);
 	}
 
+	public bool HasConnection(IntVector2 direction){
+		for (int i = 0; i<4; i++) {
+			if(connectionDirections[i]!=Vector2.zero){
+				if(connectionDirections[i].x==direction.x && connectionDirections[i].y==direction.y){
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 
 
 }

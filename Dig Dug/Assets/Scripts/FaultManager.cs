@@ -68,7 +68,7 @@ public class FaultManager : MonoBehaviour {
 							fault.faultCollectionRef.MergeCollection(newFault.faultCollectionRef);
 							faultCollections.Remove(newFault.faultCollectionRef);
 						}
-						//Not explode point connection
+						//Fault has connected to itself in a link, should explode
 						else if(i>0){
 							fault.SetLinksToSelf();
 						}
@@ -117,7 +117,7 @@ public class FaultManager : MonoBehaviour {
 		}
 
 		tileManager.SetAdjacentWaterTiles ();
-		//Collapse any water connections
+		//Collapse any tiles we should
 		List<IntVector2> tilesToCollapse = fault.faultCollectionRef.GetTilesToCollapse (tileManager.adjacentToWaterTiles);
 		if (tilesToCollapse.Count > 0) {
 			foreach(IntVector2 tileIndex in tilesToCollapse){
@@ -152,9 +152,6 @@ public class FaultManager : MonoBehaviour {
 			faultCollections.Remove(baseCollection);
 
 		}
-
-
-
 	}
 
 	void SetFaultAsMain(Fault fault){
