@@ -104,7 +104,10 @@ public class FaultManager : MonoBehaviour {
 						SetFaultAsMain(newFault);
 					}
 					//Update rotation based on connections
-					newFault.UpdateSprite();
+					if(!tile.HasCollapsed()){
+						newFault.UpdateSprite();
+					}
+
 				}
 				else{
 					fault.SetConnectsToWater();

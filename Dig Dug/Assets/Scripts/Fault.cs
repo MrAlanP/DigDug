@@ -72,6 +72,7 @@ public class Fault : MonoBehaviour {
 		UpdateSprite ();
 	}
 
+
 	public void AddConnectionDirection(Vector2 dir){
 
 		for(int i = 0; i<connectionDirections.Length; i++){
@@ -167,6 +168,7 @@ public class Fault : MonoBehaviour {
 	}
 
 	public bool GetConnectsToWater(){
+
 		return connectsToWater;
 	}
 

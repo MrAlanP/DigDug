@@ -95,8 +95,11 @@ public class FaultCollection {
 		}
 
 
-
+		//Work out if any faults left should be set as water attached
 		foreach (List<IntVector2> path in paths) {
+
+
+
 			List<IntVector2> containedTiles = GetContainedSquares(path);
 			path.AddRange(containedTiles);
 
@@ -107,15 +110,19 @@ public class FaultCollection {
 						faults.RemoveAt(j);
 						break;
 					}
-					else{
-						IntVector2 difference = path[i] - faults[j].tileIndex;
-						int offset = (Mathf.Abs(difference.x)+Mathf.Abs(difference.y));
-						//Tile is next to one we just destroyed
-						if(offset==1){
-							if(faults[j].HasConnection(difference)){
-								faults[j].SetConnectsToWater();
-							}
-						}
+				}
+			}
+
+			for(int i = 0; i<path.Count; i++){
+				for(int j = faults.Count-1; j>=0; j--){
+					IntVector2 difference = faults[j].tileIndex-path[i];
+					int offset = Mathf.Abs(difference.x)+Mathf.Abs(difference.y);
+
+					//Tile is next to one we just destroyed
+					if(offset==1){
+						//TODO make sure it actually has the correct connection to water
+						faults[j].SetConnectsToWater();
+
 					}
 				}
 			}
