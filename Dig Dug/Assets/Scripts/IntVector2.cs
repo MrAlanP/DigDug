@@ -59,4 +59,8 @@ public struct IntVector2 {
 	{
 		return !(a == b);
 	}
+
+	public string ToString(){
+		return "(" + this.x + "," + this.y + ")";
+	}
 }

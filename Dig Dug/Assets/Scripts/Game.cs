@@ -31,3 +31,5 @@ public class Game : MonoBehaviour {
 		gameCam.Earthquake ();
 	}
 }
+
+

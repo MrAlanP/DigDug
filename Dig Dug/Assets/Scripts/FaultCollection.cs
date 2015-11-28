@@ -49,6 +49,17 @@ public class FaultCollection {
 			}
 		}
 
+		//Make an intvector2 list of water tiles
+		List<IntVector2> adjacentWaterTiles = new List<IntVector2> ();
+		foreach (Tile tile in waterTiles) {
+			adjacentWaterTiles.Add(tile.tileIndex);
+		}
+
+		//Make an intvector2 list of faults
+		List<IntVector2> faultIndices = new List<IntVector2> ();
+		foreach (Fault fault in faults) {
+			faultIndices.Add(fault.tileIndex);
+		}
 
 
 		//Collapse
@@ -56,15 +67,30 @@ public class FaultCollection {
 		//Water linked path
 		if(waterConnectionIndexes.Count > 1){
 			for (int i = 0; i<waterConnectionIndexes.Count-1; i++) {
-				List<IntVector2> path1 = GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1]);
-				List<IntVector2> path2 =  GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1],waterTiles);
+				List<IntVector2> path1 = GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1], faultIndices);
+				List<IntVector2> path2 =  GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1],adjacentWaterTiles);
 				path1.AddRange(path2);
 				//Add to list
 				paths.Add(path1);
 			}
 		}
 		for (int i = 0; i<landConnectionIndexes.Count; i++) {
-			//paths.Add(GetPath(landConnectionIndexes[i], landConnectionIndexes[i]));
+			if(faultIndices.Contains(landConnectionIndexes[i])){
+				faultIndices.Remove(landConnectionIndexes[i]);
+			}
+			//Iterate through adjacent starting positions to find how the land connection connects
+			for(int j = 0; j<4; j++){
+				float startAngle = Mathf.Deg2Rad*(90*(j%4));
+				float endAngle = Mathf.Deg2Rad*(90*((j+1)%4));
+				IntVector2 start = new IntVector2((int)Mathf.Cos(startAngle),(int)-Mathf.Sin(startAngle)) + landConnectionIndexes[i];
+				IntVector2 end = new IntVector2((int)Mathf.Cos(endAngle),(int)-Mathf.Sin(endAngle)) + landConnectionIndexes[i];
+				List<IntVector2> path = GetPath(start, end, faultIndices);
+				if(path!=null){
+					//Add start
+					path.Add(landConnectionIndexes[i]);
+					paths.Add(path);
+				}
+			}
 		}
 
 
@@ -85,7 +111,7 @@ public class FaultCollection {
 	}
 
 	//A* pathfinding for faults
-	List<IntVector2> GetPath(IntVector2 start, IntVector2 goal, List<Tile> tiles = null){
+	List<IntVector2> GetPath(IntVector2 start, IntVector2 goal, List<IntVector2> tiles){
 		List<PathHeuristic> openList = new List<PathHeuristic> ();
 		List<PathHeuristic> closedList = new List<PathHeuristic> ();
 
@@ -129,13 +155,8 @@ public class FaultCollection {
 			}
 
 			//Set adjacent list up
-			List<IntVector2> adjacentList;
-			if(tiles!=null){
-				adjacentList = GetAdjacentTiles(currentTile.tileIndex, tiles);
-			}
-			else{
-				adjacentList = GetAdjacentFaults(currentTile.tileIndex);
-			}
+			List<IntVector2> adjacentList = GetAdjacentVectors(currentTile.tileIndex, tiles);
+
 
 			foreach(IntVector2 adjacent in adjacentList){
 				//If adjacent is in closed list, skip
@@ -172,36 +193,18 @@ public class FaultCollection {
 		return null;
 	}
 
-	List<IntVector2> GetAdjacentFaults(IntVector2 tileIndex){
-		List<IntVector2> adjacents = new List<IntVector2> ();
-
-		for(int i = 0; i<faults.Count; i++){
-			if(faults[i].tileIndex.x == tileIndex.x){
-				if(Mathf.Abs(faults[i].tileIndex.y - tileIndex.y)==1){
-					adjacents.Add(faults[i].tileIndex);
-				}
-			}
-			else if(faults[i].tileIndex.y == tileIndex.y){
-				if(Mathf.Abs(faults[i].tileIndex.x - tileIndex.x)==1){
-					adjacents.Add(faults[i].tileIndex);
-				}
-			}
-		}
-		return adjacents;
-	}
-
-	List<IntVector2> GetAdjacentTiles(IntVector2 tileIndex, List<Tile> tiles){
+	List<IntVector2> GetAdjacentVectors(IntVector2 tileIndex, List<IntVector2> collections){
 		List<IntVector2> adjacents = new List<IntVector2> ();
 		
-		for(int i = 0; i<tiles.Count; i++){
-			if(tiles[i].tileIndex.x == tileIndex.x){
-				if(Mathf.Abs(tiles[i].tileIndex.y - tileIndex.y)==1){
-					adjacents.Add(tiles[i].tileIndex);
+		for(int i = 0; i<collections.Count; i++){
+			if(collections[i].x == tileIndex.x){
+				if(Mathf.Abs(collections[i].y - tileIndex.y)==1){
+					adjacents.Add(collections[i]);
 				}
 			}
-			else if(tiles[i].tileIndex.y == tileIndex.y){
-				if(Mathf.Abs(tiles[i].tileIndex.x - tileIndex.x)==1){
-					adjacents.Add(tiles[i].tileIndex);
+			else if(collections[i].y == tileIndex.y){
+				if(Mathf.Abs(collections[i].x - tileIndex.x)==1){
+					adjacents.Add(collections[i]);
 				}
 			}
 		}

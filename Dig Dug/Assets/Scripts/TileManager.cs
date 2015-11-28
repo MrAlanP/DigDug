@@ -56,12 +56,12 @@ public class TileManager : MonoBehaviour {
 		Tile[] tilesToAddFaults = new Tile [faultCount];
 
 
-		tilesToAddFaults [0] = tiles [5, 20];
+		tilesToAddFaults [0] = tiles [20, 20];
 
 
 		for (int i = 0; i<faultCount; i++) {
 			Vector2 tileIndex = new Vector2(Random.Range(0,(int)GRID_SIZE.x-1), Random.Range(0,(int)GRID_SIZE.y-1));
-			tilesToAddFaults[i] = tiles[(int)tileIndex.x, (int)tileIndex.y];
+			//tilesToAddFaults[i] = tiles[(int)tileIndex.x, (int)tileIndex.y];
 		}
 		faultManager.CreateCracks (tilesToAddFaults);
 
