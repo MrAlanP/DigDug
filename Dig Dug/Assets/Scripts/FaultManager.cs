@@ -40,7 +40,7 @@ public class FaultManager : MonoBehaviour {
 		IntVector2 faultIndex = fault.tileIndex;
 
 		//The number of tiles the explosion expands the fault by
-		int explodeRange = 10;
+		int explodeRange = 3;
 
 		//Do all 4 directions
 		for(int j = 0; j<4; j++){

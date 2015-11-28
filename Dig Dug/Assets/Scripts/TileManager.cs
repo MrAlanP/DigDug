@@ -6,6 +6,7 @@ public class TileManager : MonoBehaviour {
 
 	public GameObject tilesParent;
 	public GameObject tilePrefab;
+	public ParticleSystem collapseParticles;
 
 	FaultManager faultManager;
 
@@ -88,6 +89,8 @@ public class TileManager : MonoBehaviour {
 		foreach (IntVector2 tileIndex in tileIndices) {
 			if(!tiles[tileIndex.x, tileIndex.y].HasCollapsed()){
 				tiles[tileIndex.x, tileIndex.y].Collapse();
+				collapseParticles.transform.localPosition = tiles[tileIndex.x, tileIndex.y].transform.localPosition;
+				collapseParticles.Emit(32);
 			}
 
 		}

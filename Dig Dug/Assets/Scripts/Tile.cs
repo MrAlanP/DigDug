@@ -4,6 +4,7 @@ using System.Collections;
 public class Tile : MonoBehaviour {
 
 	public Sprite grassEdgeSprite;
+	//public ParticleSystem collapseParticles;
 
 	SpriteRenderer spriteRend;
 
@@ -41,6 +42,7 @@ public class Tile : MonoBehaviour {
 	}
 
 	public void Collapse(){
+		//collapseParticles.Play ();
 		collapsed = true;
 		spriteRend.enabled = false;
 		if (HasFault ()) {

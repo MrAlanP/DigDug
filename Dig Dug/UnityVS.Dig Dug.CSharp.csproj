@@ -92,6 +92,7 @@
     <Compile Include="Assets\Scripts\SimplePlayer.cs" />
     <Compile Include="Assets\Scripts\Tile.cs" />
     <Compile Include="Assets\Scripts\TileManager.cs" />
+    <Compile Include="Assets\Scripts\WaterBackground.cs" />
     <Compile Include="Assets\basicContoller.cs" />
     <Compile Include="Assets\bombTrack.cs" />
     <Compile Include="Assets\bombTrigger.cs" />
@@ -105,6 +106,7 @@
     <None Include="Assets\Imported\Demigiant\DOTween\Editor\DOTweenEditor.XML" />
     <None Include="Assets\Imported\Demigiant\DOTween\readme.txt" />
     <None Include="Assets\Imported\JSON\readme.txt" />
+    <None Include="Assets\Shaders\TileSprite.shader" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
