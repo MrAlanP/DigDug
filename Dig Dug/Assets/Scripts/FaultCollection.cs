@@ -6,6 +6,7 @@ using System.Linq;
 public class FaultCollection {
 
 	public List<Fault> faults = new List<Fault>();
+	List<IntVector2> faultIndices = new List<IntVector2>();
 
 	public uint key = 0;
 
@@ -21,7 +22,12 @@ public class FaultCollection {
 
 	public void AddFault(Fault fault){
 		faults.Add (fault);
+		faultIndices.Add (fault.tileIndex);
 		fault.faultCollectionRef = this;
+	}
+
+	public List<Fault> GetFaults(){
+		return faults;
 	}
 
 
@@ -54,12 +60,6 @@ public class FaultCollection {
 		List<IntVector2> adjacentWaterTiles = new List<IntVector2> ();
 		foreach (Tile tile in waterTiles) {
 			adjacentWaterTiles.Add(tile.tileIndex);
-		}
-
-		//Make an intvector2 list of faults
-		List<IntVector2> faultIndices = new List<IntVector2> ();
-		foreach (Fault fault in faults) {
-			faultIndices.Add(fault.tileIndex);
 		}
 
 
@@ -114,8 +114,29 @@ public class FaultCollection {
 		return tilesToCollapse;
 	}
 
+	public List<Fault> GetTouchingFaults(IntVector2 start){
+		List<IntVector2> touchingFaultIndices = GetPath (start, new IntVector2 (-1, -1), faultIndices, true);
+		List<Fault> touchingFaults = new List<Fault> ();
+		//Remove these touching faults from the collection
+		for (int i = 0; i<touchingFaultIndices.Count; i++) {
+			for(int j = faults.Count-1; j>=0; j--){
+				if(touchingFaultIndices[i] == faults[j].tileIndex){
+					touchingFaults.Add(faults[j]);
+					faults.RemoveAt(j);
+					faultIndices.RemoveAt(j);
+
+				}
+			}
+		}
+		return touchingFaults;
+	}
+
+	public bool HasFaults(){
+		return faults.Count > 0;
+	}
+
 	//A* pathfinding for faults
-	List<IntVector2> GetPath(IntVector2 start, IntVector2 goal, List<IntVector2> tiles){
+	List<IntVector2> GetPath(IntVector2 start, IntVector2 goal, List<IntVector2> tiles, bool returnClosedOnFail = false){
 		List<PathHeuristic> openList = new List<PathHeuristic> ();
 		List<PathHeuristic> closedList = new List<PathHeuristic> ();
 
@@ -193,6 +214,15 @@ public class FaultCollection {
 			}
 		} while(openList.Count>0);
 
+		//Return closed list if we can't find path
+		if (returnClosedOnFail) {
+			List<IntVector2> closedListIndices = new List<IntVector2>();
+			for(int i = 0; i<closedList.Count; i++){
+				closedListIndices.Add(closedList[i].tileIndex);
+			}
+			return closedListIndices;
+		}
+
 		//Unable to find a path between the start-goal
 		return null;
 	}
@@ -214,7 +244,6 @@ public class FaultCollection {
 		}
 		return adjacents;
 	}
-
 
 	int GetParentCount(PathHeuristic _tile){
 
@@ -281,6 +310,11 @@ public class FaultCollection {
 
 
 		return containedSquares;
+	}
+
+	public void ClearCollection(){
+		faultIndices.Clear ();
+		faults.Clear ();
 	}
 
 

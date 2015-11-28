@@ -128,10 +128,32 @@ public class FaultManager : MonoBehaviour {
 					}
 				}
 			}
-			faultCollections.Remove(fault.faultCollectionRef);
 
 			tileManager.CollapseTiles(tilesToCollapse);
+
+
+			//Make new base collection
+			FaultCollection baseCollection = CreateFaultCollection();
+
+			//Add old faultcollections to base
+			for(int i = faultCollections.Count-2; i>=0; i--){
+				baseCollection.AddFaults(faultCollections[i].GetFaults());
+				faultCollections[i].ClearCollection();
+				faultCollections.RemoveAt(i);
+			}
+			//Get touching faults and add them to seperate collections
+			while(baseCollection.HasFaults()){
+				FaultCollection newCollection = CreateFaultCollection();
+				List<Fault> touchingFaults = baseCollection.GetTouchingFaults(baseCollection.GetFaults()[0].tileIndex);
+				newCollection.AddFaults(touchingFaults);
+			}
+
+			baseCollection.ClearCollection();
+			faultCollections.Remove(baseCollection);
+
 		}
+
+
 
 	}
 
