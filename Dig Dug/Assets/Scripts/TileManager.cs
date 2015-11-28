@@ -7,6 +7,7 @@ public class TileManager : MonoBehaviour {
 	public GameObject tilesParent;
 	public GameObject tilePrefab;
 	public ParticleSystem collapseParticles;
+	public Texture2D level;
 
 	FaultManager faultManager;
 
@@ -21,24 +22,42 @@ public class TileManager : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		faultManager = GetComponent<FaultManager> ();
-
-		//Create Tiles in grid
 		tiles = new Tile[(int)GRID_SIZE.x, (int)GRID_SIZE.y];
-		for(int y = 0; y<GRID_SIZE.y; y++){
-			for(int x = 0; x<GRID_SIZE.x; x++){
-				GameObject newTile = Instantiate(tilePrefab);
-				newTile.transform.SetParent(tilesParent.transform);
-				newTile.transform.localPosition = new Vector3(TILE_SIZE*x, TILE_SIZE*y, 0);
-				newTile.name = "Tile_"+x+"-"+y;
-				tiles[x,y] = newTile.GetComponent<Tile>();
-				tiles[x,y].tileIndex = new IntVector2(x,y);
+		Color[] pixels = level.GetPixels();
 
-				//If the sprite should be edge alt sprite
-				if(y==0){
-					tiles[x,y].SetEdgeSprite();
+		//Reads in an image, doesnt currently do Alans tile edge stuff
+		for(int y = 0; y < level.height; y++){
+			for(int x = 0; x < level.width; x++){
+
+				Color color = pixels[(y*level.width)+x];
+
+				if(color.r < 0.1){
+					GameObject newTile = Instantiate(tilePrefab);
+					newTile.transform.SetParent(tilesParent.transform);
+					newTile.transform.localPosition = new Vector3(TILE_SIZE*x, TILE_SIZE*y, 0);
+					newTile.name = "Tile_"+x+"-"+y;
+					tiles[x,y] = newTile.GetComponent<Tile>();
+					tiles[x,y].tileIndex = new IntVector2(x,y);
 				}
 			}
 		}
+		//Create Tiles in grid
+		
+//		for(int y = 0; y<GRID_SIZE.y; y++){
+//			for(int x = 0; x<GRID_SIZE.x; x++){
+//				GameObject newTile = Instantiate(tilePrefab);
+//				newTile.transform.SetParent(tilesParent.transform);
+//				newTile.transform.localPosition = new Vector3(TILE_SIZE*x, TILE_SIZE*y, 0);
+//				newTile.name = "Tile_"+x+"-"+y;
+//				tiles[x,y] = newTile.GetComponent<Tile>();
+//				tiles[x,y].tileIndex = new IntVector2(x,y);
+//
+//				//If the sprite should be edge alt sprite
+//				if(y==0){
+//					tiles[x,y].SetEdgeSprite();
+//				}
+//			}
+//		}
 
 		GetClosestTile (new Vector2 (1.8f, 3.2f));
 	}
