@@ -21,47 +21,37 @@ public class TileManager : MonoBehaviour {
 	public List<Tile> adjacentToWaterTiles = new List<Tile>();
 	// Use this for initialization
 	void Awake () {
+		GRID_SIZE = new Vector2 (level.width, level.height);
 		faultManager = GetComponent<FaultManager> ();
 		tiles = new Tile[(int)GRID_SIZE.x, (int)GRID_SIZE.y];
-		Color[] pixels = level.GetPixels();
+	}
 
+	public void LoadLevel(){
+		Color[] pixels = level.GetPixels();
+		
 		//Reads in an image, doesnt currently do Alans tile edge stuff
 		for(int y = 0; y < level.height; y++){
 			for(int x = 0; x < level.width; x++){
-
+				
 				Color color = pixels[(y*level.width)+x];
-
+				
 				GameObject newTile = Instantiate(tilePrefab);
 				newTile.transform.SetParent(tilesParent.transform);
 				newTile.transform.localPosition = new Vector3(TILE_SIZE*x, TILE_SIZE*y, 0);
 				newTile.name = "Tile_"+x+"-"+y;
 				tiles[x,y] = newTile.GetComponent<Tile>();
 				tiles[x,y].tileIndex = new IntVector2(x,y);
-
+				
 				if(color.r > 0.1){
 					tiles[x,y].Collapse();
 				}
-			}
-		}
-		//Create Tiles in grid
-		
-//		for(int y = 0; y<GRID_SIZE.y; y++){
-//			for(int x = 0; x<GRID_SIZE.x; x++){
-//				GameObject newTile = Instantiate(tilePrefab);
-//				newTile.transform.SetParent(tilesParent.transform);
-//				newTile.transform.localPosition = new Vector3(TILE_SIZE*x, TILE_SIZE*y, 0);
-//				newTile.name = "Tile_"+x+"-"+y;
-//				tiles[x,y] = newTile.GetComponent<Tile>();
-//				tiles[x,y].tileIndex = new IntVector2(x,y);
-//
-//				//If the sprite should be edge alt sprite
+
+				//If the sprite should be edge alt sprite
 //				if(y==0){
 //					tiles[x,y].SetEdgeSprite();
 //				}
-//			}
-//		}
-
-		GetClosestTile (new Vector2 (1.8f, 3.2f));
+			}
+		}
 	}
 	
 	// Update is called once per frame

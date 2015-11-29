@@ -4,13 +4,14 @@ using System.Collections;
 
 public class Game : MonoBehaviour {
 
+	public GameObject joinMenu;
 	public GameCamera gameCam;
 	TileManager tileManager;
 
 
 	// Use this for initialization
 	void Awake () {
-
+		joinMenu.SetActive (true);
 		tileManager = GetComponent<TileManager> ();
 
 
@@ -29,6 +30,15 @@ public class Game : MonoBehaviour {
 	void Earthquake(){
 		tileManager.Earthquake ();
 		gameCam.Earthquake ();
+	}
+
+	public void StartGame(){
+		joinMenu.SetActive (false);
+		LoadLevel ();
+	}
+
+	void LoadLevel(){
+		tileManager.LoadLevel ();
 	}
 }
 

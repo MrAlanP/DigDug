@@ -5,12 +5,15 @@ using System.Collections.Generic;
 
 public class JoinGame : MonoBehaviour {
 
+	public Game game;
 	public Text countdownTimer;
 	public GameObject[] readyTexts;
 	bool[] playerReady = new bool[8];
 
 
 	float timer;
+
+	bool gameStarted = false;
 
 	// Use this for initialization
 	void Awake ()
@@ -25,6 +28,9 @@ public class JoinGame : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+		if (gameStarted) {
+			return;
+		}
 		bool PCReadyP1 = Input.GetKeyDown (KeyCode.Return);
 		bool PCReadyP2 = Input.GetKeyDown (KeyCode.KeypadEnter);
 
@@ -33,7 +39,6 @@ public class JoinGame : MonoBehaviour {
 				bool readyButtonDown = Input.GetButton ("Player"+(i+1)+"Bumper");
 
 				if(readyButtonDown){
-					//Debug.Log(Input.GetAxis ("Player"+(i+1)+"Bumper"));
 					playerReady[i] = true;
 					readyTexts[i].SetActive(true);
 					//Set countdown to start if we have at least 1 player
@@ -53,6 +58,11 @@ public class JoinGame : MonoBehaviour {
 		if(countdownTimer.gameObject.activeSelf){
 			timer -= Time.deltaTime;
 			countdownTimer.text = "Starting in: "+Mathf.RoundToInt(timer);
+		}
+
+		if(timer<=0){
+			gameStarted = true;
+			game.StartGame();
 		}
 
 	}
