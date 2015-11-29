@@ -57,7 +57,15 @@ public class bombTrack : MonoBehaviour
 
             if (localTile.HasFault())
             {
-                crackActiveBomb();
+                Fault fault = localTile.GetFault();
+                if (fault.IsMain())
+                {
+                    crackActiveBomb();
+                }
+                else
+                {
+                    groundActiveBomb();
+                }
             }
             else
             {
@@ -77,7 +85,8 @@ public class bombTrack : MonoBehaviour
         if (gameObject.transform.localScale == Vector3.zero)
         {
             Instantiate(explosion, gameObject.transform.position, gameObject.transform.rotation);
-			if(localFault.IsMain()){
+            if (localFault.IsMain())
+            {
 				faultManager.ExplodeFault(localFault);
 			}
 
@@ -118,16 +127,20 @@ public class bombTrack : MonoBehaviour
            
         }
 
-        if (throbCount==7)
+        if (throbCount == 7)
         {
-          
-            if (Random.Range(0, 2) == 1)
+            if (!localTile.HasFault())
             {
-                Tile[] crack = new Tile[1];
-                crack[0] = localTile;
-                faultManager.CreateCracks(crack);
+
+                if (Random.Range(0, 2) == 1)
+                {
+                    Tile[] crack = new Tile[1];
+                    crack[0] = localTile;
+                    faultManager.CreateCracks(crack);
+                }
             }
-            Destroy(gameObject);
+                Destroy(gameObject);
+            
         }
     }
 }

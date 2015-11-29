@@ -23,8 +23,16 @@ public class explosion : MonoBehaviour {
             tile = tileManager.GetClosestTile(gameObject.transform.position);
             if (tile.HasFault())
             {
-                source.PlayOneShot(softBang, 1);
-                playedClip = true;
+                if (tile.GetFault().IsMain())
+                {
+                    source.PlayOneShot(softBang, 1);
+                    playedClip = true;
+                }
+                else
+                {
+                    source.PlayOneShot(loudBang, 1);
+                    playedClip = true;
+                }
             }
             else
             {
