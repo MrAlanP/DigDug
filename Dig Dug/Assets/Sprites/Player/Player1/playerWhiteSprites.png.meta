@@ -1,21 +1,21 @@
 fileFormatVersion: 2
 guid: f9395b3dcc301c54d97f0c355f97ce31
-timeCreated: 1448809704
+timeCreated: 1448812901
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: playerWhiteSprites_0
+    21300000: playerIdle
     21300002: playerWhiteSprites_1
-    21300004: playerWhiteSprites_2
-    21300006: playerWhiteSprites_3
-    21300008: playerWhiteSprites_4
-    21300010: playerWhiteSprites_5
-    21300012: playerWhiteSprites_6
-    21300014: playerWhiteSprites_7
-    21300016: playerWhiteSprites_8
-    21300018: playerWhiteSprites_9
-    21300020: playerWhiteSprites_10
-    21300022: playerWhiteSprites_11
+    21300004: playerJump
+    21300006: playerDead
+    21300008: playerDown1
+    21300010: playerDown2
+    21300012: playerUp1
+    21300014: playerUp2
+    21300016: playerRight1
+    21300018: playerRight2
+    21300020: playerLeft1
+    21300022: playerLeft2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -62,7 +62,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: playerWhiteSprites_0
+    - name: playerIdle
       rect:
         serializedVersion: 2
         x: 178
@@ -70,7 +70,7 @@ TextureImporter:
         width: 285
         height: 421
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: playerWhiteSprites_1
       rect:
@@ -80,9 +80,9 @@ TextureImporter:
         width: 206
         height: 421
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: playerWhiteSprites_2
+    - name: playerJump
       rect:
         serializedVersion: 2
         x: 1419
@@ -90,9 +90,9 @@ TextureImporter:
         width: 364
         height: 421
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: playerWhiteSprites_3
+    - name: playerDead
       rect:
         serializedVersion: 2
         x: 1937
@@ -100,9 +100,9 @@ TextureImporter:
         width: 525
         height: 223
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: playerWhiteSprites_4
+    - name: playerDown1
       rect:
         serializedVersion: 2
         x: 2777
@@ -110,9 +110,9 @@ TextureImporter:
         width: 244
         height: 421
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: playerWhiteSprites_5
+    - name: playerDown2
       rect:
         serializedVersion: 2
         x: 3377
@@ -120,9 +120,9 @@ TextureImporter:
         width: 244
         height: 421
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: playerWhiteSprites_6
+    - name: playerUp1
       rect:
         serializedVersion: 2
         x: 4018
@@ -130,9 +130,9 @@ TextureImporter:
         width: 244
         height: 421
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: playerWhiteSprites_7
+    - name: playerUp2
       rect:
         serializedVersion: 2
         x: 4697
@@ -140,9 +140,9 @@ TextureImporter:
         width: 244
         height: 421
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: playerWhiteSprites_8
+    - name: playerRight1
       rect:
         serializedVersion: 2
         x: 5319
@@ -150,9 +150,9 @@ TextureImporter:
         width: 244
         height: 421
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: playerWhiteSprites_9
+    - name: playerRight2
       rect:
         serializedVersion: 2
         x: 5957
@@ -160,9 +160,9 @@ TextureImporter:
         width: 244
         height: 421
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: playerWhiteSprites_10
+    - name: playerLeft1
       rect:
         serializedVersion: 2
         x: 6598
@@ -170,9 +170,9 @@ TextureImporter:
         width: 244
         height: 421
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: playerWhiteSprites_11
+    - name: playerLeft2
       rect:
         serializedVersion: 2
         x: 7239
@@ -180,7 +180,7 @@ TextureImporter:
         width: 244
         height: 421
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
