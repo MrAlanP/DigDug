@@ -196,6 +196,10 @@ public class Fault : MonoBehaviour {
 		return false;
 	}
 
+	public bool IsMain(){
+		return faultType == FaultType.Main;
+	}
+
 
 
 }
