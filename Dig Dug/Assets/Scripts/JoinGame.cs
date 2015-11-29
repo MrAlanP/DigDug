@@ -67,5 +67,16 @@ public class JoinGame : MonoBehaviour {
 
 	}
 
+	public List<int> GetPlayers(){
+		List<int> players = new List<int> ();
+		for(int i = 0; i<playerReady.Length; i++){
+			if(playerReady[i]){
+				players.Add(i+1);
+			}
+		}
+
+		return players;
+	}
+
 
 }

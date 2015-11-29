@@ -47,9 +47,9 @@ public class explosion : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D col)
     {
 
-        if (col.gameObject.GetComponent<basicContoller>())
+        if (col.gameObject.GetComponent<Player>())
         {
-            col.gameObject.GetComponent<basicContoller>().dead = true;
+			col.gameObject.GetComponent<Player>().dead = true;
         }
     }
 }

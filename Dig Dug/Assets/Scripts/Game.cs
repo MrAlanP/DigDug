@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 public class Game : MonoBehaviour {
 
-	public GameObject joinMenu;
+	public JoinGame joinMenu;
 	public GameCamera gameCam;
 	TileManager tileManager;
+	PlayerManager playerManager;
 
 
 	// Use this for initialization
 	void Awake () {
-		joinMenu.SetActive (true);
+		joinMenu.gameObject.SetActive (true);
 		tileManager = GetComponent<TileManager> ();
-
+		playerManager = GetComponent<PlayerManager> ();
 
 		//Centre camera on middle of tiles
 		Vector2 cameraPos = tileManager.GetCentrePoint ();
@@ -33,8 +35,14 @@ public class Game : MonoBehaviour {
 	}
 
 	public void StartGame(){
-		joinMenu.SetActive (false);
+		joinMenu.gameObject.SetActive (false);
+
+
+
 		LoadLevel ();
+
+		List<int> players = joinMenu.GetPlayers ();
+		playerManager.SpawnPlayers (players);
 	}
 
 	void LoadLevel(){

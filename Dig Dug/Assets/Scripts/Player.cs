@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class basicContoller : MonoBehaviour
+public class Player : MonoBehaviour
 {
    public GameObject bomb;
    public AudioClip ohNo;
@@ -18,14 +18,17 @@ public class basicContoller : MonoBehaviour
     float coolDown = 0;
     bool hasplayed = false;
 
+	int playerIndex;
+
     ///////////////////////////////////////////////////////////////////////////
     //If false using left side of the controller if true then right side
     /// ///////////////////////////////////////////////////////////////////////
     public bool controllerSide = false;
 
 	// Use this for initialization
-	void Start () 
+	void Awake () 
     {
+		playerIndex = 0;
         tileManager = GameObject.FindGameObjectWithTag("Game").GetComponent<TileManager>();
      ani = gameObject.GetComponent<Animator>();
      source = GetComponent<AudioSource>();
@@ -34,6 +37,9 @@ public class basicContoller : MonoBehaviour
 	// Update is called once per frame
     void Update()
     {
+		if (playerIndex == 0) {
+			return;
+		}
         ani.SetBool("playerDead", dead);
         if (!dead&&!checkFalling())
         {
@@ -50,6 +56,10 @@ public class basicContoller : MonoBehaviour
             fall();
         }
     }
+
+	public void SetIndex(int index){
+		playerIndex = index;
+	}
 
     //kill player object
     void onDeath()
@@ -84,11 +94,11 @@ public class basicContoller : MonoBehaviour
                 float player1MovementXAxis = 0f;
 
                 //set all inputs straight to 1 so both sides of the controller have the same movement
-                if (Input.GetAxis("Player1DpadX") < 0)
+				if (Input.GetAxis("Player"+playerIndex+"DpadX") < 0)
                 {
                     player1MovementXAxis = -1f;
                 }
-                else if (Input.GetAxis("Player1DpadX") > 0)
+				else if (Input.GetAxis("Player"+playerIndex+"DpadX") > 0)
                 {
                     player1MovementXAxis = 1f;
                 }
@@ -120,11 +130,11 @@ public class basicContoller : MonoBehaviour
                 float player1MovementYAxis = 0f;
 
                 //set all inputs straight to 1 so both sides of the controller have the same movement
-                if (Input.GetAxis("Player1DpadY") < 0)
+				if (Input.GetAxis("Player"+playerIndex+"DpadY") < 0)
                 {
                     player1MovementYAxis = -1f;
                 }
-                else if (Input.GetAxis("Player1DpadY") > 0)
+				else if (Input.GetAxis("Player"+playerIndex+"DpadY") > 0)
                 {
                     player1MovementYAxis = 1f;
                 }
@@ -166,15 +176,15 @@ public class basicContoller : MonoBehaviour
                 float player2MovementXAxis = 0f;
 
                 //recognize button input
-                if (Input.GetButton("Player2ButtonX") == true)
+                if (Input.GetButton("Player"+playerIndex+"ButtonX") == true)
                 {
                     player2MovementXAxis = -1f;
                 }
-                else if (Input.GetButton("Player2ButtonB") == true)
+				else if (Input.GetButton("Player"+playerIndex+"ButtonB") == true)
                 {
                     player2MovementXAxis = 1f;
                 }
-                if (Input.GetButton("Player2ButtonX") == true && Input.GetButton("Player2ButtonB") == true)
+				if (Input.GetButton("Player"+playerIndex+"ButtonX") == true && Input.GetButton("Player"+playerIndex+"ButtonB") == true)
                 {
                     player2MovementXAxis = 0f;
                     //ani.Play("playerIdle");
@@ -209,15 +219,15 @@ public class basicContoller : MonoBehaviour
                 float player2MovementYAxis = 0f;
 
                 //recognize button input
-                if (Input.GetButton("Player2ButtonA") == true)
+				if (Input.GetButton("Player"+playerIndex+"ButtonA") == true)
                 {
                     player2MovementYAxis = -1f;
                 }
-                else if (Input.GetButton("Player2ButtonY") == true)
+				else if (Input.GetButton("Player"+playerIndex+"ButtonY") == true)
                 {
                     player2MovementYAxis = 1f;
                 }
-                if (Input.GetButton("Player2ButtonA") == true && Input.GetButton("Player2ButtonY") == true)
+				if (Input.GetButton("Player"+playerIndex+"ButtonA") == true && Input.GetButton("Player"+playerIndex+"ButtonY") == true)
                 {
                     player2MovementYAxis = 0f;
                     //ani.Play("playerIdle");
@@ -250,54 +260,29 @@ public class basicContoller : MonoBehaviour
     }
     void placeBomb()
     {
-        if (!controllerSide)
-        {
-            if (!sexBomb)
-            {
-                if (Input.GetButtonDown("Player1Bumper"))
-                {
-                    Instantiate(bomb, new Vector2(gameObject.transform.position.x + 0.1f, gameObject.transform.position.y), gameObject.transform.rotation);
-                    sexBomb = true;
-                }
-                if (Input.GetButtonUp("Player1Bumper"))
-                {
-                    sexBomb = false;
-                }
-            }
-            else
-            {
-                coolDown += Time.deltaTime;
-                if (coolDown >= 2)
-                {
-                    sexBomb = false;
-                    coolDown = 0;
-                }
-            }
-        }
-        else
-        {
-            if (!sexBomb)
-            {
-                if (Input.GetButtonDown("Player2Bumper"))
-                {
-                    Instantiate(bomb, new Vector2(gameObject.transform.position.x + 0.1f, gameObject.transform.position.y), gameObject.transform.rotation);
-                    sexBomb = true;
-                }
-                if (Input.GetButtonUp("Player2Bumper"))
-                {
-                    sexBomb = false;
-                }
-            }
-            else
-            {
-                coolDown += Time.deltaTime;
-                if (coolDown >= 2)
-                {
-                    sexBomb = false;
-                    coolDown = 0;
-                }
-            }
-        }
+
+	    if (!sexBomb)
+	    {
+			if (Input.GetButtonDown("Player"+playerIndex+"Bumper"))
+	        {
+	            Instantiate(bomb, new Vector2(gameObject.transform.position.x + 0.1f, gameObject.transform.position.y), gameObject.transform.rotation);
+	            sexBomb = true;
+	        }
+			if (Input.GetButtonUp("Player"+playerIndex+"Bumper"))
+	        {
+	            sexBomb = false;
+	        }
+	    }
+	    else
+	    {
+	        coolDown += Time.deltaTime;
+	        if (coolDown >= 2)
+	        {
+	            sexBomb = false;
+	            coolDown = 0;
+	        }
+	    }
+
     }
     bool checkFalling()
     {
