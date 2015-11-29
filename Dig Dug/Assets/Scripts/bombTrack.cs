@@ -36,7 +36,7 @@ public class bombTrack : MonoBehaviour
         {
             Tile tile = tileManager.GetClosestTile(gameObject.transform.position);
             
-            if (Vector2.Distance(tile.transform.position, gameObject.transform.position) > 0.32f)
+            if (!tile.GetComponent<SpriteRenderer>().enabled)//(Vector2.Distance(tile.transform.position, gameObject.transform.position) > 0.32f)
             {
                 drop = true;
                 gameObject.transform.localScale = Vector2.Lerp(gameObject.transform.localScale, Vector2.zero, lerpTime);

@@ -45,12 +45,14 @@ public class Player : MonoBehaviour
         {
             MovePlayer();
             placeBomb();
+           
+            
         }
         else if (dead)
         {
             onDeath();
         }
-        else
+        if (checkFalling())
         {
             ani.SetBool("playerFalling", checkFalling());
             fall();
@@ -279,7 +281,7 @@ public class Player : MonoBehaviour
 	    else
 	    {
 	        coolDown += Time.deltaTime;
-	        if (coolDown >= 2)
+	        if (coolDown >= 0.5f)
 	        {
 	            sexBomb = false;
 	            coolDown = 0;
@@ -289,16 +291,21 @@ public class Player : MonoBehaviour
     }
     bool checkFalling()
     {
-        Vector2 tilePos = tileManager.GetClosestTile(gameObject.transform.position).transform.position;
+        Tile tileCheck = tileManager.GetClosestTile(gameObject.transform.position);
+        Vector2 tilePos = tileCheck.transform.position;
         bool fall = false;
-        if (Vector2.Distance(tilePos, gameObject.transform.position)>0.32f)
+        Debug.Log(tileCheck.name.ToString());
+        if (!tileCheck.GetComponent<SpriteRenderer>().enabled)
         {
-          fall = true;
+            {
+                fall = true;
+            }
         }
-        else
+        else if (Vector2.Distance(tilePos, gameObject.transform.position) > 0.32f)
         {
-            fall = false;
+            fall = true;
         }
+    
         return fall;
     }
     void fall()
