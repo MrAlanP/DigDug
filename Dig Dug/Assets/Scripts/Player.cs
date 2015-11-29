@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
    public AudioClip bump;
    AudioSource source;
    TileManager tileManager;
-    float speed = 250;
+    float speed = 150;
     public bool falling = false;
     Animator ani;
     public bool dead = false;
