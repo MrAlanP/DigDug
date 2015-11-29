@@ -37,6 +37,24 @@ public class FaultCollection {
 		}
 	}
 
+	public bool CanCollapseTiles(){
+		int waterConnections = 0;
+		for(int i = 0; i<faults.Count; i++){
+			if(faults[i].GetConnectsToWater()){
+				waterConnections++;
+			}
+			else if(faults[i].GetLinksToSelf()){
+				return true;
+			}
+		}
+
+		if (waterConnections > 1) {
+			return true;
+		}
+
+		return false;
+	}
+
 
 	public List<IntVector2> GetTilesToCollapse(List<Tile> waterTiles){
 		List<IntVector2> tilesToCollapse = new List<IntVector2> ();
@@ -70,9 +88,12 @@ public class FaultCollection {
 			for (int i = 0; i<waterConnectionIndexes.Count-1; i++) {
 				List<IntVector2> path1 = GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1], faultIndices);
 				List<IntVector2> path2 =  GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1],adjacentWaterTiles);
-				path1.AddRange(path2);
-				//Add to list
-				paths.Add(path1);
+				if(path1!=null && path2!=null){
+					path1.AddRange(path2);
+					//Add to list
+					paths.Add(path1);
+				}
+
 			}
 		}
 		for (int i = 0; i<landConnectionIndexes.Count; i++) {
@@ -317,9 +338,12 @@ public class FaultCollection {
 			if(startEdges.Count>0){
 				//Add all points between start and end edges
 				for(int j= 0; j<endEdges.Count; j++){
-					for(int k = startEdges[j]+1; k<endEdges[j]; k++){
-						containedSquares.Add(new IntVector2(k, i));
+					if(j<startEdges.Count){
+						for(int k = startEdges[j]+1; k<endEdges[j]; k++){
+							containedSquares.Add(new IntVector2(k, i));
+						}
 					}
+
 				}
 			}
 

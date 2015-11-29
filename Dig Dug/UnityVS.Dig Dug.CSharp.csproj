@@ -75,28 +75,28 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\FlashText.cs" />
     <Compile Include="Assets\Imported\Demigiant\DOTween\Examples\Basics.cs" />
     <Compile Include="Assets\Imported\Demigiant\DOTween\Examples\Sequences.cs" />
     <Compile Include="Assets\Imported\JSON\JSONObject.cs" />
     <Compile Include="Assets\Imported\JSON\JSONTemplates.cs" />
     <Compile Include="Assets\Imported\JSON\VectorTemplates.cs" />
-    <Compile Include="Assets\JoinGame.cs" />
     <Compile Include="Assets\Scripts\Fault.cs" />
     <Compile Include="Assets\Scripts\FaultCollection.cs" />
     <Compile Include="Assets\Scripts\FaultManager.cs" />
+    <Compile Include="Assets\Scripts\FlashText.cs" />
     <Compile Include="Assets\Scripts\Game.cs" />
     <Compile Include="Assets\Scripts\GameCamera.cs" />
     <Compile Include="Assets\Scripts\IntVector2.cs" />
+    <Compile Include="Assets\Scripts\JoinGame.cs" />
     <Compile Include="Assets\Scripts\MenuCountdownLabel.cs" />
     <Compile Include="Assets\Scripts\SimplePlayer.cs" />
     <Compile Include="Assets\Scripts\Tile.cs" />
     <Compile Include="Assets\Scripts\TileManager.cs" />
     <Compile Include="Assets\Scripts\WaterBackground.cs" />
-    <Compile Include="Assets\basicContoller.cs" />
-    <Compile Include="Assets\bombTrack.cs" />
-    <Compile Include="Assets\bombTrigger.cs" />
-    <Compile Include="Assets\explosion.cs" />
+    <Compile Include="Assets\Scripts\basicContoller.cs" />
+    <Compile Include="Assets\Scripts\bombTrack.cs" />
+    <Compile Include="Assets\Scripts\bombTrigger.cs" />
+    <Compile Include="Assets\Scripts\explosion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Imported\Demigiant\DOTween\DOTween.XML" />

@@ -74,21 +74,19 @@ public class TileManager : MonoBehaviour {
 	}
 
 	public void Earthquake(){
-		int faultCount = 1;
+		int faultCount = 3;
 		Tile[] tilesToAddFaults = new Tile [faultCount];
 
 
-		tilesToAddFaults [0] = tiles [59, 4];
 
-
-		/*for (int i = 0; i<faultCount; i++) {
+		for (int i = 0; i<faultCount; i++) {
 			do{
 				Vector2 tileIndex = new Vector2(Random.Range(0,(int)GRID_SIZE.x-1), Random.Range(0,(int)GRID_SIZE.y-1));
 				tilesToAddFaults[i] = tiles[(int)tileIndex.x, (int)tileIndex.y];
 			}while(tilesToAddFaults[i].HasCollapsed() || tilesToAddFaults[i].HasFault());
 
 
-		}*/
+		}
 		faultManager.CreateCracks (tilesToAddFaults);
 
 	}

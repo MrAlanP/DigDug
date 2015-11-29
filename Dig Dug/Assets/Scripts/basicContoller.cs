@@ -249,12 +249,12 @@ public class basicContoller : MonoBehaviour
         {
             if (!sexBomb)
             {
-                if (Input.GetButtonDown("Player1BumperLeft"))
+                if (Input.GetButtonDown("Player1Bumper"))
                 {
                     Instantiate(bomb, new Vector2(gameObject.transform.position.x + 0.1f, gameObject.transform.position.y), gameObject.transform.rotation);
                     sexBomb = true;
                 }
-                if (Input.GetButtonUp("Player1BumperLeft"))
+                if (Input.GetButtonUp("Player1Bumper"))
                 {
                     sexBomb = false;
                 }
@@ -273,12 +273,12 @@ public class basicContoller : MonoBehaviour
         {
             if (!sexBomb)
             {
-                if (Input.GetButtonDown("Player2BumperRight"))
+                if (Input.GetButtonDown("Player2Bumper"))
                 {
                     Instantiate(bomb, new Vector2(gameObject.transform.position.x + 0.1f, gameObject.transform.position.y), gameObject.transform.rotation);
                     sexBomb = true;
                 }
-                if (Input.GetButtonUp("Player2BumperRight"))
+                if (Input.GetButtonUp("Player2Bumper"))
                 {
                     sexBomb = false;
                 }

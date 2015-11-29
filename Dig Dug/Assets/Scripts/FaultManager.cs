@@ -122,6 +122,26 @@ public class FaultManager : MonoBehaviour {
 		tileManager.SetAdjacentWaterTiles ();
 		//Collapse any tiles we should
 		List<IntVector2> tilesToCollapse = fault.faultCollectionRef.GetTilesToCollapse (tileManager.adjacentToWaterTiles);
+		CollapseTiles (tilesToCollapse);
+
+		bool stillCollapsable = false;
+		do {
+			stillCollapsable = false;
+			for(int i = 0; i<faultCollections.Count; i++){
+				if(faultCollections[i].CanCollapseTiles()){
+					stillCollapsable = true;
+					tileManager.SetAdjacentWaterTiles ();
+					tilesToCollapse = faultCollections[i].GetTilesToCollapse(tileManager.adjacentToWaterTiles);
+					CollapseTiles (tilesToCollapse);
+					break;
+				}
+			}
+		} while(stillCollapsable);
+
+	}
+
+	void CollapseTiles(List<IntVector2> tilesToCollapse){
+
 		if (tilesToCollapse.Count > 0) {
 			foreach(IntVector2 tileIndex in tilesToCollapse){
 				for(int i = mainFaults.Count-1; i>=0; i--){
@@ -131,13 +151,13 @@ public class FaultManager : MonoBehaviour {
 					}
 				}
 			}
-
+			
 			tileManager.CollapseTiles(tilesToCollapse);
-
-
+			
+			
 			//Make new base collection
 			FaultCollection baseCollection = CreateFaultCollection();
-
+			
 			//Add old faultcollections to base
 			for(int i = faultCollections.Count-2; i>=0; i--){
 				baseCollection.AddFaults(faultCollections[i].GetFaults());
@@ -150,10 +170,10 @@ public class FaultManager : MonoBehaviour {
 				List<Fault> touchingFaults = baseCollection.GetTouchingFaults(baseCollection.GetFaults()[0].tileIndex);
 				newCollection.AddFaults(touchingFaults);
 			}
-
+			
 			baseCollection.ClearCollection();
 			faultCollections.Remove(baseCollection);
-
+			
 		}
 	}
 
