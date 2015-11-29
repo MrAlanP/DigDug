@@ -4,6 +4,9 @@ using System.Collections;
 public class basicContoller : MonoBehaviour
 {
    public GameObject bomb;
+   public AudioClip ohNo;
+   public AudioClip bump;
+   AudioSource source;
    TileManager tileManager;
     float speed = 250;
     public bool falling = false;
@@ -13,6 +16,7 @@ public class basicContoller : MonoBehaviour
     float fade = 0;
     bool sexBomb = false;
     float coolDown = 0;
+    bool hasplayed = false;
 
     ///////////////////////////////////////////////////////////////////////////
     //If false using left side of the controller if true then right side
@@ -24,6 +28,7 @@ public class basicContoller : MonoBehaviour
     {
         tileManager = GameObject.FindGameObjectWithTag("Game").GetComponent<TileManager>();
      ani = gameObject.GetComponent<Animator>();
+     source = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -300,7 +305,7 @@ public class basicContoller : MonoBehaviour
         bool fall = false;
         if (Vector2.Distance(tilePos, gameObject.transform.position)>0.32f)
         {
-            fall = true;
+          fall = true;
         }
         else
         {
@@ -310,7 +315,14 @@ public class basicContoller : MonoBehaviour
     }
     void fall()
     {
+        
         float fallToDeath=0;
+       if(!hasplayed)
+       {
+           hasplayed = true;
+           source.PlayOneShot(ohNo);
+           
+       }
         fallToDeath+=Time.deltaTime;
         gameObject.transform.localScale = Vector2.Lerp(gameObject.transform.localScale, Vector2.zero, fallToDeath);
         if (gameObject.transform.localScale.x <= 0.07f)
@@ -318,5 +330,12 @@ public class basicContoller : MonoBehaviour
             Destroy(gameObject);
         }
 
+    }
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col!=null)
+        {
+            source.PlayOneShot(bump, 1);
+        }
     }
 }

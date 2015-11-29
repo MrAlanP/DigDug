@@ -3,13 +3,36 @@ using System.Collections;
 
 public class explosion : MonoBehaviour {
     Animator anim;
+    TileManager tileManager;
+    Tile tile;
+    AudioSource source;
+    public AudioClip loudBang;
+    public AudioClip softBang;
     float die = 0;
+    bool playedClip = false;
     void Start()
     {
+        tileManager = GameObject.FindGameObjectWithTag("Game").GetComponent<TileManager>();
+        source = GetComponent<AudioSource>();
         anim = gameObject.GetComponent<Animator>();
     }
     void Update()
     {
+        if (!playedClip)
+        {
+            tile = tileManager.GetClosestTile(gameObject.transform.position);
+            if (tile.HasFault())
+            {
+                source.PlayOneShot(softBang, 1);
+                playedClip = true;
+            }
+            else
+            {
+                source.PlayOneShot(loudBang, 1);
+                playedClip = true;
+            }
+           
+        }
         die += Time.deltaTime;
         if (die >= 0.6f)
         {
