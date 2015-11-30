@@ -17,6 +17,10 @@ public class Player : MonoBehaviour
     bool sexBomb = false;
     float coolDown = 0;
     bool hasplayed = false;
+    bool canMoveL = true;
+    bool camMoveR = true;
+    bool canMoveU = true;
+    bool canMoveD = true;
 
 	int playerIndex;
 
@@ -43,6 +47,7 @@ public class Player : MonoBehaviour
         ani.SetBool("playerDead", dead);
         if (!dead&&!checkFalling())
         {
+            dontFallInTheWaterDummy();
             MovePlayer();
             placeBomb();
            
@@ -107,25 +112,30 @@ public class Player : MonoBehaviour
                 {
                     player1MovementXAxis = 1f;
                 }
-
-                //do movement stuff
-                if (player1MovementXAxis > 0)
+                if (camMoveR)
                 {
+                    //do movement stuff
+                    if (player1MovementXAxis > 0)
+                    {
 
-                    gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2((player1MovementXAxis * speed), 0));
-					ani.SetFloat("XMovement", player1MovementXAxis);
-                   // ani.Play("walkR");
+                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2((player1MovementXAxis * speed), 0));
+                        ani.SetFloat("XMovement", player1MovementXAxis);
+                        // ani.Play("walkR");
+                    }
                 }
-                else if(player1MovementXAxis < 0)
+                if (canMoveL)
                 {
-                   // ani.Play("walkL");
-                    gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player1MovementXAxis * speed, 0));
-					ani.SetFloat("XMovement", player1MovementXAxis);
+                    if (player1MovementXAxis < 0)
+                    {
+                        // ani.Play("walkL");
+                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player1MovementXAxis * speed, 0));
+                        ani.SetFloat("XMovement", player1MovementXAxis);
+                    }
                 }
-				else if(player1MovementXAxis == 0)
-				{
-					ani.SetFloat("XMovement", player1MovementXAxis);
-				}
+                if (player1MovementXAxis == 0)
+                {
+                    ani.SetFloat("XMovement", player1MovementXAxis);
+                }
             //}
             ////////////////////////////////////
             // Y Axis button input here
@@ -145,7 +155,8 @@ public class Player : MonoBehaviour
                 }
 
 			
-
+            //if (canMoveD)
+            
                 //do movement stuff
                 if (player1MovementYAxis > 0)
                 {
@@ -294,7 +305,7 @@ public class Player : MonoBehaviour
         Tile tileCheck = tileManager.GetClosestTile(gameObject.transform.position);
         Vector2 tilePos = tileCheck.transform.position;
         bool fall = false;
-        Debug.Log(tileCheck.name.ToString());
+      //  Debug.Log(tileCheck.name.ToString());
         if (!tileCheck.GetComponent<SpriteRenderer>().enabled)
         {
             {
@@ -335,4 +346,52 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// this function tells john to fuck off
+    /// </summary>
+    void dontFallInTheWaterDummy()
+    {
+        Debug.Log("dont fall in the water dummy");
+        Tile closeTile = tileManager.GetClosestTile(transform.position);
+        IntVector2 closeTileint = closeTile.tileIndex;
+        if (tileManager.adjacentToWaterTiles.Contains(closeTile))
+        {
+            Debug.Log("Close tie");
+            if (!tileManager.GetTile(new IntVector2(closeTileint.x+1, closeTileint.y)).GetComponent<SpriteRenderer>().enabled)
+            {
+                camMoveR = false;
+                Debug.Log("water to yr right");
+            }
+            else
+            {
+                camMoveR = true;
+            }
+           if (!tileManager.GetTile(new IntVector2(closeTileint.x-1, closeTileint.y)).GetComponent<SpriteRenderer>().enabled)
+           {
+               Debug.Log("water to your left");
+               canMoveL = false;
+           }
+           else
+           {
+               canMoveL = true;
+           }
+           if (!tileManager.GetTile(new IntVector2(closeTileint.x, closeTileint.y+1)).GetComponent<SpriteRenderer>().enabled)
+           {
+               canMoveD = false;
+           }
+           else
+           {
+               canMoveD = true;
+           }
+           if (!tileManager.GetTile(new IntVector2(closeTileint.x, closeTileint.y-1)).GetComponent<SpriteRenderer>().enabled)
+           {
+               canMoveU = false;
+           }
+           else
+           {
+               canMoveU = true;
+           }
+        }
+           
+    }
 }
