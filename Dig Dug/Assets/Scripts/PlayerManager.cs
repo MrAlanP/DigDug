@@ -33,7 +33,7 @@ public class PlayerManager : MonoBehaviour {
 			Player player = newPlayer.GetComponent<Player>();
 			player.SetIndex(index);
 			players.Add(player);
-            newPlayer.GetComponent<SpriteRenderer>().color = playerColour(index);
+            newPlayer.GetComponent<SpriteRenderer>().color = playerColour(index-1);
             
 		}
 	}

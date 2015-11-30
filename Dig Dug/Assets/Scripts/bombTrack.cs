@@ -85,7 +85,7 @@ public class bombTrack : MonoBehaviour
         if (gameObject.transform.localScale == Vector3.zero)
         {
             Instantiate(explosion, gameObject.transform.position, gameObject.transform.rotation);
-            if (localFault.IsMain())
+            if (localFault.CanExplode())
             {
 				faultManager.ExplodeFault(localFault);
 			}
