@@ -76,6 +76,7 @@ public class Fault : MonoBehaviour {
 		AddConnectionDirection (new Vector2 (-1, 0));
 		AddConnectionDirection (new Vector2 (0, -1));
 		UpdateSprite ();
+		mainFaultSprite.enabled = false;
 	}
 
 
@@ -212,8 +213,8 @@ public class Fault : MonoBehaviour {
 		}
 	}
 
-	public bool IsMain(){
-		return faultType == FaultType.Main;
+	public bool CanExplode(){
+		return (faultType == FaultType.Main && mainFaultSprite.enabled);
 	}
 
 
