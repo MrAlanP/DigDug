@@ -58,7 +58,7 @@ public class bombTrack : MonoBehaviour
             if (localTile.HasFault())
             {
                 Fault fault = localTile.GetFault();
-                if (fault.IsMain())
+                if (fault.CanExplode())
                 {
                     crackActiveBomb();
                 }
