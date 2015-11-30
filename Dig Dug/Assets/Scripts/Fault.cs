@@ -21,8 +21,6 @@ public class Fault : MonoBehaviour {
 	SpriteRenderer spriteRend;
 
 	Tile tile;
-	//A reference back to the collection of faults this belongs to
-	public FaultCollection faultCollectionRef;
 
 	public IntVector2 tileIndex;
 
@@ -172,7 +170,6 @@ public class Fault : MonoBehaviour {
 
 	public void SetConnectsToWater(bool setter = true){
 		connectsToWater = setter;
-		spriteRend.color = new Color (1, 1, 1, 0.8f);
 	}
 
 	public bool GetConnectsToWater(){
@@ -189,7 +186,8 @@ public class Fault : MonoBehaviour {
 	}
 
 	public void Collapse(){
-		spriteRend.color = new Color (1, 1, 1, 0.5f);
+		spriteRend.color = new Color (1, 1, 1, 0.3f);
+		//gameObject.SetActive (false);
 		//Destroy (gameObject);
 	}
 
@@ -211,6 +209,10 @@ public class Fault : MonoBehaviour {
 				Debug.Log(connectionDirections[i]);
 			}
 		}
+	}
+
+	public Vector2[] GetConnections(){
+		return connectionDirections;
 	}
 
 	public bool CanExplode(){

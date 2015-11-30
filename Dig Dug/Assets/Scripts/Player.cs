@@ -354,7 +354,7 @@ public class Player : MonoBehaviour
         Debug.Log("dont fall in the water dummy");
         Tile closeTile = tileManager.GetClosestTile(transform.position);
         IntVector2 closeTileint = closeTile.tileIndex;
-        if (tileManager.adjacentToWaterTiles.Contains(closeTile))
+        if (tileManager.adjacentWaterTiles.Contains(closeTile))
         {
             Debug.Log("Close tie");
             if (!tileManager.GetTile(new IntVector2(closeTileint.x+1, closeTileint.y)).GetComponent<SpriteRenderer>().enabled)

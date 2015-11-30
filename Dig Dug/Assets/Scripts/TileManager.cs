@@ -18,7 +18,9 @@ public class TileManager : MonoBehaviour {
 	Vector2 GRID_SIZE = new Vector2(70,35);
 
 	[HideInInspector]
-	public List<Tile> adjacentToWaterTiles = new List<Tile>();
+	public List<Tile> waterTiles = new List<Tile>();
+	[HideInInspector]
+	public List<Tile> adjacentWaterTiles = new List<Tile>();
 	// Use this for initialization
 	void Awake () {
 		GRID_SIZE = new Vector2 (level.width, level.height);
@@ -52,6 +54,8 @@ public class TileManager : MonoBehaviour {
 //				}
 			}
 		}
+		SetAdjacentWaterTiles ();
+		SetWaterTiles ();
 	}
 	
 	// Update is called once per frame
@@ -109,8 +113,20 @@ public class TileManager : MonoBehaviour {
 		}
 	}
 
+	public void SetWaterTiles(){
+		waterTiles.Clear ();
+		for(int y = 0; y<GRID_SIZE.y; y++){
+			for(int x = 0; x<GRID_SIZE.x; x++){
+				Tile tile = GetTile(new IntVector2(x,y));
+				if(tile.HasCollapsed()){
+					waterTiles.Add(tile);
+				}
+			}
+		}
+	}
+
 	public void SetAdjacentWaterTiles(){
-		adjacentToWaterTiles.Clear ();
+		adjacentWaterTiles.Clear ();
 		for(int y = 0; y<GRID_SIZE.y; y++){
 			for(int x = 0; x<GRID_SIZE.x; x++){
 				for(int i = 0; i<4; i++){
@@ -122,31 +138,13 @@ public class TileManager : MonoBehaviour {
 						if(!adjacent.HasCollapsed()){
 							continue;
 						}
-
+						
 					}
-
-					Tile tile = GetTile(new IntVector2(x,y));
-					adjacentToWaterTiles.Add(tile);
-					/*if(tile.HasFault()){
-						//tile.GetFault().SetConnectsToWater();
-						if(tile.GetFault().HasConnection(new IntVector2(-(int)direction.x, (int)direction.y))){
-							tile.GetFault().SetConnectsToWater();
-							break;
-						}
-
-					}*/
-
-
-
-
+					adjacentWaterTiles.Add(GetTile(new IntVector2(x,y)));
 				}
 			}
 		}
-
-
 	}
-
-
 
   
 }

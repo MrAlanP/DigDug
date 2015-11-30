@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class FaultManager : MonoBehaviour {
 	
 	List<Fault> mainFaults = new List<Fault>();
-	List<FaultCollection> faultCollections = new List<FaultCollection> ();
-	uint faultKey = 0;
+	List<Fault> faults = new List<Fault> ();
+	
 	public GameObject faultPrefab;
 
 	TileManager tileManager;
@@ -20,37 +20,24 @@ public class FaultManager : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Q)) {
 			ExplodeFault(mainFaults[Random.Range(0,mainFaults.Count)]);
 		}
-
-		if (Input.GetKeyDown (KeyCode.R)) {
-			bool collapse = false;
-			for(int i = 0; i<faultCollections.Count; i++){
-				if(faultCollections[i].CanCollapseTiles()){
-					collapse = true;
-				}
-			}
-			Debug.Log(collapse);
-		}
-
-		if (Input.GetKeyDown (KeyCode.T)) {
-			tileManager.SetAdjacentWaterTiles();
-		}
+		
 
 	}
 
 	public void CreateCracks(Tile[] tilesToAddCracks){
 		for (int i = 0; i<tilesToAddCracks.Length; i++) {
-			Fault newFault = AddFault(tilesToAddCracks[i]);
+			Fault newFault = AddFaultToTile(tilesToAddCracks[i]);
 			SetFaultAsMain(newFault);
 
-			//Create a new fault collection for this item
-			FaultCollection collection = CreateFaultCollection();
-			collection.AddFault(newFault);
 		}
 	}
 
 	public void ExplodeFault(Fault fault){
+
 		mainFaults.Remove (fault);
 		fault.ExplodeFault();
+
+		List<Fault> faultsToCheck = new List<Fault> ();
 
 		IntVector2 faultIndex = fault.tileIndex;
 
@@ -78,23 +65,17 @@ public class FaultManager : MonoBehaviour {
 					if(tile.HasFault()){
 						newFault = tile.GetFault();
 						stopExplodingInDirection = true;
-						//Check if fault collection is same or not
-						if(newFault.faultCollectionRef.key != fault.faultCollectionRef.key){
-							fault.faultCollectionRef.MergeCollection(newFault.faultCollectionRef);
-							faultCollections.Remove(newFault.faultCollectionRef);
-						}
 						//Fault has connected to itself in a link, should explode
-						else if(i>0){
-							fault.SetLinksToSelf();
+						if(i>0){
+							faultsToCheck.Add(newFault);
 						}
 					}
 					else{
 						//Create a new fault
-						newFault = AddFault(tile);
-						fault.faultCollectionRef.AddFault(newFault);
+						newFault = AddFaultToTile(tile);
 					}
 
-
+					faults.Add(newFault);
 
 					//Add entry connection
 					newFault.AddConnectionDirection(direction);
@@ -104,14 +85,13 @@ public class FaultManager : MonoBehaviour {
 						//Check to see if this connects to ocean
 						Tile exitTile = tileManager.GetTile(tile.tileIndex + direction);
 
-
 						if(exitTile==null){
 							stopExplodingInDirection = true;
-							newFault.SetConnectsToWater();
+							faultsToCheck.Add(newFault);
 						}
 						else if(exitTile.HasCollapsed()){
 							stopExplodingInDirection = true;
-							newFault.SetConnectsToWater();
+							faultsToCheck.Add(newFault);
 						}
 					}
 					//Set fault type as insertable
@@ -124,9 +104,6 @@ public class FaultManager : MonoBehaviour {
 					}
 
 				}
-				else{
-					fault.SetConnectsToWater();
-				}
 
 				if(stopExplodingInDirection){
 					break;
@@ -134,26 +111,19 @@ public class FaultManager : MonoBehaviour {
 			}
 		}
 
-		//tileManager.SetAdjacentWaterTiles ();
+
+
 		//Collapse any tiles we should
-		List<IntVector2> tilesToCollapse = fault.faultCollectionRef.GetTilesToCollapse (tileManager.adjacentToWaterTiles);
-		CollapseTiles (tilesToCollapse);
+		for (int i = 0; i<faultsToCheck.Count; i++) {
 
-		tileManager.SetAdjacentWaterTiles ();
+			List<IntVector2> tilesToCollapse = GetTilesToCollapse (faultsToCheck[i]);
+			CollapseTiles (tilesToCollapse);
+			//Update water tiles
+			tileManager.SetWaterTiles ();
+			tileManager.SetAdjacentWaterTiles();
+		}
 
-		bool stillCollapsable = false;
-		//do {
-			//stillCollapsable = false;
-			for(int i = 0; i<faultCollections.Count; i++){
-				if(faultCollections[i].CanCollapseTiles()){
-					stillCollapsable = true;
-					tileManager.SetAdjacentWaterTiles ();
-					tilesToCollapse = faultCollections[i].GetTilesToCollapse(tileManager.adjacentToWaterTiles);
-					CollapseTiles (tilesToCollapse);
-					break;
-				}
-			}
-		//} while(stillCollapsable);
+
 
 	}
 
@@ -161,39 +131,116 @@ public class FaultManager : MonoBehaviour {
 
 		if (tilesToCollapse.Count > 0) {
 			foreach(IntVector2 tileIndex in tilesToCollapse){
+
 				for(int i = mainFaults.Count-1; i>=0; i--){
 					if(mainFaults[i].tileIndex == tileIndex){
 						mainFaults.RemoveAt(i);
 						break;
 					}
 				}
+				for(int i = faults.Count-1; i>=0; i--){
+					if(faults[i].tileIndex == tileIndex){
+						faults.RemoveAt(i);
+						break;
+					}
+				}
 			}
-			
 			tileManager.CollapseTiles(tilesToCollapse);
-			
-			
-			//Make new base collection
-			FaultCollection baseCollection = CreateFaultCollection();
-			
-			//Add old faultcollections to base
-			for(int i = faultCollections.Count-2; i>=0; i--){
-				baseCollection.AddFaults(faultCollections[i].GetFaults());
-				faultCollections[i].ClearCollection();
-				faultCollections.RemoveAt(i);
-			}
-			//Get touching faults and add them to seperate collections
-			while(baseCollection.HasFaults()){
-				FaultCollection newCollection = CreateFaultCollection();
-				List<Fault> touchingFaults = baseCollection.GetTouchingFaults(baseCollection.GetFaults()[0].tileIndex);
-				newCollection.AddFaults(touchingFaults);
-			}
-			
-			baseCollection.ClearCollection();
-			faultCollections.Remove(baseCollection);
-			
 		}
 	}
 
+	void PrintPath(List<IntVector2> path){
+		for (int i = 0; i<path.Count; i++) {
+			Debug.Log(path[i].ToString());
+		}
+	}
+
+	public List<IntVector2> GetTilesToCollapse(Fault faultToCheck){
+		List<IntVector2> tilesToCollapse = new List<IntVector2> ();
+		List<IntVector2> path = null;
+
+
+		
+		//List of nodes
+		List<IntVector2> nodes = new List<IntVector2> ();
+		for (int i = 0; i<tileManager.waterTiles.Count; i++) {
+			nodes.Add(tileManager.waterTiles[i].tileIndex);
+		}
+		for (int i = 0; i<faults.Count; i++) {
+			nodes.Add(faults[i].tileIndex);
+		}
+
+		IntVector2 faultIndex = faultToCheck.tileIndex;
+
+		while (nodes.Contains(faultIndex)) {
+			nodes.Remove(faultIndex);
+		}
+
+		for (int i = 0; i<2 || path!=null; i++) {
+			//Should use an array here
+			List<IntVector2> startToEnd = new List<IntVector2>();
+			float angle = Mathf.Deg2Rad*(90*i);
+			startToEnd.Add(faultIndex + new IntVector2((int)Mathf.Cos(angle),(int)-Mathf.Sin(angle)));
+			startToEnd.Add(faultIndex - new IntVector2((int)Mathf.Cos(angle),(int)-Mathf.Sin(angle)));
+			if(AreNodesValid(startToEnd)){
+				path = Pathfinding.GetPath(startToEnd[0], startToEnd[1], nodes);
+				if(path!=null){
+					//Add start
+					path.Add(faultIndex);
+				}
+			}
+
+			if(path!=null){
+				break;
+			}
+			//Right angles
+			for(int j = 0; j<2; j++){
+				startToEnd.Clear();
+				float startAngle = Mathf.Deg2Rad*((90*(j%4))+(i*180));
+				float endAngle = Mathf.Deg2Rad*((90*((j+1)%4))+i*180);
+
+				startToEnd.Add(new IntVector2((int)Mathf.Cos(startAngle),(int)-Mathf.Sin(startAngle)) + faultIndex);
+				startToEnd.Add(new IntVector2((int)Mathf.Cos(endAngle),(int)-Mathf.Sin(endAngle)) + faultIndex);
+				if(AreNodesValid(startToEnd)){
+					path = Pathfinding.GetPath(startToEnd[0], startToEnd[1], nodes);
+					if(path!=null){
+						//Add start
+						path.Add(faultIndex);
+						break;
+					}
+				}
+			}
+		}
+		
+		if(path!=null){
+			List<IntVector2> containedTiles = Pathfinding.GetContainedSquares(path);
+			path.AddRange(containedTiles);
+			
+			//Add all tiles
+			for(int i = 0; i<path.Count; i++){
+				tilesToCollapse.Add(path[i]);
+			}
+		}
+
+		return tilesToCollapse;
+	}
+
+	bool AreNodesValid(List<IntVector2> nodes){
+
+		for(int i = 0; i<nodes.Count; i++){
+			Tile tile = tileManager.GetTile(nodes[i]);
+			if(tile==null){
+				return false;
+			}
+			//Not a fault or water
+			if(!tile.HasCollapsed() && !tile.HasFault()){
+				return false;
+			}
+		}
+
+		return true;
+	}
+	
 	void SetFaultAsMain(Fault fault){
 		if (fault.CanBeSetMain ()) {
 			fault.SetAsMain ();
@@ -202,20 +249,13 @@ public class FaultManager : MonoBehaviour {
 
 	}
 
-	Fault AddFault(Tile tile){
+	Fault AddFaultToTile(Tile tile){
 		GameObject newFault = Instantiate (faultPrefab);
 		Fault fault = newFault.GetComponent<Fault>();
 		tile.AddFault(fault);
 		fault.SetTile(tile);
+		faults.Add (fault);
 		return fault;
 	}
 
-	FaultCollection CreateFaultCollection(){
-		FaultCollection newCollection = new FaultCollection ();
-		faultCollections.Add (newCollection);
-		newCollection.key = faultKey;
-		faultKey++;
-
-		return newCollection;
-	}
 }

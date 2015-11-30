@@ -81,13 +81,13 @@
     <Compile Include="Assets\Imported\JSON\JSONTemplates.cs" />
     <Compile Include="Assets\Imported\JSON\VectorTemplates.cs" />
     <Compile Include="Assets\Scripts\Fault.cs" />
-    <Compile Include="Assets\Scripts\FaultCollection.cs" />
     <Compile Include="Assets\Scripts\FaultManager.cs" />
     <Compile Include="Assets\Scripts\FlashText.cs" />
     <Compile Include="Assets\Scripts\Game.cs" />
     <Compile Include="Assets\Scripts\GameCamera.cs" />
     <Compile Include="Assets\Scripts\IntVector2.cs" />
     <Compile Include="Assets\Scripts\JoinGame.cs" />
+    <Compile Include="Assets\Scripts\Pathfinding.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Tile.cs" />

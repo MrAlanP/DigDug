@@ -19,6 +19,8 @@ public class Game : MonoBehaviour {
     // time to do an earthquake
     private float earthquakeTime;
 
+	bool gameActive = false;
+
 
 	// Use this for initialization
 	void Awake () {
@@ -51,23 +53,22 @@ public class Game : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.E)) {
 			Earthquake();
 		}
+
+		// Random earthquake stuff follows
+		if (gameActive) {
+			// count up
+			time += Time.deltaTime;
+			
+			// check if its the right time to call an earthquake
+			if (time >= earthquakeTime)
+			{
+				Earthquake();
+				SetRandomTime();
+				time = 0;
+			}
+		}
 	}
 
-    // Random earthquake stuff follows
-
-    void FixedUpdate()
-    {
-        // count up
-        time += Time.deltaTime;
-
-        // check if its the right time to call an earthquake
-        if (time >= earthquakeTime)
-        {
-            Earthquake();
-            SetRandomTime();
-            time = 0;
-        }
-    }
 
     void SetRandomTime()
     {
@@ -84,6 +85,8 @@ public class Game : MonoBehaviour {
 		
 
 		LoadLevel ();
+
+		gameActive = true;
 
 		List<int> players = joinMenu.GetPlayers ();
 		playerManager.SpawnPlayers (players);
