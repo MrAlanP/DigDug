@@ -140,10 +140,10 @@ public class FaultManager : MonoBehaviour {
 		CollapseTiles (tilesToCollapse);
 
 		tileManager.SetAdjacentWaterTiles ();
-		return;
+
 		bool stillCollapsable = false;
-		do {
-			stillCollapsable = false;
+		//do {
+			//stillCollapsable = false;
 			for(int i = 0; i<faultCollections.Count; i++){
 				if(faultCollections[i].CanCollapseTiles()){
 					stillCollapsable = true;
@@ -153,7 +153,7 @@ public class FaultManager : MonoBehaviour {
 					break;
 				}
 			}
-		} while(stillCollapsable);
+		//} while(stillCollapsable);
 
 	}
 
