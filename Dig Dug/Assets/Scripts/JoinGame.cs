@@ -54,7 +54,7 @@ public class JoinGame : MonoBehaviour {
 		UpdateCountdown ();
 	}
 
-	void UpdateCountdown(){
+	public void UpdateCountdown(){
 		if(countdownTimer.gameObject.activeSelf){
 			timer -= Time.deltaTime;
 			countdownTimer.text = "Starting in: "+Mathf.RoundToInt(timer);
