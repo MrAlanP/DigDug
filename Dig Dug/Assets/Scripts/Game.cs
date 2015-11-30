@@ -13,13 +13,24 @@ public class Game : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		joinMenu.gameObject.SetActive (true);
+
+
 		tileManager = GetComponent<TileManager> ();
 		playerManager = GetComponent<PlayerManager> ();
+
+
 
 		//Centre camera on middle of tiles
 		Vector2 cameraPos = tileManager.GetCentrePoint ();
 		gameCam.SetPosition(new Vector3 (cameraPos.x, cameraPos.y, gameCam.transform.localPosition.z));
+	}
+
+	void Start(){
+		if (joinMenu != null) {
+			joinMenu.gameObject.SetActive (true);
+		} else {
+			LoadLevel();
+		}
 	}
 	
 	// Update is called once per frame
@@ -36,8 +47,7 @@ public class Game : MonoBehaviour {
 
 	public void StartGame(){
 		joinMenu.gameObject.SetActive (false);
-
-
+		
 
 		LoadLevel ();
 

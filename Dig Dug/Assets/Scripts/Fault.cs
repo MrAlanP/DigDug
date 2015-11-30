@@ -35,7 +35,10 @@ public class Fault : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		spriteRend = GetComponent<SpriteRenderer> ();
-		mainFaultSprite.enabled = false;
+		if (faultType == FaultType.Connection) {
+			mainFaultSprite.enabled = false;
+		}
+
 	}
 	
 	// Update is called once per frame
@@ -50,10 +53,13 @@ public class Fault : MonoBehaviour {
 
 	//Sets the fault as a connection type
 	public void SetAsMain(){
-		faultType = FaultType.Main;
-		mainFaultSprite.enabled = true;
+		if (faultType != FaultType.Main) {
+			faultType = FaultType.Main;
+			mainFaultSprite.enabled = true;
+			
+			FadeIn ();
+		}
 
-		FadeIn ();
 	}
 
 	public bool CanBeSetMain(){
@@ -165,6 +171,7 @@ public class Fault : MonoBehaviour {
 
 	public void SetConnectsToWater(bool setter = true){
 		connectsToWater = setter;
+		spriteRend.color = new Color (1, 1, 1, 0.8f);
 	}
 
 	public bool GetConnectsToWater(){
@@ -181,7 +188,8 @@ public class Fault : MonoBehaviour {
 	}
 
 	public void Collapse(){
-		Destroy (gameObject);
+		spriteRend.color = new Color (1, 1, 1, 0.5f);
+		//Destroy (gameObject);
 	}
 
 	public bool HasConnection(IntVector2 direction){
@@ -194,6 +202,14 @@ public class Fault : MonoBehaviour {
 		}
 
 		return false;
+	}
+
+	public void PrintConnections(){
+		for (int i = 0; i<4; i++) {
+			if(connectionDirections[i]!=Vector2.zero){
+				Debug.Log(connectionDirections[i]);
+			}
+		}
 	}
 
 	public bool IsMain(){

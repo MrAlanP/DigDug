@@ -20,6 +20,21 @@ public class FaultManager : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Q)) {
 			ExplodeFault(mainFaults[Random.Range(0,mainFaults.Count)]);
 		}
+
+		if (Input.GetKeyDown (KeyCode.R)) {
+			bool collapse = false;
+			for(int i = 0; i<faultCollections.Count; i++){
+				if(faultCollections[i].CanCollapseTiles()){
+					collapse = true;
+				}
+			}
+			Debug.Log(collapse);
+		}
+
+		if (Input.GetKeyDown (KeyCode.T)) {
+			tileManager.SetAdjacentWaterTiles();
+		}
+
 	}
 
 	public void CreateCracks(Tile[] tilesToAddCracks){
@@ -119,11 +134,13 @@ public class FaultManager : MonoBehaviour {
 			}
 		}
 
-		tileManager.SetAdjacentWaterTiles ();
+		//tileManager.SetAdjacentWaterTiles ();
 		//Collapse any tiles we should
 		List<IntVector2> tilesToCollapse = fault.faultCollectionRef.GetTilesToCollapse (tileManager.adjacentToWaterTiles);
 		CollapseTiles (tilesToCollapse);
 
+		tileManager.SetAdjacentWaterTiles ();
+		return;
 		bool stillCollapsable = false;
 		do {
 			stillCollapsable = false;
