@@ -10,6 +10,15 @@ public class Game : MonoBehaviour {
 	TileManager tileManager;
 	PlayerManager playerManager;
 
+    public float minTime = 2;
+    public float maxTime = 5;
+
+    // current time
+    private float time;
+
+    // time to do an earthquake
+    private float earthquakeTime;
+
 
 	// Use this for initialization
 	void Awake () {
@@ -31,6 +40,10 @@ public class Game : MonoBehaviour {
 		} else {
 			LoadLevel();
 		}
+
+        //Initialize the timer for earthquakes
+        SetRandomTime();
+        time = minTime;
 	}
 	
 	// Update is called once per frame
@@ -39,6 +52,27 @@ public class Game : MonoBehaviour {
 			Earthquake();
 		}
 	}
+
+    // Random earthquake stuff follows
+
+    void FixedUpdate()
+    {
+        // count up
+        time += Time.deltaTime;
+
+        // check if its the right time to call an earthquake
+        if (time >= earthquakeTime)
+        {
+            Earthquake();
+            SetRandomTime();
+            time = 0;
+        }
+    }
+
+    void SetRandomTime()
+    {
+        earthquakeTime = Random.Range(minTime, maxTime);
+    }
 
 	void Earthquake(){
 		tileManager.Earthquake ();
