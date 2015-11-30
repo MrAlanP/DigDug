@@ -319,6 +319,7 @@ public class Player : MonoBehaviour
            
        }
         fallToDeath+=Time.deltaTime;
+        gameObject.transform.Rotate(new Vector3(0, 0,1)*Mathf.PI*2);
         gameObject.transform.localScale = Vector2.Lerp(gameObject.transform.localScale, Vector2.zero, fallToDeath);
         if (gameObject.transform.localScale.x <= 0.07f)
         {
@@ -333,4 +334,5 @@ public class Player : MonoBehaviour
             source.PlayOneShot(bump, 1);
         }
     }
+
 }

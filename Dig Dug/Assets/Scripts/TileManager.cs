@@ -118,14 +118,26 @@ public class TileManager : MonoBehaviour {
 					
 					Vector2 direction = new Vector2(Mathf.Cos(angle),-Mathf.Sin(angle));
 					Tile adjacent = GetTile(new IntVector2(x+(int)direction.x, y+(int)direction.y));
-					if(adjacent==null){
-						adjacentToWaterTiles.Add(GetTile(new IntVector2(x,y)));
-						break;
+					if(adjacent!=null){
+						if(!adjacent.HasCollapsed()){
+							continue;
+						}
+
 					}
-					else if(adjacent.HasCollapsed()){
-						adjacentToWaterTiles.Add(GetTile(new IntVector2(x,y)));
-						break;
-					}
+
+					Tile tile = GetTile(new IntVector2(x,y));
+					adjacentToWaterTiles.Add(tile);
+					/*if(tile.HasFault()){
+						//tile.GetFault().SetConnectsToWater();
+						if(tile.GetFault().HasConnection(new IntVector2(-(int)direction.x, (int)direction.y))){
+							tile.GetFault().SetConnectsToWater();
+							break;
+						}
+
+					}*/
+
+
+
 
 				}
 			}

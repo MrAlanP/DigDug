@@ -84,11 +84,22 @@ public class FaultCollection {
 		//Collapse
 		List<List<IntVector2>> paths = new List<List<IntVector2>> ();
 		//Water linked path
+		//This here is causing the adjacent square problem
 		if(waterConnectionIndexes.Count > 1){
 			for (int i = 0; i<waterConnectionIndexes.Count-1; i++) {
 				List<IntVector2> path1 = GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1], faultIndices);
+				if(path1!=null){
+					if(path1.Count==3){
+						continue;
+					}
+
+				}
+				
+
+				//Path 2 is the problem
 				List<IntVector2> path2 =  GetPath (waterConnectionIndexes [i], waterConnectionIndexes [i+1],adjacentWaterTiles);
 				if(path1!=null && path2!=null){
+					paths.Add(path1);
 					path1.AddRange(path2);
 					//Add to list
 					paths.Add(path1);
@@ -111,6 +122,7 @@ public class FaultCollection {
 					//Add start
 					path.Add(landConnectionIndexes[i]);
 					paths.Add(path);
+					break;
 				}
 			}
 		}
@@ -294,9 +306,11 @@ public class FaultCollection {
 		return parentCount;
 	}
 
+	//THIS WORKS I THINK
 	//Pass in a list of a shapes coords for its circumference, get back a list of squares inside the shape
 	List<IntVector2> GetContainedSquares(List<IntVector2> shapeCirc){
 		List<IntVector2> containedSquares = new List<IntVector2> ();
+
 
 		//Order list by height
 		shapeCirc = shapeCirc.OrderBy (w => w.y).ToList ();
