@@ -151,15 +151,16 @@ public class FaultManager : MonoBehaviour {
 				}
 				for(int i = faults.Count-1; i>=0; i--){
 					if(faults[i].tileIndex == tileIndex){
+						//tileManager.adjacentWaterTiles.Add(faults[i].GetTile());
 						faults.RemoveAt(i);
+
 						break;
 					}
 				}
 			}
 			tileManager.CollapseTiles(tilesToCollapse);
-
 			//Update water tiles
-			tileManager.SetWaterTiles ();
+			tileManager.SetWaterTiles();
 			tileManager.SetAdjacentWaterTiles();
 		}
 	}

@@ -8,9 +8,11 @@ public class WinScreen : MonoBehaviour {
 	public GameObject screen;
 	GameCamera cam;
 	public Game game;
+    AudioSource source;
 
 	public Text playerWinText;
 	public Text destroyedText;
+    
 
 	bool active = false;
 
@@ -19,6 +21,7 @@ public class WinScreen : MonoBehaviour {
 	void Awake () {
 		screen.SetActive (false);
 		cam = game.gameCam;
+        source = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -34,7 +37,7 @@ public class WinScreen : MonoBehaviour {
 	public void ShowWin(Player winningPlayer, string name = ""){
 		active = true;
 		game.EndGame ();
-
+        source.Play();
 		if (winningPlayer != null) {
 			DOTween.To (() => cam.cameraPosition, x => cam.cameraPosition = x, 
 			           new Vector2 (winningPlayer.transform.localPosition.x + 0.25f, winningPlayer.transform.localPosition.y), 

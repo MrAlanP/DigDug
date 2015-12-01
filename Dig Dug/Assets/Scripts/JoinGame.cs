@@ -9,6 +9,7 @@ public class JoinGame : MonoBehaviour {
 	public Text countdownTimer;
 	public GameObject[] readyTexts;
 	bool[] playerReady = new bool[8];
+    AudioSource source;
 
     bool countdownActive = false;
 
@@ -20,6 +21,7 @@ public class JoinGame : MonoBehaviour {
 	// Use this for initialization
 	void Awake ()
     {
+        source = gameObject.GetComponent<AudioSource>();
 		timer = 5;
 		//countdownTimer.gameObject.SetActive (false);
 		for(int i = 0; i<playerReady.Length; i++){
@@ -60,6 +62,7 @@ public class JoinGame : MonoBehaviour {
 		if(countdownActive){
 			timer -= Time.deltaTime;
 			countdownTimer.text = "Starting in: "+Mathf.RoundToInt(timer);
+            source.volume = timer;
 		}
 
 		if(timer<=0){

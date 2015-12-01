@@ -9,6 +9,7 @@ public class Game : MonoBehaviour {
 	public GameCamera gameCam;
 	TileManager tileManager;
 	PlayerManager playerManager;
+    AudioSource source;
 
     float minTime = 15;
     float maxTime = 25;
@@ -28,7 +29,7 @@ public class Game : MonoBehaviour {
 
 		tileManager = GetComponent<TileManager> ();
 		playerManager = GetComponent<PlayerManager> ();
-
+        source = gameObject.GetComponent<AudioSource>();
 
 
 		//Centre camera on middle of tiles
@@ -51,6 +52,8 @@ public class Game : MonoBehaviour {
 
 		// Random earthquake stuff follows
 		if (gameActive) {
+            //play music
+            playMusic();
 			// count up
 			time += Time.deltaTime;
 			
@@ -64,7 +67,14 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-
+    void playMusic()
+    {
+        if (!source.isPlaying)
+        {
+            source.Play();
+        }
+        
+    }
 
 
     void SetRandomTime()
@@ -89,6 +99,8 @@ public class Game : MonoBehaviour {
 
 	public void EndGame(){
 		gameActive = false;
+
+        source.Stop();
 	}
 
 	public int GetTotalDestroyedLand(){

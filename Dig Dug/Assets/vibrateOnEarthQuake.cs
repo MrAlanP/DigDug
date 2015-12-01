@@ -26,7 +26,7 @@ public class vibrateOnEarthQuake : MonoBehaviour
 
         if (!playerIndexSet || !prevState.IsConnected)
         {
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < playerManager.players.Count/2; ++i)
             {
                 PlayerIndex testPlayerIndex = (PlayerIndex)i;
                 Debug.Log(playerIndex);
@@ -51,7 +51,7 @@ public class vibrateOnEarthQuake : MonoBehaviour
             {
                 for (int i = 0; i < playerManager.players.Count; i++)
                 {
-                   // GamePad.SetVibration((PlayerIndex)i, 0, 1);
+                   
                     if (i % 2 != 0)
                         GamePad.SetVibration((PlayerIndex)(i / 2), 0, 1);
                     else
