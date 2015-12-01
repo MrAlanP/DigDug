@@ -9,6 +9,7 @@ public class TileManager : MonoBehaviour {
 	public GameObject tilePrefab;
 	public ParticleSystem collapseParticles;
 	public Texture2D level;
+    public bool quake;
 
 	FaultManager faultManager;
 
@@ -75,7 +76,7 @@ public class TileManager : MonoBehaviour {
         
 		Tile[] tilesToAddFaults = new Tile [faultCount];
 
-
+        quake = true;
 
 		for (int i = 0; i<faultCount; i++) {
 			do{

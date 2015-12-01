@@ -68,10 +68,10 @@
       <HintPath>Assets\Imported\Demigiant\DOTween\DOTween50.dll</HintPath>
     </Reference>
     <Reference Include="XInputDotNetPure">
-      <HintPath>Assets\Plugins\x86\XInputDotNetPure.dll</HintPath>
+      <HintPath>Assets\Plugins\x86_64\XInputDotNetPure.dll</HintPath>
     </Reference>
     <Reference Include="XInputDotNetPure">
-      <HintPath>Assets\Plugins\x86_64\XInputDotNetPure.dll</HintPath>
+      <HintPath>Assets\XInputDotNetPure.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
