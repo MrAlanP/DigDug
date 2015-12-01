@@ -174,7 +174,7 @@ public class FaultManager : MonoBehaviour {
 		List<IntVector2> tilesToCollapse = new List<IntVector2> ();
 		List<IntVector2> path = null;
 
-
+		float rt = Time.realtimeSinceStartup;
 		
 		//List of nodes
 		List<IntVector2> nodes = new List<IntVector2> ();
@@ -236,7 +236,7 @@ public class FaultManager : MonoBehaviour {
 				tilesToCollapse.Add(path[i]);
 			}
 		}
-
+		//Debug.Log(1000*(Time.realtimeSinceStartup-rt));
 		return tilesToCollapse;
 	}
 
@@ -272,5 +272,6 @@ public class FaultManager : MonoBehaviour {
 		faults.Add (fault);
 		return fault;
 	}
+
 
 }

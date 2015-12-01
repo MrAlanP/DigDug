@@ -5,6 +5,8 @@ using System.Linq;
 
 public static class Pathfinding {
 
+	static bool test = false;
+
 	//A* pathfinding for faults
 	public static List<IntVector2> GetPath(IntVector2 start, IntVector2 goal, List<IntVector2> nodes){
 		List<PathHeuristic> openList = new List<PathHeuristic> ();
@@ -48,6 +50,9 @@ public static class Pathfinding {
 				}
 				pathList.Add(start);
 				pathList.Reverse();
+
+				float time = (Time.realtimeSinceStartup-startFuncTime)*100;
+
 				return pathList;
 			}
 
@@ -89,8 +94,10 @@ public static class Pathfinding {
 	}
 
 	static List<IntVector2> GetAdjacentNodes(IntVector2 tileIndex, List<IntVector2> collections){
+		float startFuncTime = Time.realtimeSinceStartup;
 		List<IntVector2> adjacents = new List<IntVector2> ();
-		
+
+
 		for(int i = 0; i<collections.Count; i++){
 			if(collections[i].x == tileIndex.x){
 				if(Mathf.Abs(collections[i].y - tileIndex.y)==1){
@@ -102,6 +109,11 @@ public static class Pathfinding {
 					adjacents.Add(collections[i]);
 				}
 			}
+		}
+		if (!test) {
+
+			Debug.Log(adjacents.Count);
+			test = true;
 		}
 		return adjacents;
 	}
