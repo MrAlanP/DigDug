@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     bool camMoveR = true;
     bool canMoveU = true;
     bool canMoveD = true;
+    float player2MovementYAxis = 0f;
 
 	int playerIndex;
 
@@ -99,43 +100,46 @@ public class Player : MonoBehaviour
             ////////////////////////////////////
             // X Axis button input here
             ////////////////////////////////////
-            //if (Input.GetAxis("Player1DpadX") != 0)
-            //{
+            
                 float player1MovementXAxis = 0f;
-
-                //set all inputs straight to 1 so both sides of the controller have the same movement
-				if (Input.GetAxis("Player"+playerIndex+"DpadX") < 0)
+                if (Input.GetAxis("Player" + playerIndex + "DpadY") == 0)
                 {
-                    player1MovementXAxis = -1f;
-                }
-				else if (Input.GetAxis("Player"+playerIndex+"DpadX") > 0)
-                {
-                    player1MovementXAxis = 1f;
-                }
-                if (camMoveR)
-                {
-                    //do movement stuff
-                    if (player1MovementXAxis > 0)
+                    //set all inputs straight to 1 so both sides of the controller have the same movement
+                    if (Input.GetAxis("Player" + playerIndex + "DpadX") < 0)
                     {
-
-                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2((player1MovementXAxis * speed), 0));
-                        ani.SetFloat("XMovement", player1MovementXAxis);
-                        // ani.Play("walkR");
+                        player1MovementXAxis = -1f;
                     }
-                }
-                if (canMoveL)
-                {
-                    if (player1MovementXAxis < 0)
+                    else if (Input.GetAxis("Player" + playerIndex + "DpadX") > 0)
                     {
-                        // ani.Play("walkL");
-                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player1MovementXAxis * speed, 0));
-                        ani.SetFloat("XMovement", player1MovementXAxis);
+                        player1MovementXAxis = 1f;
+                    }
+                    if (camMoveR)
+                    {
+                        //do movement stuff
+                        if (player1MovementXAxis > 0)
+                        {
+
+                            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2((player1MovementXAxis * speed), 0));
+                            ani.SetFloat("XMovement", player1MovementXAxis);
+                            // ani.Play("walkR");
+                        }
+                    }
+                    if (canMoveL)
+                    {
+                        if (player1MovementXAxis < 0)
+                        {
+                            // ani.Play("walkL");
+                            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player1MovementXAxis * speed, 0));
+                            ani.SetFloat("XMovement", player1MovementXAxis);
+                        }
+
                     }
                 }
                 if (player1MovementXAxis == 0)
                 {
                     ani.SetFloat("XMovement", player1MovementXAxis);
                 }
+
             //}
             ////////////////////////////////////
             // Y Axis button input here
@@ -143,7 +147,7 @@ public class Player : MonoBehaviour
             //else if (Input.GetAxis("Player1DpadY") != 0)
            // {
                 float player1MovementYAxis = 0f;
-
+           
                 //set all inputs straight to 1 so both sides of the controller have the same movement
 				if (Input.GetAxis("Player"+playerIndex+"DpadY") < 0)
                 {
@@ -191,68 +195,72 @@ public class Player : MonoBehaviour
             ////////////////////////////////////
             // X Axis button input here
             ////////////////////////////////////
-           // if (Input.GetButton("Player2ButtonX")  || Input.GetButton("Player2ButtonB"))
+            // if (Input.GetButton("Player2ButtonX")  || Input.GetButton("Player2ButtonB"))
             {
                 float player2MovementXAxis = 0f;
-
-                //recognize button input
-                if (Input.GetButton("Player"+playerIndex+"ButtonX") == true)
-                {
-                    player2MovementXAxis = -1f;
-                }
-				else if (Input.GetButton("Player"+playerIndex+"ButtonB") == true)
-                {
-                    player2MovementXAxis = 1f;
-                }
-				if (Input.GetButton("Player"+playerIndex+"ButtonX") == true && Input.GetButton("Player"+playerIndex+"ButtonB") == true)
-                {
-                    player2MovementXAxis = 0f;
-                    //ani.Play("playerIdle");
-                }
-                if (camMoveR)
-                {
-                    //do movement stuff
-                    if (player2MovementXAxis > 0)
+               // if (!Input.GetButton("Player" + playerIndex + "ButtonY") || !Input.GetButton("Player" + playerIndex + "ButtonA"))
+                if (player2MovementYAxis == 0)
+                {//recognize button input
+                    if (Input.GetButton("Player" + playerIndex + "ButtonX") == true)
                     {
-                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2((player2MovementXAxis * speed), 0));
-                        ani.SetFloat("XMovement", player2MovementXAxis);
-                        //ani.Play("walkR");
+                        player2MovementXAxis = -1f;
+                    }
+                    else if (Input.GetButton("Player" + playerIndex + "ButtonB") == true)
+                    {
+                        player2MovementXAxis = 1f;
+                    }
+                    if (Input.GetButton("Player" + playerIndex + "ButtonX") == true && Input.GetButton("Player" + playerIndex + "ButtonB") == true)
+                    {
+                        player2MovementXAxis = 0f;
+                        //ani.Play("playerIdle");
+                    }
+
+                    if (camMoveR)
+                    {
+                        //do movement stuff
+                        if (player2MovementXAxis > 0)
+                        {
+                            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2((player2MovementXAxis * speed), 0));
+                            ani.SetFloat("XMovement", player2MovementXAxis);
+                            //ani.Play("walkR");
+                        }
+                    }
+                    if (canMoveL)
+                    {
+                        if (player2MovementXAxis < 0)
+                        {
+                            //ani.Play("walkL");
+                            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player2MovementXAxis * speed, 0));
+                            ani.SetFloat("XMovement", player2MovementXAxis);
+
+                        }
                     }
                 }
-                if (canMoveL)
-                {
-                    if (player2MovementXAxis < 0)
+                    if (player2MovementXAxis == 0)
                     {
-                        //ani.Play("walkL");
-                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player2MovementXAxis * speed, 0));
+                        gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                         ani.SetFloat("XMovement", player2MovementXAxis);
-
+                        //ani.Play("playerIdle");
                     }
-                }
-                 if (player2MovementXAxis == 0)
-                {
-                    gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                    ani.SetFloat("XMovement", player2MovementXAxis);
-                    //ani.Play("playerIdle");
-                }
+                
             }
             ////////////////////////////////////
             // Y Axis button input here
             ////////////////////////////////////
-         //   else if (Input.GetButton("Player2ButtonY") != false || Input.GetButton("Player2ButtonA") != false)
+            //   else if (Input.GetButton("Player2ButtonY") != false || Input.GetButton("Player2ButtonA") != false)
             {
-                float player2MovementYAxis = 0f;
-
+                 player2MovementYAxis = 0f;
+                
                 //recognize button input
-				if (Input.GetButton("Player"+playerIndex+"ButtonA") == true)
+                if (Input.GetButton("Player" + playerIndex + "ButtonA") == true)
                 {
                     player2MovementYAxis = -1f;
                 }
-				else if (Input.GetButton("Player"+playerIndex+"ButtonY") == true)
+                else if (Input.GetButton("Player" + playerIndex + "ButtonY") == true)
                 {
                     player2MovementYAxis = 1f;
                 }
-				if (Input.GetButton("Player"+playerIndex+"ButtonA") == true && Input.GetButton("Player"+playerIndex+"ButtonY") == true)
+                if (Input.GetButton("Player" + playerIndex + "ButtonA") == true && Input.GetButton("Player" + playerIndex + "ButtonY") == true)
                 {
                     player2MovementYAxis = 0f;
                     //ani.Play("playerIdle");
@@ -278,7 +286,7 @@ public class Player : MonoBehaviour
 
                     }
                 }
-               if (player2MovementYAxis == 0)
+                if (player2MovementYAxis == 0)
                 {
                     gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                     ani.SetFloat("YMovement", player2MovementYAxis);
