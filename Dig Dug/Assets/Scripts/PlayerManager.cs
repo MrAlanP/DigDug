@@ -6,6 +6,7 @@ public class PlayerManager : MonoBehaviour {
 
 	public GameObject playerPrefab;
 	public GameObject playersParent;
+	public WinScreen winScreen;
 
 	List<Player> players = new List<Player>();
 
@@ -16,7 +17,9 @@ public class PlayerManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (Input.GetKeyDown (KeyCode.Z)) {
+			winScreen.ShowWin(players[0]);
+		}
 	}
 
 	public void SpawnPlayers(List<int> playerIndexes){
@@ -24,10 +27,22 @@ public class PlayerManager : MonoBehaviour {
 			GameObject newPlayer = Instantiate(playerPrefab);
 			newPlayer.transform.SetParent(playersParent.transform);
 			Player player = newPlayer.GetComponent<Player>();
-			player.SetIndex(index);
+			player.Initialise(index, this);
 			players.Add(player);
             newPlayer.GetComponent<SpriteRenderer>().color = playerColour(index-1);
             
+		}
+	}
+
+	public void KillPlayer(Player player){
+		players.Remove (player);
+		Destroy (player.gameObject);
+
+		switch (players.Count) {
+		case 0:
+			break;
+		case 1:
+			break;
 		}
 	}
     Color playerColour(int selector)

@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     bool canMoveU = true;
     bool canMoveD = true;
     float player2MovementYAxis = 0f;
+	PlayerManager playerManager;
 
 	int playerIndex;
 
@@ -67,11 +68,12 @@ public class Player : MonoBehaviour
         }
     }
 
-	public void SetIndex(int index){
+	public void Initialise(int index, PlayerManager manager){
 		playerIndex = index;
 		if (index % 2 == 0) {
 			controllerSide = true;
 		}
+		playerManager = manager;
 	}
 
     //kill player object
@@ -87,7 +89,7 @@ public class Player : MonoBehaviour
         }
         if (gameObject.GetComponent<SpriteRenderer>().color == Color.clear)
         {
-            Destroy(gameObject);
+			playerManager.KillPlayer(this);
         }
     }
 

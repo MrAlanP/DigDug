@@ -101,6 +101,7 @@
     <Compile Include="Assets\Scripts\Tile.cs" />
     <Compile Include="Assets\Scripts\TileManager.cs" />
     <Compile Include="Assets\Scripts\WaterBackground.cs" />
+    <Compile Include="Assets\Scripts\WinScreen.cs" />
     <Compile Include="Assets\Scripts\bombTrack.cs" />
     <Compile Include="Assets\Scripts\bombTrigger.cs" />
     <Compile Include="Assets\Scripts\explosion.cs" />
