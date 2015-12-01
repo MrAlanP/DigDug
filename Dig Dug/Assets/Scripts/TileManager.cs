@@ -68,17 +68,17 @@ public class TileManager : MonoBehaviour {
 	}
 
 	public void Earthquake(){
-		int faultCount = 1;
+		int faultCount = 4;
 		Tile[] tilesToAddFaults = new Tile [faultCount];
 
 
 
 		for (int i = 0; i<faultCount; i++) {
-			do{
-				Vector2 tileIndex = new Vector2(Random.Range(0,(int)GRID_SIZE.x-1), Random.Range(0,(int)GRID_SIZE.y-1));
-				tilesToAddFaults[i] = tiles[62,28];//(int)tileIndex.x, (int)tileIndex.y];
-			}while(tilesToAddFaults[i].HasCollapsed() || tilesToAddFaults[i].HasFault());
-
+			Vector2 tileIndex = new Vector2(Random.Range(0,(int)GRID_SIZE.x-1), Random.Range(0,(int)GRID_SIZE.y-1));
+			tilesToAddFaults[i] = tiles[(int)tileIndex.x, (int)tileIndex.y];
+			if(tilesToAddFaults[i].HasCollapsed() || tilesToAddFaults[i].HasFault()){
+				tilesToAddFaults[i] = null;
+			}
 
 		}
 		faultManager.CreateCracks (tilesToAddFaults);
@@ -127,7 +127,7 @@ public class TileManager : MonoBehaviour {
 						Tile adjacent = GetTile(new IntVector2(x+(int)direction.x, y+(int)direction.y));
 						if(adjacent!=null){
 							if(!adjacent.HasCollapsed()){
-								//waterTiles.Add(tile);
+								waterTiles.Add(tile);
 								break;
 							}
 						}

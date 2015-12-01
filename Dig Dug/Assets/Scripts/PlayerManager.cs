@@ -6,14 +6,7 @@ public class PlayerManager : MonoBehaviour {
 
 	public GameObject playerPrefab;
 	public GameObject playersParent;
-   //public Sprite playerSprite1;
-   //public Sprite playerSprite2;
-   //public Sprite playerSprite3;
-   //public Sprite playerSprite4;
-   //public Sprite playerSprite5;
-   //public Sprite playerSprite6;
-   //public Sprite playerSprite7;
-   //public Sprite playerSprite8;
+
 	List<Player> players = new List<Player>();
 
 	// Use this for initialization

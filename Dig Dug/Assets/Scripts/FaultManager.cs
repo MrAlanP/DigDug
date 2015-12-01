@@ -34,8 +34,11 @@ public class FaultManager : MonoBehaviour {
 
 	public void CreateCracks(Tile[] tilesToAddCracks){
 		for (int i = 0; i<tilesToAddCracks.Length; i++) {
-			Fault newFault = AddFaultToTile(tilesToAddCracks[i]);
-			SetFaultAsMain(newFault);
+			if(tilesToAddCracks[i]!=null){
+				Fault newFault = AddFaultToTile(tilesToAddCracks[i]);
+				SetFaultAsMain(newFault);
+			}
+
 
 		}
 	}
