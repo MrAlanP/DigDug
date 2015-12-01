@@ -26,33 +26,34 @@ public class GameUI : MonoBehaviour {
 	void Update () {
 
 		if (Joining.timer == 0) {
+			UI.SetActive (true);
 
-			if (Joining.GetPlayers() == 1) {
+			if (Joining.GetPlayerCount() == 1) {
 				Player1.SetActive(true);
 			}
-			else if(Joining.GetPlayers() == 2){
+			else if(Joining.GetPlayerCount() == 2){
 				Player1.SetActive (true);
 				Player2.SetActive (true);
 			}
-			else if(Joining.GetPlayers() == 3){
+			else if(Joining.GetPlayerCount() == 3){
 				Player1.SetActive (true);
 				Player2.SetActive (true);
 				Player3.SetActive (true);
 			}
-			else if(Joining.GetPlayers() == 4){
+			else if(Joining.GetPlayerCount() == 4){
 				Player1.SetActive (true);
 				Player2.SetActive (true);
 				Player3.SetActive (true);
 				Player4.SetActive (true);
 			}
-			else if(Joining.GetPlayers() == 5){
+			else if(Joining.GetPlayerCount() == 5){
 				Player1.SetActive (true);
 				Player2.SetActive (true);
 				Player3.SetActive (true);
 				Player4.SetActive (true);
 				Player5.SetActive (true);
 			}
-			else if(Joining.GetPlayers() == 6){
+			else if(Joining.GetPlayerCount() == 6){
 				Player1.SetActive (true);
 				Player2.SetActive (true);
 				Player3.SetActive (true);
@@ -60,7 +61,7 @@ public class GameUI : MonoBehaviour {
 				Player5.SetActive (true);
 				Player6.SetActive (true);
 			}
-			else if(Joining.GetPlayers() == 7){
+			else if(Joining.GetPlayerCount() == 7){
 				Player1.SetActive (true);
 				Player2.SetActive (true);
 				Player3.SetActive (true);
@@ -69,7 +70,7 @@ public class GameUI : MonoBehaviour {
 				Player6.SetActive (true);
 				Player7.SetActive (true);
 			}
-			else if(Joining.GetPlayers() == 8){
+			else if(Joining.GetPlayerCount() == 8){
 				Player1.SetActive (true);
 				Player2.SetActive (true);
 				Player3.SetActive (true);
