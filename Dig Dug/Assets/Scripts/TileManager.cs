@@ -133,10 +133,11 @@ public class TileManager : MonoBehaviour {
 			for(int x = 0; x<GRID_SIZE.x; x++){
 				Tile tile = GetTile(new IntVector2(x,y));
 				if(tile.HasCollapsed()){
+					waterTiles.Add(tile);
 					for(int i = 0; i<8; i++){
 						Tile adjacent = GetTile(new IntVector2(x+offsets[i].x, y+offsets[i].y));
 						if(adjacent!= null && !adjacent.HasCollapsed()){
-							waterTiles.Add(tile);
+							//waterTiles.Add(tile);
 							break;
 						}
 					}
