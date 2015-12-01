@@ -9,6 +9,8 @@ public class PlayerManager : MonoBehaviour {
 	public WinScreen winScreen;
 
 	List<Player> players = new List<Player>();
+	Color[] playerColours = new Color[8]{Color.blue,Color.cyan,Color.gray,Color.green,Color.magenta,Color.red,Color.yellow,Color.black};
+	string[] playerNames = new string[8]{"Blue","Cyan","Gray","Green","Magenta","Red","Yellow","Black"};
 
 	// Use this for initialization
 	void Start () {
@@ -18,7 +20,14 @@ public class PlayerManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Z)) {
-			winScreen.ShowWin(players[0]);
+			int nameIndex = 0;
+			for(int i = 0; i<playerColours.Length; i++){
+				if(playerColours[i]==players[0].GetColour()){
+					nameIndex = i;
+					break;
+				}
+			}
+			winScreen.ShowWin(players[0], playerNames[nameIndex]);
 		}
 	}
 
@@ -29,7 +38,7 @@ public class PlayerManager : MonoBehaviour {
 			Player player = newPlayer.GetComponent<Player>();
 			player.Initialise(index, this);
 			players.Add(player);
-			player.SetColour(playerColour(index-1));
+			player.SetColour(playerColours[index-1]);
             
 		}
 	}
@@ -40,47 +49,18 @@ public class PlayerManager : MonoBehaviour {
 
 		switch (players.Count) {
 		case 0:
+			winScreen.ShowDraw();
 			break;
 		case 1:
+			int nameIndex = 0;
+			for(int i = 0; i<playerColours.Length; i++){
+				if(playerColours[i]==players[0].GetColour()){
+					nameIndex = i;
+					break;
+				}
+			}
+			winScreen.ShowWin(players[0], playerNames[nameIndex]);
 			break;
 		}
 	}
-    Color playerColour(int selector)
-    {
-        Color colour = new Color();
-        if (selector==0)
-        {
-            colour = Color.blue;
-        }
-        if (selector==1)
-        {
-            colour = Color.cyan;
-        }
-        if (selector==2)
-        {
-            colour = Color.gray;
-        }
-        if (selector==3)
-        {
-            colour = Color.green;
-        }
-        if (selector==4)
-        {
-            colour = Color.magenta;
-        }
-        if (selector==5)
-        {
-            colour = Color.red;
-        }
-        if (selector==6)
-        {
-            colour = Color.yellow;
-        }
-        if (selector==7)
-        {
-            colour = Color.black;
-        }
-        return colour;
-
-    }
 }

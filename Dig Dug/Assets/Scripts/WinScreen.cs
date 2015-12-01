@@ -8,6 +8,8 @@ public class WinScreen : MonoBehaviour {
 	public GameObject screen;
 	GameCamera cam;
 	public Game game;
+
+	public Text playerWinText;
 	// Use this for initialization
 	void Awake () {
 		screen.SetActive (false);
@@ -19,7 +21,9 @@ public class WinScreen : MonoBehaviour {
 		
 	}
 
-	public void ShowWin(Player winningPlayer){
+	public void ShowWin(Player winningPlayer, string name){
+
+		game.EndGame ();
 
 		//cam.transform.DOLocalMove (new Vector3(winningPlayer.transform.localPosition.x, winningPlayer.transform.localPosition.y, cam.transform.localPosition.z), 3.0f);
 		Debug.Log (winningPlayer.transform.localPosition);
@@ -32,7 +36,8 @@ public class WinScreen : MonoBehaviour {
 			screen.SetActive (true);
 		});
 
-		//Get colours
+		playerWinText.text = name+" Wins";
+		playerWinText.color = winningPlayer.GetColour ();
 
 	}
 

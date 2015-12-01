@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
 	PlayerManager playerManager;
 	Color playerColour;
 
+	bool movementEnabled = true;
+
 	int playerIndex;
 
     ///////////////////////////////////////////////////////////////////////////
@@ -94,6 +96,11 @@ public class Player : MonoBehaviour
         }
     }
 
+	public void DisableMovement(){
+		movementEnabled = false;
+		//Set animation to face forward
+	}
+
 	public void SetColour(Color col){
 		GetComponent<SpriteRenderer> ().color = col;
 		playerColour = col;
@@ -105,7 +112,9 @@ public class Player : MonoBehaviour
 
     void MovePlayer()
     {
-
+		if (!movementEnabled) {
+			return;
+		}
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // Left side of the controller
         /////////////////////////////////////////////////////////////////////////////////////////////////
