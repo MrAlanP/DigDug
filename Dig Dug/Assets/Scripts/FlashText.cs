@@ -4,10 +4,9 @@ using UnityEngine.UI;
 
 public class FlashText : MonoBehaviour {
 
-    int counter = 0;
-    int blinkSpeed = 10;
-    bool blinkR;
-    bool blinkY;
+    float counter = 0;
+    float blinkSpeed = 0.2f;
+	bool isRed = true;
     Text text;
 
     void Awake()
@@ -18,28 +17,23 @@ public class FlashText : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (counter == 5)
-        {
-            blinkR = false;
-            blinkY = true;
-        }
-        if (counter == blinkSpeed)
-        {
-            blinkY = false;
-            blinkR = true;
         
-            counter = 0;
-        }
-        
-        counter++;
+        counter+= Time.deltaTime;
 
-        if (blinkY == true)
-        {
-            text.color = Color.yellow;
-        }
-        if (blinkR == true)
-        {
-            text.color = Color.red;
-        }
+		if (counter >= blinkSpeed) {
+			isRed = !isRed;
+			if (isRed)
+			{
+
+				text.color = Color.yellow;
+			}
+			else
+			{
+				text.color = Color.red;
+			}
+			counter = 0;
+		}
+
+        
 	}
 }

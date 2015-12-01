@@ -47,7 +47,6 @@ public class Game : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.E)) {
 			Earthquake();
-			Application.LoadLevel("Game");
 		}
 
 		// Random earthquake stuff follows
