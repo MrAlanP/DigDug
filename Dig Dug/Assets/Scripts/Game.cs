@@ -10,11 +10,11 @@ public class Game : MonoBehaviour {
 	TileManager tileManager;
 	PlayerManager playerManager;
 
-    public float minTime = 2;
-    public float maxTime = 5;
+    float minTime = 15;
+    float maxTime = 25;
 
     // current time
-    private float time;
+    private float time = 0;
 
     // time to do an earthquake
     private float earthquakeTime;

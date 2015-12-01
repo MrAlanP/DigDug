@@ -44,9 +44,12 @@ public class Fault : MonoBehaviour {
 	
 	}
 
-	public void FadeIn(){
-		mainFaultSprite.transform.localScale = Vector3.zero;
-		DOTween.To (() => mainFaultSprite.transform.localScale, x => mainFaultSprite.transform.localScale = x, new Vector3 (1, 1, 1), 1);
+	public void FadeIn(float time){
+		mainFaultSprite.color = new Color (1, 1, 1, 0);
+		spriteRend.color = new Color (1, 1, 1, 0);
+		DOTween.To(()=> spriteRend.color, x=> spriteRend.color = x, new Color(1,1,1,1), time).SetOptions(true);
+		DOTween.To(()=> mainFaultSprite.color, x=> mainFaultSprite.color = x, new Color(1,1,1,1), time).SetOptions(true);
+
 	}
 
 	//Sets the fault as a connection type
@@ -54,8 +57,6 @@ public class Fault : MonoBehaviour {
 		if (faultType != FaultType.Main) {
 			faultType = FaultType.Main;
 			mainFaultSprite.enabled = true;
-			
-			FadeIn ();
 		}
 
 	}
@@ -186,8 +187,7 @@ public class Fault : MonoBehaviour {
 	}
 
 	public void Collapse(){
-		spriteRend.color = new Color (1, 1, 1, 0.3f);
-		//gameObject.SetActive (false);
+		gameObject.SetActive (false);
 		//Destroy (gameObject);
 	}
 
