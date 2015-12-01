@@ -120,11 +120,22 @@ public class TileManager : MonoBehaviour {
 
 	public void SetWaterTiles(){
 		waterTiles.Clear ();
+		IntVector2[] offsets = new IntVector2[8]{new IntVector2(-1,-1), new IntVector2(0,-1), new IntVector2(1,-1),
+								new IntVector2(-1,0), new IntVector2(1,0), 
+								new IntVector2(1,1), new IntVector2(0,1), new IntVector2(1,1)};
+
 		for(int y = 0; y<GRID_SIZE.y; y++){
 			for(int x = 0; x<GRID_SIZE.x; x++){
 				Tile tile = GetTile(new IntVector2(x,y));
 				if(tile.HasCollapsed()){
-					waterTiles.Add(tile);
+					for(int i = 0; i<8; i++){
+						Tile adjacent = GetTile(new IntVector2(x+offsets[i].x, y+offsets[i].y));
+						if(adjacent!= null && !adjacent.HasCollapsed()){
+							waterTiles.Add(tile);
+							break;
+						}
+					}
+
 				}
 			}
 		}

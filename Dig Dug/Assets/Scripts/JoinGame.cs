@@ -78,5 +78,7 @@ public class JoinGame : MonoBehaviour {
 		return players;
 	}
 
-
+	public int GetPlayerCount(){
+		return GetPlayers ().Count;
+	}
 }
