@@ -11,6 +11,10 @@ public class WinScreen : MonoBehaviour {
 
 	public Text playerWinText;
 	public Text destroyedText;
+
+	bool active = false;
+
+	float shownTime = 0;
 	// Use this for initialization
 	void Awake () {
 		screen.SetActive (false);
@@ -19,11 +23,16 @@ public class WinScreen : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (active) {
+			shownTime+=Time.deltaTime;
+			if(shownTime>10){
+				Application.LoadLevel("Game");
+			}
+		}
 	}
 
 	public void ShowWin(Player winningPlayer, string name = ""){
-
+		active = true;
 		game.EndGame ();
 
 		if (winningPlayer != null) {

@@ -32,14 +32,14 @@ public class TileManager : MonoBehaviour {
 		tiles = new Tile[(int)GRID_SIZE.x, (int)GRID_SIZE.y];
 	}
 
-	public void LoadLevel(){
+	public IEnumerator LoadLevel(){
 		Color[] pixels = level.GetPixels();
 		
 		//Reads in an image, doesnt currently do Alans tile edge stuff
 		for(int y = 0; y < level.height; y++){
 			for(int x = 0; x < level.width; x++){
 				
-				Color color = pixels[(y*level.width)+x];
+				Color color =  pixels[(y*level.width)+x];
 				
 				GameObject newTile = Instantiate(tilePrefab);
 				newTile.transform.SetParent(tilesParent.transform);
@@ -56,10 +56,14 @@ public class TileManager : MonoBehaviour {
 //				if(y==0){
 //					tiles[x,y].SetEdgeSprite();
 //				}
+
 			}
+			yield return null;
+
 		}
 		SetAdjacentWaterTiles ();
 		SetWaterTiles ();
+		yield return null;
 	}
 	
 	// Update is called once per frame
@@ -147,17 +151,22 @@ public class TileManager : MonoBehaviour {
 		for(int y = 0; y<GRID_SIZE.y; y++){
 			for(int x = 0; x<GRID_SIZE.x; x++){
 				for(int i = 0; i<4; i++){
-					float angle = Mathf.Deg2Rad*(90*(i%4));
+					float angle = Mathf.Deg2Rad*(90*((i+1)%4));
 					
 					Vector2 direction = new Vector2(Mathf.Cos(angle),-Mathf.Sin(angle));
 					Tile adjacent = GetTile(new IntVector2(x+(int)direction.x, y+(int)direction.y));
 					if(adjacent!=null){
 						if(!adjacent.HasCollapsed()){
+
 							continue;
 						}
 						
 					}
+					if(i%4==0){
+						GetTile(new IntVector2(x,y)).SetEdgeSprite();
+					}
 					adjacentWaterTiles.Add(GetTile(new IntVector2(x,y)));
+					break;
 				}
 			}
 		}

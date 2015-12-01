@@ -37,21 +37,17 @@ public class Game : MonoBehaviour {
 	}
 
 	void Start(){
-		if (joinMenu != null) {
-			joinMenu.gameObject.SetActive (true);
-		} else {
-			LoadLevel();
-		}
-
         //Initialize the timer for earthquakes
         SetRandomTime();
         time = minTime;
+		LoadLevel ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.E)) {
 			Earthquake();
+			Application.LoadLevel("Game");
 		}
 
 		// Random earthquake stuff follows
@@ -86,8 +82,6 @@ public class Game : MonoBehaviour {
 		joinMenu.gameObject.SetActive (false);
 		
 
-		LoadLevel ();
-
 		gameActive = true;
 
 		List<int> players = joinMenu.GetPlayers ();
@@ -103,7 +97,7 @@ public class Game : MonoBehaviour {
 	}
 
 	void LoadLevel(){
-		tileManager.LoadLevel ();
+		StartCoroutine(tileManager.LoadLevel ());
 	}
 }
 

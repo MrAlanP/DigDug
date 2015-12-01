@@ -110,11 +110,6 @@ public static class Pathfinding {
 				}
 			}
 		}
-		if (!test) {
-
-			Debug.Log(adjacents.Count);
-			test = true;
-		}
 		return adjacents;
 	}
 
