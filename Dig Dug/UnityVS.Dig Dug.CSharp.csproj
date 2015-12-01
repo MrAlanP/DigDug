@@ -106,7 +106,6 @@
     <Compile Include="Assets\Scripts\bombTrigger.cs" />
     <Compile Include="Assets\Scripts\explosion.cs" />
     <Compile Include="Assets\XInputDotNet\Examples\XInputTestCS.cs" />
-    <Compile Include="Assets\vibrateOnEarthQuake.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Imported\Demigiant\DOTween\DOTween.XML" />

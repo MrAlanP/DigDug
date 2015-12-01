@@ -9,7 +9,7 @@ public class PlayerManager : MonoBehaviour {
 	public WinScreen winScreen;
 	TileManager tileManager;
 
-	public List<Player> players = new List<Player>();
+	List<Player> players = new List<Player>();
 	Color[] playerColours = new Color[8]{Color.blue,Color.cyan,Color.gray,Color.green,Color.magenta,Color.red,Color.yellow,Color.black};
 	string[] playerNames = new string[8]{"Blue","Cyan","Gray","Green","Magenta","Red","Yellow","Black"};
 	IntVector2[] spawnPoints = new IntVector2[8]{new IntVector2(5,30), new IntVector2(64,6), new IntVector2(64,30), new IntVector2(5,6),
