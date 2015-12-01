@@ -1711,6 +1711,10 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: 4.92000008
       objectReference: {fileID: 0}
+    - target: {fileID: 11485160, guid: 6c6de7d01ce2373408e20a445d3f181a, type: 2}
+      propertyPath: earthquake
+      value: 
+      objectReference: {fileID: 8300000, guid: 8763d22c7396a28439a9e35d6491f81c, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6c6de7d01ce2373408e20a445d3f181a, type: 2}
   m_IsPrefabParent: 0
