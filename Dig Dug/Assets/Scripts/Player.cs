@@ -72,6 +72,7 @@ public class Player : MonoBehaviour
     }
     void onDeath()
     {
+		dead = true;
         gameObject.GetComponent<BoxCollider2D>().enabled = false;
         dying += Time.deltaTime;
         if (dying >= 3)
@@ -96,6 +97,8 @@ public class Player : MonoBehaviour
 
 	public void DisableMovement(){
 		movementEnabled = false;
+		ani.SetFloat("XMovement", 0);
+		ani.SetFloat("YMovement", 0);
 		//Set animation to face forward
 	}
 
@@ -385,7 +388,9 @@ public class Player : MonoBehaviour
     }
     void placeBomb()
     {
-
+		if (!movementEnabled) {
+			return;
+		}
 	    if (!sexBomb)
 	    {
 			if (Input.GetButtonDown("Player"+playerIndex+"Bumper"))

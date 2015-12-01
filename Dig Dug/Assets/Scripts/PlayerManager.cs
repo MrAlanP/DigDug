@@ -43,8 +43,8 @@ public class PlayerManager : MonoBehaviour {
 		players.Remove (player);
 		Destroy (player.gameObject);
 
-		if (players.Count <= 1) {
-			if(players[0].falling){
+		if (players.Count==1) {
+			if(players[0].falling || players[0].dead){
 				winScreen.ShowDraw();
 			}
 			else{

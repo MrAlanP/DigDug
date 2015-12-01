@@ -61,5 +61,6 @@ public class WinScreen : MonoBehaviour {
 
 	public void ShowDraw(){
 		ShowWin (null);
+		screen.SetActive (true);
 	}
 }
