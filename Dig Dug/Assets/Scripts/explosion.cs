@@ -10,6 +10,7 @@ public class explosion : MonoBehaviour {
     public AudioClip softBang;
     float die = 0;
     bool playedClip = false;
+    public float vibrate;
     void Start()
     {
         tileManager = GameObject.FindGameObjectWithTag("Game").GetComponent<TileManager>();
@@ -36,7 +37,7 @@ public class explosion : MonoBehaviour {
             }
             else
             {
-                source.PlayOneShot(loudBang, 1);
+                source.PlayOneShot(loudBang, 0.7f);
                 playedClip = true;
             }
            
@@ -49,6 +50,7 @@ public class explosion : MonoBehaviour {
         if (gameObject.GetComponent<CircleCollider2D>().radius <= 0.05f)
         {
             gameObject.GetComponent<CircleCollider2D>().radius += 0.002f;
+            vibrate = gameObject.GetComponent<CircleCollider2D>().radius*10;
         }
     
     }

@@ -40,7 +40,7 @@ public class XInputTestCS : MonoBehaviour
       
 
         // Set vibration according to triggers
-        GamePad.SetVibration(playerIndex, state.Triggers.Left, state.Triggers.Right);
+        GamePad.SetVibration(playerIndex, 1, 1);//, state.Triggers.Left, state.Triggers.Right);
 
        
     }

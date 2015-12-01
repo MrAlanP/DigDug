@@ -16,7 +16,7 @@ GameObject:
   - 82: {fileID: 8282160}
   m_Layer: 0
   m_Name: explosion
-  m_TagString: Untagged
+  m_TagString: explosion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -160,6 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loudBang: {fileID: 8300000, guid: 3c0815574e1410243aafffa54bb10970, type: 3}
   softBang: {fileID: 8300000, guid: be1f4bcbc20a85a4295d39aa36a5c0ff, type: 3}
+  vibrate: 0
 --- !u!212 &21202174
 SpriteRenderer:
   m_ObjectHideFlags: 1

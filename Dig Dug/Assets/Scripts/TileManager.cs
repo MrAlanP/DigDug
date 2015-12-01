@@ -9,7 +9,7 @@ public class TileManager : MonoBehaviour {
 	public GameObject tilePrefab;
 	public ParticleSystem collapseParticles;
 	public Texture2D level;
-
+    public bool quake = false;
 	FaultManager faultManager;
 
 	Tile[,] tiles;
@@ -74,9 +74,8 @@ public class TileManager : MonoBehaviour {
 		int faultCount = 3;
         
 		Tile[] tilesToAddFaults = new Tile [faultCount];
-
-
-
+        //bool to make controllers vibrate;
+        quake = true; 
 		for (int i = 0; i<faultCount; i++) {
 			do{
 				Vector2 tileIndex = new Vector2(Random.Range(0,(int)GRID_SIZE.x-1), Random.Range(0,(int)GRID_SIZE.y-1));

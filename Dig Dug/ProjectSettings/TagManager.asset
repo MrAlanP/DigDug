@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bomb
   - Game
+  - explosion
   layers:
   - Default
   - TransparentFX
