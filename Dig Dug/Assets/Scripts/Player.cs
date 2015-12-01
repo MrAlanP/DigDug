@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
 		if (playerIndex == 0) {
 			return;
 		}
-        ani.SetBool("playerDead", dead);
+       
         if (!dead&&!checkFalling())
         {
             dontFallInTheWaterDummy();
@@ -56,6 +56,8 @@ public class Player : MonoBehaviour
         }
         else if (dead)
         {
+            
+            ani.SetBool("PlayerDead", dead);
             onDeath();
         }
         if (checkFalling())
@@ -296,6 +298,72 @@ public class Player : MonoBehaviour
         }
 
     }
+    Vector2 nearestFault()
+    {
+        Fault fault;
+        Tile tile = tileManager.GetClosestTile(gameObject.transform.position);
+        IntVector2 tileCheck = tile.tileIndex;
+        //right
+        if (tileManager.GetTile(new IntVector2(tileCheck.x + 1, tileCheck.y)).HasFault())
+        {
+            fault = tileManager.GetTile(new IntVector2(tileCheck.x + 1, tileCheck.y)).GetFault();
+            if (fault.CanExplode())
+            {
+                return tileManager.GetTile(new IntVector2(tileCheck.x + 1, tileCheck.y)).transform.position;
+            }
+            else
+            {
+                return new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.1f);
+            }
+        }
+            //left
+        else if (tileManager.GetTile(new IntVector2(tileCheck.x - 1, tileCheck.y)).HasFault())
+        {
+            fault = tileManager.GetTile(new IntVector2(tileCheck.x - 1, tileCheck.y)).GetFault();
+            if (fault.CanExplode())
+            {
+                return tileManager.GetTile(new IntVector2(tileCheck.x - 1, tileCheck.y)).transform.position;
+            }
+            else
+            {
+                return new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.1f);
+            }
+        }
+            //down
+        else if (tileManager.GetTile(new IntVector2(tileCheck.x, tileCheck.y + 1)).HasFault())
+        {
+            fault = tileManager.GetTile(new IntVector2(tileCheck.x, tileCheck.y + 1)).GetFault();
+            if (fault.CanExplode())
+            {
+                return tileManager.GetTile(new IntVector2(tileCheck.x, tileCheck.y + 1)).transform.position;
+            }
+            else
+            {
+                return new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.1f);
+            }
+        }
+            //up
+        else if (tileManager.GetTile(new IntVector2(tileCheck.x, tileCheck.y - 1)).HasFault())
+        {
+            fault = tileManager.GetTile(new IntVector2(tileCheck.x, tileCheck.y - 1)).GetFault();
+            if (fault.CanExplode())
+            {
+                return tileManager.GetTile(new IntVector2(tileCheck.x, tileCheck.y-1)).transform.position;
+            }
+            else
+            {
+                return new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.1f);
+            }
+        }
+        else if (tile.HasFault())
+        {
+            return tile.transform.position;
+        }
+        else
+        {
+            return new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.1f);
+        }
+    }
     void placeBomb()
     {
 
@@ -303,7 +371,7 @@ public class Player : MonoBehaviour
 	    {
 			if (Input.GetButtonDown("Player"+playerIndex+"Bumper"))
 	        {
-	            Instantiate(bomb, new Vector2(gameObject.transform.position.x + 0.1f, gameObject.transform.position.y), gameObject.transform.rotation);
+                Instantiate(bomb, nearestFault(), gameObject.transform.rotation);
 	            sexBomb = true;
 	        }
 			if (Input.GetButtonUp("Player"+playerIndex+"Bumper"))
@@ -368,9 +436,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// this function tells john to fuck off
-    /// </summary>
+    //edge check
     void dontFallInTheWaterDummy()
     {
         Tile closeTile = tileManager.GetClosestTile(transform.position);

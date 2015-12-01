@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using XInputDotNetPure;
 
 public class TileManager : MonoBehaviour {
 
@@ -69,6 +70,7 @@ public class TileManager : MonoBehaviour {
 
 	public void Earthquake(){
 		int faultCount = 3;
+        
 		Tile[] tilesToAddFaults = new Tile [faultCount];
 
 
@@ -146,5 +148,4 @@ public class TileManager : MonoBehaviour {
 		}
 	}
 
-  
 }

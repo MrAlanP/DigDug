@@ -4,6 +4,7 @@ using System.Collections;
 public class bombTrack : MonoBehaviour 
 {
     public GameObject explosion;
+    public GameObject player;
     FaultManager faultManager;
     TileManager tileManager;
     Fault localFault;

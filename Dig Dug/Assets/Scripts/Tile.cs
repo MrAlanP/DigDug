@@ -36,6 +36,10 @@ public class Tile : MonoBehaviour {
 	public bool HasFault(){
 		return fault != null;
 	}
+    public bool HasMainFault()
+    {
+        return true;        
+    }
 
 	public Fault GetFault(){
 		return fault;
