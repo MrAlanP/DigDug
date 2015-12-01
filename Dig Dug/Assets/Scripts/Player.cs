@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     bool canMoveD = true;
     float player2MovementYAxis = 0f;
 	PlayerManager playerManager;
+	Color playerColour;
 
 	int playerIndex;
 
@@ -92,6 +93,15 @@ public class Player : MonoBehaviour
 			playerManager.KillPlayer(this);
         }
     }
+
+	public void SetColour(Color col){
+		GetComponent<SpriteRenderer> ().color = col;
+		playerColour = col;
+	}
+
+	public Color GetColour(){
+		return playerColour;
+	}
 
     void MovePlayer()
     {

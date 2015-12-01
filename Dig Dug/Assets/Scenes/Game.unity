@@ -746,6 +746,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8c3e3b2aa546c246b1fe2f216b0db25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraPosition: {x: 0, y: 0}
 --- !u!1 &750616095
 GameObject:
   m_ObjectHideFlags: 0
@@ -1799,6 +1800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screen: {fileID: 1032918363}
+  game: {fileID: 485989984}
 --- !u!1 &1676240438
 GameObject:
   m_ObjectHideFlags: 0

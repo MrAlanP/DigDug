@@ -70,6 +70,8 @@ public class Game : MonoBehaviour {
 	}
 
 
+
+
     void SetRandomTime()
     {
         earthquakeTime = Random.Range(minTime, maxTime);
@@ -90,6 +92,10 @@ public class Game : MonoBehaviour {
 
 		List<int> players = joinMenu.GetPlayers ();
 		playerManager.SpawnPlayers (players);
+	}
+
+	public void EndGame(){
+		gameActive = false;
 	}
 
 	void LoadLevel(){

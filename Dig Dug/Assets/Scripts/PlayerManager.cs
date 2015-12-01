@@ -29,7 +29,7 @@ public class PlayerManager : MonoBehaviour {
 			Player player = newPlayer.GetComponent<Player>();
 			player.Initialise(index, this);
 			players.Add(player);
-            newPlayer.GetComponent<SpriteRenderer>().color = playerColour(index-1);
+			player.SetColour(playerColour(index-1));
             
 		}
 	}

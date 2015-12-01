@@ -5,7 +5,7 @@ using DG.Tweening; //DOTween
 public class GameCamera : MonoBehaviour {
 
 	Vector2 cameraOffset = new Vector2();
-	Vector2 cameraPosition = new Vector2();
+	public Vector2 cameraPosition = new Vector2();
 	// Use this for initialization
 	void Awake () {
 		DOTween.Init ();

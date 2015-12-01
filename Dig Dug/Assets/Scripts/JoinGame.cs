@@ -18,7 +18,7 @@ public class JoinGame : MonoBehaviour {
 	// Use this for initialization
 	void Awake ()
     {
-		timer = 10;
+		timer = 5;
 		countdownTimer.gameObject.SetActive (false);
 		for(int i = 0; i<playerReady.Length; i++){
 			playerReady[i] = false;
