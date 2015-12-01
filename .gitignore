@@ -75,3 +75,5 @@ Dig Dug/UnityVS.Dig Dug.CSharp.csproj
 *.csproj
 *.csproj
 *.csproj
+Dig Dug/Assets/Plugins/x86/XInputDotNetPure.dll.meta
+*.meta
