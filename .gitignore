@@ -76,5 +76,3 @@ Dig Dug/UnityVS.Dig Dug.CSharp.csproj
 *.csproj
 *.csproj
 Dig Dug/Assets/Plugins/x86/XInputDotNetPure.dll.meta
-*.dll
-Dig Dug/digdug222_Data/Mono/etc/mono/1.0/DefaultWsdlHelpGenerator.aspx
