@@ -22,27 +22,35 @@ public class WinScreen : MonoBehaviour {
 		
 	}
 
-	public void ShowWin(Player winningPlayer, string name){
+	public void ShowWin(Player winningPlayer, string name = ""){
 
 		game.EndGame ();
 
-		DOTween.To(()=> cam.cameraPosition, x=> cam.cameraPosition = x, 
-		           new Vector2(winningPlayer.transform.localPosition.x + 0.25f, winningPlayer.transform.localPosition.y), 
-		           3.0f);
+		if (winningPlayer != null) {
+			DOTween.To (() => cam.cameraPosition, x => cam.cameraPosition = x, 
+			           new Vector2 (winningPlayer.transform.localPosition.x + 0.25f, winningPlayer.transform.localPosition.y), 
+			           3.0f);
+			
+			
+			cam.gameObject.GetComponent<Camera> ().DOOrthoSize (0.5f, 3.0f).OnComplete (() => {
+				screen.SetActive (true);
+			});
+
+			playerWinText.text = name + " Wins";
+			playerWinText.color = winningPlayer.GetColour ();
+		} else {
+			playerWinText.text = "Nobody Won!";
+		}
 
 
-		cam.gameObject.GetComponent<Camera>().DOOrthoSize (0.5f, 3.0f).OnComplete(()=>{
-			screen.SetActive (true);
-		});
 
 		destroyedText.text = game.GetTotalDestroyedLand ().ToString();
 
-		playerWinText.text = name+" Wins";
-		playerWinText.color = winningPlayer.GetColour ();
+
 
 	}
 
 	public void ShowDraw(){
-
+		ShowWin (null);
 	}
 }
