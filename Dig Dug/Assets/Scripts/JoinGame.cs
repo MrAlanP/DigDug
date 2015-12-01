@@ -11,7 +11,7 @@ public class JoinGame : MonoBehaviour {
 	bool[] playerReady = new bool[8];
 
 
-	float timer;
+	public float timer;
 
 	bool gameStarted = false;
 
