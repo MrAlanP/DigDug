@@ -28,6 +28,10 @@ public class JoinGame : MonoBehaviour {
 			playerReady[i] = false;
 		}
 	}
+
+	void Start(){
+		source.Play ();
+	}
 	
 	// Update is called once per frame
 	void Update ()
@@ -68,6 +72,7 @@ public class JoinGame : MonoBehaviour {
 		if(timer<=0){
 			gameStarted = true;
 			game.StartGame();
+			source.Stop();
 		}
 
 	}

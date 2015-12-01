@@ -39,6 +39,7 @@ public class Game : MonoBehaviour {
 
 	void Start(){
         //Initialize the timer for earthquakes
+
         SetRandomTime();
         time = minTime;
 		LoadLevel ();
