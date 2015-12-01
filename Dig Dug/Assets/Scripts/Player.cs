@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
         else if (dead)
         {
             
-            ani.SetBool("PlayerDead", dead);
+            ani.SetBool("playerDead", dead);
             onDeath();
         }
         if (checkFalling())
