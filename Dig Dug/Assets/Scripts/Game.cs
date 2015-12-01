@@ -10,6 +10,7 @@ public class Game : MonoBehaviour {
 	TileManager tileManager;
 	PlayerManager playerManager;
     AudioSource source;
+    public AudioClip earthquake;
 
     float minTime = 15;
     float maxTime = 25;
@@ -84,6 +85,7 @@ public class Game : MonoBehaviour {
     }
 
 	void Earthquake(){
+        source.PlayOneShot(earthquake);
 		tileManager.Earthquake ();
 		gameCam.Earthquake ();
 	}
