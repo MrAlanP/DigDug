@@ -58,12 +58,7 @@ public class Player : MonoBehaviour
            
             
         }
-        else if (dead)
-        {
-            
-            ani.SetBool("playerDead", dead);
-            onDeath();
-        }
+
         if (checkFalling())
         {
             ani.SetBool("playerFalling", checkFalling());
@@ -79,22 +74,6 @@ public class Player : MonoBehaviour
 		playerManager = manager;
 	}
 
-    //kill player object
-    void onDeath()
-    {
-        gameObject.GetComponent<BoxCollider2D>().enabled = false;
-        dying += Time.deltaTime;
-        if (dying >= 3)
-        {
-
-            fade += Time.deltaTime;
-            gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.clear, fade);
-        }
-        if (gameObject.GetComponent<SpriteRenderer>().color == Color.clear)
-        {
-			playerManager.KillPlayer(this);
-        }
-    }
 
 	public void DisableMovement(){
 		movementEnabled = false;
@@ -445,7 +424,7 @@ public class Player : MonoBehaviour
         gameObject.transform.localScale = Vector2.Lerp(gameObject.transform.localScale, Vector2.zero, fallToDeath);
         if (gameObject.transform.localScale.x <= 0.07f)
         {
-            Destroy(gameObject);
+			playerManager.KillPlayer(this);
         }
 
     }

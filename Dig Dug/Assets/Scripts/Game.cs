@@ -98,6 +98,10 @@ public class Game : MonoBehaviour {
 		gameActive = false;
 	}
 
+	public int GetTotalDestroyedLand(){
+		return tileManager.destroyedCount * 5;
+	}
+
 	void LoadLevel(){
 		tileManager.LoadLevel ();
 	}

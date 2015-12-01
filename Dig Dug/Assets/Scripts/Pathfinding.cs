@@ -48,7 +48,6 @@ public static class Pathfinding {
 				}
 				pathList.Add(start);
 				pathList.Reverse();
-				Debug.Log ((Time.realtimeSinceStartup - startFuncTime)*1000);
 				return pathList;
 			}
 

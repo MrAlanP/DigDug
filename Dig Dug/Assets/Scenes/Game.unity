@@ -1802,6 +1802,7 @@ MonoBehaviour:
   screen: {fileID: 1032918363}
   game: {fileID: 485989984}
   playerWinText: {fileID: 1212252946}
+  destroyedText: {fileID: 1556184956}
 --- !u!1 &1676240438
 GameObject:
   m_ObjectHideFlags: 0

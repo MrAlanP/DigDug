@@ -22,6 +22,8 @@ public class TileManager : MonoBehaviour {
 	public List<Tile> waterTiles = new List<Tile>();
 	[HideInInspector]
 	public List<Tile> adjacentWaterTiles = new List<Tile>();
+	[HideInInspector]
+	public int destroyedCount = 0;
 	// Use this for initialization
 	void Awake () {
 		GRID_SIZE = new Vector2 (level.width, level.height);
@@ -110,6 +112,7 @@ public class TileManager : MonoBehaviour {
 				tiles[tileIndex.x, tileIndex.y].Collapse();
 				collapseParticles.transform.localPosition = tiles[tileIndex.x, tileIndex.y].transform.localPosition;
 				collapseParticles.Emit(32);
+				destroyedCount++;
 			}
 
 		}

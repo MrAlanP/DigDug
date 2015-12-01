@@ -19,16 +19,7 @@ public class PlayerManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.Z)) {
-			int nameIndex = 0;
-			for(int i = 0; i<playerColours.Length; i++){
-				if(playerColours[i]==players[0].GetColour()){
-					nameIndex = i;
-					break;
-				}
-			}
-			winScreen.ShowWin(players[0], playerNames[nameIndex]);
-		}
+
 	}
 
 	public void SpawnPlayers(List<int> playerIndexes){
@@ -47,20 +38,24 @@ public class PlayerManager : MonoBehaviour {
 		players.Remove (player);
 		Destroy (player.gameObject);
 
-		switch (players.Count) {
-		case 0:
-			winScreen.ShowDraw();
-			break;
-		case 1:
-			int nameIndex = 0;
-			for(int i = 0; i<playerColours.Length; i++){
-				if(playerColours[i]==players[0].GetColour()){
-					nameIndex = i;
-					break;
-				}
+		if (players.Count <= 1) {
+			if(players[0].falling){
+				winScreen.ShowDraw();
 			}
-			winScreen.ShowWin(players[0], playerNames[nameIndex]);
-			break;
+			else{
+				int nameIndex = 0;
+				for(int i = 0; i<playerColours.Length; i++){
+					if(playerColours[i]==players[0].GetColour()){
+						nameIndex = i;
+						break;
+					}
+				}
+				players[0].DisableMovement();
+				winScreen.ShowWin(players[0], playerNames[nameIndex]);
+			}
+
 		}
+			
+
 	}
 }
