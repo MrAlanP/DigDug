@@ -48,6 +48,7 @@ public static class Pathfinding {
 				}
 				pathList.Add(start);
 				pathList.Reverse();
+				Debug.Log ((Time.realtimeSinceStartup - startFuncTime)*1000);
 				return pathList;
 			}
 
@@ -84,10 +85,6 @@ public static class Pathfinding {
 				}
 			}
 		} while(openList.Count>0);
-
-		Debug.Log (Time.realtimeSinceStartup - startFuncTime);
-		Debug.Log (closedList.Count);
-
 		//Unable to find a path between the start-goal
 		return null;
 	}

@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class FaultManager : MonoBehaviour {
 	
 	List<Fault> mainFaults = new List<Fault>();
 	List<Fault> faults = new List<Fault> ();
+	List<Fault> faultsToCheck = new List<Fault> ();
 	
 	public GameObject faultPrefab;
 
@@ -20,8 +22,14 @@ public class FaultManager : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Q)) {
 			ExplodeFault(mainFaults[Random.Range(0,mainFaults.Count)]);
 		}
-		
+		//Collapse any tiles we should
+		for (int i = 0; i<faultsToCheck.Count; i++) {
+			
+			List<IntVector2> tilesToCollapse = GetTilesToCollapse (faultsToCheck[i]);
+			CollapseTiles (tilesToCollapse);
 
+			faultsToCheck.RemoveAt(i);
+		}
 	}
 
 	public void CreateCracks(Tile[] tilesToAddCracks){
@@ -33,16 +41,17 @@ public class FaultManager : MonoBehaviour {
 	}
 
 	public void ExplodeFault(Fault fault){
-
 		mainFaults.Remove (fault);
 		fault.ExplodeFault();
 
-		List<Fault> faultsToCheck = new List<Fault> ();
+
 
 		IntVector2 faultIndex = fault.tileIndex;
 
 		//The number of tiles the explosion expands the fault by
 		int explodeRange = 3;
+		//How long do we see faults fade in for
+		float faultExpandTime = 0.3f;
 
 		//Do all 4 directions
 		for(int j = 0; j<4; j++){
@@ -67,12 +76,17 @@ public class FaultManager : MonoBehaviour {
 						stopExplodingInDirection = true;
 						//Fault has connected to itself in a link, should explode
 						if(i>0){
-							faultsToCheck.Add(newFault);
+							int timer = 0;
+							DOTween.To(()=>timer,x=>timer=x,0,faultExpandTime).OnComplete(()=>{
+								faultsToCheck.Add(newFault);
+							});
+
 						}
 					}
 					else{
 						//Create a new fault
 						newFault = AddFaultToTile(tile);
+						newFault.FadeIn(faultExpandTime);
 					}
 
 					faults.Add(newFault);
@@ -85,22 +99,23 @@ public class FaultManager : MonoBehaviour {
 						//Check to see if this connects to ocean
 						Tile exitTile = tileManager.GetTile(tile.tileIndex + direction);
 
-						if(exitTile==null){
+						if(exitTile==null || exitTile.HasCollapsed()){
 							stopExplodingInDirection = true;
-							faultsToCheck.Add(newFault);
-						}
-						else if(exitTile.HasCollapsed()){
-							stopExplodingInDirection = true;
-							faultsToCheck.Add(newFault);
+							int timer = 0;
+							DOTween.To(()=>timer,x=>timer=x,0,faultExpandTime).OnComplete(()=>{
+								faultsToCheck.Add(newFault);
+							});
 						}
 					}
 					//Set fault type as insertable
 					else{
 						SetFaultAsMain(newFault);
+
 					}
 					//Update rotation based on connections
 					if(!tile.HasCollapsed()){
 						newFault.UpdateSprite();
+
 					}
 
 				}
@@ -113,19 +128,12 @@ public class FaultManager : MonoBehaviour {
 
 
 
-		//Collapse any tiles we should
-		for (int i = 0; i<faultsToCheck.Count; i++) {
 
-			List<IntVector2> tilesToCollapse = GetTilesToCollapse (faultsToCheck[i]);
-			CollapseTiles (tilesToCollapse);
-			//Update water tiles
-			tileManager.SetWaterTiles ();
-			tileManager.SetAdjacentWaterTiles();
-		}
 
 
 
 	}
+
 
 	void CollapseTiles(List<IntVector2> tilesToCollapse){
 
@@ -146,6 +154,10 @@ public class FaultManager : MonoBehaviour {
 				}
 			}
 			tileManager.CollapseTiles(tilesToCollapse);
+
+			//Update water tiles
+			tileManager.SetWaterTiles ();
+			tileManager.SetAdjacentWaterTiles();
 		}
 	}
 
