@@ -156,27 +156,31 @@ public class Player : MonoBehaviour
 
 			
             //if (canMoveD)
-            
-                //do movement stuff
-                if (player1MovementYAxis > 0)
-                {
-                    //ani.Play("WalkUp");
-                    gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player1MovementYAxis * speed));
-					ani.SetFloat("YMovement", player1MovementYAxis);
+                if (canMoveD)
+                {//do movement stuff
+                    if (player1MovementYAxis > 0)
+                    {
+                        //ani.Play("WalkUp");
+                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player1MovementYAxis * speed));
+                        ani.SetFloat("YMovement", player1MovementYAxis);
+                    }
                 }
-                else if(player1MovementYAxis < 0)
+               if (canMoveU)
                 {
-                   // ani.Play("walkDown");
-                    gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player1MovementYAxis * speed));
-					ani.SetFloat("YMovement", player1MovementYAxis);
-				
+                    if (player1MovementYAxis < 0)
+                    {
+                        // ani.Play("walkDown");
+                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player1MovementYAxis * speed));
+                        ani.SetFloat("YMovement", player1MovementYAxis);
+
+                    }
                 }
-            	else if(player1MovementYAxis == 0)
-           		{
-                	gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-					ani.SetFloat("YMovement", player1MovementYAxis);
-				  	//ani.Play("playerIdle");
-            	}
+                 if (player1MovementYAxis == 0)
+                {
+                    gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                    ani.SetFloat("YMovement", player1MovementYAxis);
+                    //ani.Play("playerIdle");
+                }
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,27 +209,32 @@ public class Player : MonoBehaviour
                     player2MovementXAxis = 0f;
                     //ani.Play("playerIdle");
                 }
+                if (camMoveR)
+                {
+                    //do movement stuff
+                    if (player2MovementXAxis > 0)
+                    {
+                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2((player2MovementXAxis * speed), 0));
+                        ani.SetFloat("XMovement", player2MovementXAxis);
+                        //ani.Play("walkR");
+                    }
+                }
+                if (canMoveL)
+                {
+                    if (player2MovementXAxis < 0)
+                    {
+                        //ani.Play("walkL");
+                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player2MovementXAxis * speed, 0));
+                        ani.SetFloat("XMovement", player2MovementXAxis);
 
-                //do movement stuff
-                if (player2MovementXAxis > 0)
-                {
-                    gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2((player2MovementXAxis * speed), 0));
-					ani.SetFloat("XMovement", player2MovementXAxis);
-                    //ani.Play("walkR");
+                    }
                 }
-				else if (player2MovementXAxis < 0)
+                 if (player2MovementXAxis == 0)
                 {
-                    //ani.Play("walkL");
-                    gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(player2MovementXAxis * speed, 0));
-					ani.SetFloat("XMovement", player2MovementXAxis);
-					
+                    gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                    ani.SetFloat("XMovement", player2MovementXAxis);
+                    //ani.Play("playerIdle");
                 }
-				else if(player2MovementXAxis == 0)
-				{
-					gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-					ani.SetFloat("XMovement", player2MovementXAxis);
-					//ani.Play("playerIdle");
-				}
             }
             ////////////////////////////////////
             // Y Axis button input here
@@ -248,28 +257,33 @@ public class Player : MonoBehaviour
                     player2MovementYAxis = 0f;
                     //ani.Play("playerIdle");
                 }
+                if (canMoveD)
+                {
+                    // do movement stuff
+                    if (player2MovementYAxis > 0)
+                    {
+                        // ani.Play("WalkUp");
+                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player2MovementYAxis * speed));
+                        ani.SetFloat("YMovement", player2MovementYAxis);
 
-                // do movement stuff
-                if (player2MovementYAxis > 0)
-                {
-                   // ani.Play("WalkUp");
-                    gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player2MovementYAxis * speed));
-					ani.SetFloat("YMovement", player2MovementYAxis);
-					
+                    }
                 }
-                else if (player2MovementYAxis < 0)
+                if (canMoveU)
                 {
-                    //ani.Play("walkDown");
-                    gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player2MovementYAxis * speed));
-					ani.SetFloat("YMovement", player2MovementYAxis);
-					
+                    if (player2MovementYAxis < 0)
+                    {
+                        //ani.Play("walkDown");
+                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, player2MovementYAxis * speed));
+                        ani.SetFloat("YMovement", player2MovementYAxis);
+
+                    }
                 }
-				else if (player2MovementYAxis == 0)
-				{
-					gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-					ani.SetFloat("YMovement", player2MovementYAxis);
-					
-				}
+               if (player2MovementYAxis == 0)
+                {
+                    gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                    ani.SetFloat("YMovement", player2MovementYAxis);
+
+                }
             }
         }
 
@@ -351,46 +365,38 @@ public class Player : MonoBehaviour
     /// </summary>
     void dontFallInTheWaterDummy()
     {
-        Debug.Log("dont fall in the water dummy");
         Tile closeTile = tileManager.GetClosestTile(transform.position);
         IntVector2 closeTileint = closeTile.tileIndex;
         if (tileManager.adjacentWaterTiles.Contains(closeTile))
         {
-            Debug.Log("Close tie");
+           
             if (!tileManager.GetTile(new IntVector2(closeTileint.x+1, closeTileint.y)).GetComponent<SpriteRenderer>().enabled)
             {
                 camMoveR = false;
-                Debug.Log("water to yr right");
             }
-            else
-            {
-                camMoveR = true;
-            }
+          
            if (!tileManager.GetTile(new IntVector2(closeTileint.x-1, closeTileint.y)).GetComponent<SpriteRenderer>().enabled)
            {
-               Debug.Log("water to your left");
                canMoveL = false;
            }
-           else
-           {
-               canMoveL = true;
-           }
+         
            if (!tileManager.GetTile(new IntVector2(closeTileint.x, closeTileint.y+1)).GetComponent<SpriteRenderer>().enabled)
            {
                canMoveD = false;
            }
-           else
-           {
-               canMoveD = true;
-           }
+        
            if (!tileManager.GetTile(new IntVector2(closeTileint.x, closeTileint.y-1)).GetComponent<SpriteRenderer>().enabled)
            {
                canMoveU = false;
            }
-           else
-           {
-               canMoveU = true;
-           }
+        
+        }
+        else
+        {
+            camMoveR = true;
+            canMoveU = true;
+            canMoveD = true;
+            canMoveL = true;
         }
            
     }
