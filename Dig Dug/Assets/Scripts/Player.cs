@@ -58,6 +58,11 @@ public class Player : MonoBehaviour
            
             
         }
+        else 
+        {
+            ani.SetBool("playerDead", dead);
+            onDeath();
+        }
 
         if (checkFalling())
         {
@@ -65,7 +70,21 @@ public class Player : MonoBehaviour
             fall();
         }
     }
+    void onDeath()
+    {
+        gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        dying += Time.deltaTime;
+        if (dying >= 3)
+        {
 
+            fade += Time.deltaTime;
+            gameObject.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.clear, fade);
+        }
+        if (gameObject.GetComponent<SpriteRenderer>().color == Color.clear)
+        {
+            playerManager.KillPlayer(this);
+        }
+    }
 	public void Initialise(int index, PlayerManager manager){
 		playerIndex = index;
 		if (index % 2 == 0) {
