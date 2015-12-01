@@ -10,6 +10,8 @@ public class JoinGame : MonoBehaviour {
 	public GameObject[] readyTexts;
 	bool[] playerReady = new bool[8];
 
+    bool countdownActive = false;
+
 
 	public float timer;
 
@@ -19,7 +21,7 @@ public class JoinGame : MonoBehaviour {
 	void Awake ()
     {
 		timer = 5;
-		countdownTimer.gameObject.SetActive (false);
+		//countdownTimer.gameObject.SetActive (false);
 		for(int i = 0; i<playerReady.Length; i++){
 			playerReady[i] = false;
 		}
@@ -42,8 +44,8 @@ public class JoinGame : MonoBehaviour {
 					playerReady[i] = true;
 					readyTexts[i].SetActive(true);
 					//Set countdown to start if we have at least 1 player
-					if(!countdownTimer.gameObject.activeSelf){
-						countdownTimer.gameObject.SetActive (true);
+					if(!countdownActive){
+						countdownActive = true;
 					}
 				}
 
@@ -55,7 +57,7 @@ public class JoinGame : MonoBehaviour {
 	}
 
 	public void UpdateCountdown(){
-		if(countdownTimer.gameObject.activeSelf){
+		if(countdownActive){
 			timer -= Time.deltaTime;
 			countdownTimer.text = "Starting in: "+Mathf.RoundToInt(timer);
 		}
